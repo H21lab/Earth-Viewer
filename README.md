@@ -64,7 +64,12 @@ Application is distributed as local image viewer which is accessing public avail
 
 Program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY.
 
+## Build Instruction
+
+Import the project into Android Studio, build and run the application.
+
 ## Attribution
 
 This code was created by Martin Kacer, H21 lab, Copyright 2016.
+https://sites.google.com/site/h21lab
 

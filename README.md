@@ -2,6 +2,8 @@
 Android application.
 Animated planet Earth with live weather and satellite data.
 
+![alt tag](https://github.com/H21lab/Earth-Viewer/blob/master/earth_viewer.png)
+
 Imagery included:
 Climate Reanalyzer weather forecast
 - World GFS Precipation and Clouds (+48h)

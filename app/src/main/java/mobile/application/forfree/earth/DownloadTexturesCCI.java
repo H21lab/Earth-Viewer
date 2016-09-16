@@ -203,7 +203,7 @@ public class DownloadTexturesCCI extends DownloadTextures
 
 			try {
 
-				url = new URL(myUri + String.format("%02d", h) + ".jpg");
+				url = new URL(myUri + String.format("%02d", h) + ".png");
 
 				Log.d("H21lab", "Downloading: " + url.toString());
 

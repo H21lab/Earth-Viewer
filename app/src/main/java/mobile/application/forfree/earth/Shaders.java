@@ -1969,8 +1969,10 @@ public class Shaders {
 			// 1013x643
 			// [6,55]
 			// [1006,554]
-			" 	vTexM[0] = (vTex[0] + (5.0/1013.0))*((1008.0-5.0)/1013.0); \n" +
-			" 	vTexM[1] = - (14.0/643.0) + 0.5 + (vTex[1] - 0.5)*((554.0-40.0)/643.0); \n" +
+			" 	vTexM[0] = vTex[0]; \n" +
+			" 	vTexM[1] = vTex[1]; \n" +
+			//" 	vTexM[0] = (vTex[0] + (5.0/1013.0))*((1008.0-5.0)/1013.0); \n" +
+			//" 	vTexM[1] = - (14.0/643.0) + 0.5 + (vTex[1] - 0.5)*((554.0-40.0)/643.0); \n" +
 			
 			"}                         \n";
 	    
@@ -2050,8 +2052,8 @@ public class Shaders {
 			
 			
 			// text in the bottom
-				" 	vec2 _vTexM =  vTexM; \n" +
-			" if (vPosition.y > 0.95) { \n" +
+			" 	vec2 _vTexM =  vTexM; \n" +
+		/*	" if (vPosition.y > 0.95) { \n" +
 			" 	_vTexM[1] =  -0.025 + 0.1 - 2.0*(vPosition.y-0.95) ; \n" +
 			" 	_vTexM[0] =  1.6*_vTexM[0] ; \n" +
 			" } \n" +
@@ -2059,6 +2061,7 @@ public class Shaders {
 			" if (vPosition.y < -0.9) { \n" +
 			" 	_vTexM[1] =  -0.05 + 0.9 - 1.5*(0.9 + vPosition.y - 0.01) ; \n" +
 			" } \n" +
+		*/
 
 			" vec4 cmT = 1.0*(sin(uTW3*0.5*3.1415)*(texture2D(uTextures[2], _vTexM)) 						+ (1.0 - sin(uTW3*0.5*3.1415))*(texture2D(uTextures[5], _vTexM)) ) "
 			+ "			+ 0.0*( uTW1*(texture2D(uTextures[2], _vTexM)) 						+ (1.0 - uTW1)*(texture2D(uTextures[6], _vTexM)) ) "
@@ -2071,11 +2074,11 @@ public class Shaders {
 			+ "; \n" +
 			
 			" float cm = (cmT.r + cmT.g + cmT.b)/3.0; \n" +
-			" cm = 0.6; \n" +
+			" cm = 0.5; \n" +
 			
 			
 			" float cmS = (cmTS.r + cmTS.g + cmTS.b)/3.0; \n" +
-			" cmS = 0.6; \n" +
+			" cmS = 0.5; \n" +
 
 			
 			" 		float d = (1.0 - texture2D(uTextures[1], vTex).r)*(1.0 - texture2D(uTextures[1], vTex).g)*texture2D(uTextures[1], vTex).b; \n" +
@@ -2182,8 +2185,10 @@ public class Shaders {
 			// 1013x643
 			// [6,55]
 			// [1006,554]
-			" 	vTexM[0] = (vTex[0] + (5.0/1013.0))*((1008.0-5.0)/1013.0); \n" +
-			" 	vTexM[1] = - (20.0/643.0) + 0.5 + (vTex[1] - 0.5)*((554.0-43.0)/643.0); \n" +
+			" 	vTexM[0] = vTex[0]; \n" +
+			" 	vTexM[1] = vTex[1]; \n" +
+			//" 	vTexM[0] = (vTex[0] + (5.0/1013.0))*((1008.0-5.0)/1013.0); \n" +
+			//" 	vTexM[1] = - (20.0/643.0) + 0.5 + (vTex[1] - 0.5)*((554.0-43.0)/643.0); \n" +
 			
 			
 			"}                         \n";
@@ -2264,16 +2269,16 @@ public class Shaders {
 
 			
 			// text in the bottom
-				" 	vec2 _vTexM =  vTexM; \n" +
-			" if (vPosition.y > 0.95) { \n" +
+			" 	vec2 _vTexM =  vTexM; \n" +
+		/*	" if (vPosition.y > 0.95) { \n" +
 			" 	_vTexM[1] =  -0.025 + 0.1 - 2.0*(vPosition.y-0.95) ; \n" +
 			" 	_vTexM[0] =  1.6*_vTexM[0] ; \n" +
 			" } \n" +
-			
+
 			" if (vPosition.y < -0.9) { \n" +
 			" 	_vTexM[1] =  -0.05 + 0.9 - 1.5*(0.9 + vPosition.y - 0.01) ; \n" +
 			" } \n" +
-
+		*/
 			" vec4 cmT = 0.2*(sin(uTW3*0.5*3.1415)*(texture2D(uTextures[2], _vTexM)) 						+ (1.0 - sin(uTW3*0.5*3.1415))*(texture2D(uTextures[5], _vTexM)) ) "
 			+ "			+ 0.4*( uTW1*(texture2D(uTextures[2], _vTexM)) 						+ (1.0 - uTW1)*(texture2D(uTextures[6], _vTexM)) ) "
 			+ "			+ 0.4*( uTW2*(texture2D(uTextures[4], _vTexM))						+ (1.0 - uTW2)*(texture2D(uTextures[5], _vTexM)) ) "
@@ -2285,10 +2290,10 @@ public class Shaders {
 			+ "; \n" +
 			
 			" float cm = (cmT.r + cmT.g + cmT.b)/3.0; \n" +
-			" cm = 0.6; \n" +
+			" cm = 0.5; \n" +
 			
 			" float cmS = (cmTS.r + cmTS.g + cmTS.b)/3.0; \n" +
-			" cmS = 0.6; \n" +
+			" cmS = 0.5; \n" +
 
 			
 			" 		float d = (1.0 - texture2D(uTextures[1], vTex).r)*(1.0 - texture2D(uTextures[1], vTex).g)*texture2D(uTextures[1], vTex).b; \n" +
@@ -2397,9 +2402,11 @@ public class Shaders {
 			// 1013x643
 			// [6,55]
 			// [1006,554]
-			
-			" 	vTexM[0] = - (0.0/1013.0) + 0.5 + (vTex[0] - 0.5)*((1008.0-5.0)/1013.0); \n" +
-			" 	vTexM[1] = - (62.0/643.0) + 0.5 + (vTex[1] - 0.5)*((554.0-120.0)/643.0); \n" +
+
+			" 	vTexM[0] = vTex[0]; \n" +
+			" 	vTexM[1] = vTex[1]; \n" +
+			//" 	vTexM[0] = - (0.0/1013.0) + 0.5 + (vTex[0] - 0.5)*((1008.0-5.0)/1013.0); \n" +
+			//" 	vTexM[1] = - (62.0/643.0) + 0.5 + (vTex[1] - 0.5)*((554.0-120.0)/643.0); \n" +
 			
 			"}                         \n";
 	 
@@ -2480,8 +2487,8 @@ public class Shaders {
 			
 
 			// text in the bottom
-				" 	vec2 _vTexM =  vTexM; \n" +
-			" if (vPosition.y > 0.95) { \n" +
+			" 	vec2 _vTexM =  vTexM; \n" +
+		/*	" if (vPosition.y > 0.95) { \n" +
 			" 	_vTexM[1] =  -0.03 + 0.1 - 2.0*(vPosition.y-0.95) ; \n" +
 			" 	_vTexM[0] =  1.6*_vTexM[0] ; \n" +
 			" } \n" +
@@ -2489,7 +2496,7 @@ public class Shaders {
 			" if (vPosition.y < -0.9) { \n" +
 			" 	_vTexM[1] =  -0.19 + 0.9 - 1.5*(0.9 + vPosition.y - 0.01) ; \n" +
 			" } \n" +
-			
+		*/
 
 			" vec4 cmT = 0.2*(sin(uTW3*0.5*3.1415)*(texture2D(uTextures[2], _vTexM)) 						+ (1.0 - sin(uTW3*0.5*3.1415))*(texture2D(uTextures[5], _vTexM)) ) "
 			+ "			+ 0.4*( uTW1*(texture2D(uTextures[2], _vTexM)) 						+ (1.0 - uTW1)*(texture2D(uTextures[6], _vTexM)) ) "
@@ -2502,11 +2509,11 @@ public class Shaders {
 			+ "; \n" +
 			
 			" float cm = (cmT.r + cmT.g + cmT.b)/3.0; \n" +
-			" cm = 0.6; \n" +
+			" cm = 0.5; \n" +
 			
 			
 			" float cmS = (cmTS.r + cmTS.g + cmTS.b)/3.0; \n" +
-			" cmS = 0.6; \n" +
+			" cmS = 0.5; \n" +
 
 			
 			" 		float d = (1.0 - texture2D(uTextures[1], vTex).r)*(1.0 - texture2D(uTextures[1], vTex).g)*texture2D(uTextures[1], vTex).b; \n" +
@@ -2617,8 +2624,10 @@ public class Shaders {
 			// [6,55]
 			// [1006,554]
 
-			" 	vTexM[0] = - (0.0/1013.0) + 0.5 + (vTex[0] - 0.5)*((1008.0-5.0)/1013.0); \n" +
-			" 	vTexM[1] = - (16.0/643.0) + 0.5 + (vTex[1] - 0.5)*((554.0-42.0)/643.0); \n" +
+			" 	vTexM[0] = vTex[0]; \n" +
+			" 	vTexM[1] = vTex[1]; \n" +
+			//" 	vTexM[0] = - (0.0/1013.0) + 0.5 + (vTex[0] - 0.5)*((1008.0-5.0)/1013.0); \n" +
+			//" 	vTexM[1] = - (16.0/643.0) + 0.5 + (vTex[1] - 0.5)*((554.0-42.0)/643.0); \n" +
 			
 			"}                         \n";
 	 
@@ -2686,9 +2695,11 @@ public class Shaders {
 			// 1013x643
 			// [6,55]
 			// [1006,554]
-			
-			" 	vTexM[0] = - (0.0/1013.0) + 0.5 + (vTex[0] - 0.5)*((1008.0-5.0)/1013.0); \n" +
-			" 	vTexM[1] = - (20.0/643.0) + 0.5 + (vTex[1] - 0.5)*((554.0-48.0)/643.0); \n" +
+
+			" 	vTexM[0] = vTex[0]; \n" +
+			" 	vTexM[1] = vTex[1]; \n" +
+			//" 	vTexM[0] = - (0.0/1013.0) + 0.5 + (vTex[0] - 0.5)*((1008.0-5.0)/1013.0); \n" +
+			//" 	vTexM[1] = - (20.0/643.0) + 0.5 + (vTex[1] - 0.5)*((554.0-48.0)/643.0); \n" +
 			
 			"}                         \n";
 	 
@@ -2756,9 +2767,11 @@ public class Shaders {
 			// 1013x643
 			// [6,55]
 			// [1006,554]
-			
-			" 	vTexM[0] = - (0.0/1013.0) + 0.5 + (vTex[0] - 0.5)*((1008.0-5.0)/1013.0); \n" +
-			" 	vTexM[1] = - (14.0/643.0) + 0.5 + (vTex[1] - 0.5)*((554.0-38.0)/643.0); \n" +
+
+			" 	vTexM[0] = vTex[0]; \n" +
+			" 	vTexM[1] = vTex[1]; \n" +
+			//" 	vTexM[0] = - (0.0/1013.0) + 0.5 + (vTex[0] - 0.5)*((1008.0-5.0)/1013.0); \n" +
+			//" 	vTexM[1] = - (14.0/643.0) + 0.5 + (vTex[1] - 0.5)*((554.0-38.0)/643.0); \n" +
 			
 			"}                         \n";
 	

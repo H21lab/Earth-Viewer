@@ -43,7 +43,7 @@ public class EarthActivity extends Activity {
 	private final int ID_MENU_IMAGERY_VISIBLE_INFRARED = 8;
 	private final int ID_MENU_IMAGERY_WATER_VAPOR = 9;
 	private final int ID_MENU_IMAGERY_MPE = 10;
-	private final int ID_MENU_IMAGERY_MPE_IODC = 11;
+	private final int ID_MENU_IMAGERY_IODC = 11;
 	private final int ID_MENU_IMAGERY_XPLANET= 12;
 	private final int ID_MENU_IMAGERY_SSEC_IR = 13;
 	private final int ID_MENU_IMAGERY_SSEC_WATER = 14;
@@ -98,7 +98,7 @@ public class EarthActivity extends Activity {
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_AIRMASS_HD, Menu.NONE, R.string.meteosat_0_airmass_hd);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_MPE, Menu.NONE, R.string.meteosat_0_mpe);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_INFRARED, Menu.NONE, R.string.meteosat_0_infrared);
-		menu.add(Menu.NONE, ID_MENU_IMAGERY_MPE_IODC, Menu.NONE, R.string.meteosat_iodc_mpe);
+		menu.add(Menu.NONE, ID_MENU_IMAGERY_IODC, Menu.NONE, R.string.meteosat_iodc_mpe);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_GOES_EAST, Menu.NONE, R.string.goes_east);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_GOES_WEST, Menu.NONE, R.string.goes_west);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_MTSAT, Menu.NONE, R.string.mtsat);
@@ -325,10 +325,10 @@ public class EarthActivity extends Activity {
     			OpenGLES20Renderer.mDownloadTextures.progressDialogShow();
     		}
     	}
-    	else if (item.getItemId() == ID_MENU_IMAGERY_MPE_IODC) {
+    	else if (item.getItemId() == ID_MENU_IMAGERY_IODC) {
     		if (OpenGLES20Renderer.mDownloadTextures.getStatus() == AsyncTask.Status.FINISHED) {
     			OpenGLES20Renderer.mDownloadTextures = new DownloadTexturesEumetsat();
-    		    OpenGLES20Renderer.mDownloadTextures.execute("MPE_IODC");
+    		    OpenGLES20Renderer.mDownloadTextures.execute("IODC");
     		} else if (OpenGLES20Renderer.mDownloadTextures.isCancelled() != true) {
     			OpenGLES20Renderer.mDownloadTextures.progressDialogShow();
     		}

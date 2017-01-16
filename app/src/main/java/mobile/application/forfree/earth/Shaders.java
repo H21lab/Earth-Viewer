@@ -567,9 +567,9 @@ public class Shaders {
 			"   float s = sqrt(_vPosition.x*_vPosition.x + _vPosition.y*_vPosition.y); \n" +
 			"   float sx = sqrt(_vPosition.x*_vPosition.x); \n" +
 			"   float sy = sqrt(_vPosition.y*_vPosition.y); \n" +
-			" 	vTexM[0] = 0.0025 + vTexM[0]; \n" +
+			" 	vTexM[0] = 0.006 + vTexM[0]; \n" +
 			" 	vTexM[1] = 0.0025 + vTexM[1]; \n" +
-			" 	vTexM[0] = 0.5 + (vTexM[0] - 0.5)*(1.0 + 0.13); \n" +
+			" 	vTexM[0] = 0.5 + (vTexM[0] - 0.5)*(1.0 + 0.15); \n" +
 			" 	vTexM[1] = 0.5 + (vTexM[1] - 0.5)*(1.0 + 0.18); \n" +
 			" 	vTexM[0] = 0.5 + (vTexM[0] - 0.5)*(1.0 - 0.125*pow(s,2.1)); \n" +
 			" 	vTexM[1] = 0.5 + (vTexM[1] - 0.5)*(1.0 - 0.165*pow(s,1.85)); \n" +

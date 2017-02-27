@@ -53,22 +53,22 @@ public class DownloadTexturesGoes extends DownloadTextures
     	OpenGLES20Renderer.downloadedTextures = 0;
     	OpenGLES20Renderer.reloadedTextures = true;
     	
-    	String myUri = "http://goes.gsfc.nasa.gov/goeseast/fulldisk/3band_color/";
+    	String myUri = "https://goes.gsfc.nasa.gov/goeseast/fulldisk/3band_color/";
     	char tag = 'G';
     	
     	if (urls[0].equals("GOES_EAST")) {
-    		myUri = "http://goes.gsfc.nasa.gov/goeseast/fulldisk/3band_color/";
+    		myUri = "https://goes.gsfc.nasa.gov/goeseast/fulldisk/3band_color/";
     		tag = 'G';
     	} else if (urls[0].equals("GOES_WEST")) {
-    		myUri = "http://goes.gsfc.nasa.gov/goeswest/fulldisk/3band_color/";
+    		myUri = "https://goes.gsfc.nasa.gov/goeswest/fulldisk/3band_color/";
     		tag = 'H';
-    	} 
+    	}
     	
     	OpenGLES20Renderer.mTag = tag;
     	
 	    InputStream is2 = null;
 		Bitmap b = null;
-		
+
 		URLConnection ucon = null;
 		URL url = null;
 		
@@ -177,7 +177,7 @@ public class DownloadTexturesGoes extends DownloadTextures
 
 			if (!eKeys.containsKey(h)) {
 
-				Log.d("H21lab", "Does not conain eKeys h = " + h);	
+				Log.d("H21lab", "Does not conain eKeys h = " + h);
 				
 				continue;
 			} 
@@ -188,7 +188,7 @@ public class DownloadTexturesGoes extends DownloadTextures
 			// do not download too old data
 			if (current - epoch > (24 + 3)*3600*1000) {
 
-				Log.d("H21lab", "Data fom eKeys too old h = " + h);	
+				Log.d("H21lab", "Data fom eKeys too old h = " + h);
 				
 				continue;
 			}
@@ -208,12 +208,12 @@ public class DownloadTexturesGoes extends DownloadTextures
 				
 				progressDialogUpdate();
 					
-				Log.d("H21lab", "File already exists from eKeys h = " + h);	
+				Log.d("H21lab", "File already exists from eKeys h = " + h);
 				
 				continue;
 			}
 			// change filename
-			Log.d("H21lab", "New filename = " + filename + " e = " + epoch);	
+			Log.d("H21lab", "New filename = " + filename + " e = " + epoch);
 
 
 			// download from internet
@@ -226,9 +226,9 @@ public class DownloadTexturesGoes extends DownloadTextures
 				ucon = url.openConnection();
 				ucon.setUseCaches(false);
 				ucon.connect();
-				
+
 				is2 = ucon.getInputStream();
-				
+
 				ByteArrayOutputStream mis2 = new ByteArrayOutputStream();
 				byte data[] = new byte[1024];
 				int count;
@@ -237,15 +237,15 @@ public class DownloadTexturesGoes extends DownloadTextures
 				}
 				mis2.flush();
 				is2.close();
-				
+
 				byte[] ba = mis2.toByteArray();
 
 				OpenGLES20Renderer.saveTexture(filename, ba, 2048, 2048);
 				
 				mis2.close();
-			
-				
-				
+
+
+
 			} catch (Exception e) {
 				
 				Log.e("H21lab", "Unable to connect to " + ucon.getURL().toString() + " " + e.getMessage());		

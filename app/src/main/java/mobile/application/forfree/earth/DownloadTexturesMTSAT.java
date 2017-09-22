@@ -65,7 +65,7 @@ public class DownloadTexturesMTSAT extends DownloadTextures
     	
 		InputStream is2 = null;
 		Bitmap b = null;
-		
+
 		URLConnection ucon = null;
 		URL url = null;
 		
@@ -93,7 +93,7 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 		if (iKeys.size() == 0 || eKeys.size() == 0) {
 			try {
 				
-				String uri = "http://www.jma.go.jp/en/gms/hisjs/infrared-2.js";
+				String uri = "http://www.jma.go.jp/en/gms/hisjs/infrared-6.js";
 				
 				HttpClient httpClient = new DefaultHttpClient();
 				HttpGet get = new HttpGet(uri);
@@ -101,18 +101,18 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 				HttpResponse response = httpClient.execute(get);
 				
 				Log.d("H21lab", "HTTP GET OK");
-				
+
 				// Build up result
 				String bodyHtml = EntityUtils.toString(response.getEntity());
-				
+
 				BufferedReader bufReader = new BufferedReader(new StringReader(bodyHtml));
-				
+
 				// <tr><td valign="top"><img src="/icons/image2.gif" alt="[IMG]"></td><td><a href="1501150545G13I04.tif">1501150545G13I04.tif</a></td><td align="right">15-Jan-2015 01:21  </td><td align="right">550K</td></tr>
 				Pattern pattern = Pattern.compile("ImageInfo\\(\\\"(\\d\\S+00-00)\\.png\\\"");
-				
+
 				String line;
 				int i = 0;
-				
+
 				while( (line = bufReader.readLine()) != null )
 				{
 					Matcher matcher = pattern.matcher(line);
@@ -122,20 +122,20 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 						i++;
 					}
 				}
-				
-				
+
+
 				//  <tr><td valign="top"><img src="/icons/image2.gif" alt="[IMG]"></td><td><a href="1501150545G13I04.tif">1501150545G13I04.tif</a></td><td align="right">15-Jan-2015 01:21  </td><td align="right">550K</td></tr>
 				pattern = Pattern.compile("ImageInfo\\(\\\"(\\d\\S+00)-00\\.png\\\"");
-				
+
 				bufReader = new BufferedReader(new StringReader(bodyHtml));
-				
+
 				i = 0;
 				while( (line = bufReader.readLine()) != null )
 				{
 					Matcher matcher = pattern.matcher(line);
 					while (matcher.find()) {
 						Log.d("H21lab", "eKeys: " + matcher.group(1));
-						
+
 						String str = matcher.group(1);
 						str = str.trim().replaceAll("\\t+", " ");
 						str = str.trim().replaceAll("\\s+", " ");
@@ -144,54 +144,54 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 						java.util.Date d = df.parse(str);
 						long e = d.getTime();
 						Log.d("H21lab", "eKeys: " + str + " " + e);
-						
+
 						if (current - e <= (24 + 3)*3600*1000) {
 							files_to_download++;
 						}
-						
+
 						Log.d("H21lab", "eKeys: " + i + " " + e);
 						eKeys.put(i, e);
 						i++;
 					}
 				}
-				
-				
+
+
 			} catch (Exception e3) {
-				Log.e("H21lab", "Connection error " + e3.getMessage());	
+				Log.e("H21lab", "Connection error " + e3.getMessage());
 				e3.printStackTrace();
 			}
 		}
-		
+
 		progressDialogSetMax(files_to_download);
-    			
+
 		// Download the older files if possible
 		epoch = cal.getTimeInMillis();
 		for (int h = 0; h < eKeys.size(); h+=1) {
-			
+
 			if (isCancelled() == true) {
 				break;
 			}
 
-			
+
 			boolean exists = false;
-			
+
 			Log.d("H21lab", "h = " + h);
 
 			if (!eKeys.containsKey(h)) {
 
-				Log.d("H21lab", "Does not conain eKeys h = " + h);	
-				
+				Log.d("H21lab", "Does not conain eKeys h = " + h);
+
 				continue;
-			} 
-			
+			}
+
 			epoch = eKeys.get(h);
 
-			
+
 			// do not download too old data
 			if (current - epoch > (24 + 3)*3600*1000) {
 
-				Log.d("H21lab", "Data fom eKeys too old h = " + h);	
-				
+				Log.d("H21lab", "Data fom eKeys too old h = " + h);
+
 				continue;
 			}
 			filename = OpenGLES20Renderer.getNameFromEpoch(tag, epoch);
@@ -201,28 +201,28 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 			    for (File file : subFiles) {
 			    	if ( filename.equals(file.getName()) ) {
 			    		exists = true;
-			    		break;				    		
+			    		break;
 			    	}
 			    }
 			}
 			// do not download already existing
 			if (exists) {
-				
+
 				progressDialogUpdate();
-				
-				Log.d("H21lab", "File already exists from eKeys h = " + h);	
-				
+
+				Log.d("H21lab", "File already exists from eKeys h = " + h);
+
 				continue;
 			}
 			// change filename
-			Log.d("H21lab", "New filename = " + filename + " e = " + epoch);	
-			
+			Log.d("H21lab", "New filename = " + filename + " e = " + epoch);
+
 
 			// download from internet
 			try {
 				//oiswww.eumetsat.org/IPPS/html/MSG/IMAGERY/IR108/BW/FULLDISC/IMAGESDisplay/
 				url = new URL(myUri + iKeys.get(h) + ".png");
-				
+
 				Log.d("H21lab", "Downloading: " + url.toString());
 					
 				ucon = url.openConnection();

@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Calendar;
@@ -31,11 +32,32 @@ import java.util.TimeZone;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import static java.net.HttpURLConnection.HTTP_MOVED_PERM;
+
 public class DownloadTexturesNRL extends DownloadTextures 
-{           
+{
+
+	// follow redirects
+	private HttpURLConnection openConnection(String url) throws IOException {
+		HttpURLConnection connection;
+		boolean redirected;
+		do {
+			connection = (HttpURLConnection) new URL(url).openConnection();
+			connection.setUseCaches(false);
+
+			int code = connection.getResponseCode();
+			redirected = code == HttpURLConnection.HTTP_MOVED_PERM || code == HttpURLConnection.HTTP_MOVED_TEMP || code == HttpURLConnection.HTTP_SEE_OTHER;
+			if (redirected) {
+				url = connection.getHeaderField("Location");
+				connection.disconnect();
+			}
+		} while (redirected);
+		return connection;
+	}
 
 
-    @Override
+
+	@Override
     protected String doInBackground(String... urls) 
     {
     	OpenGLES20Renderer.downloadedTextures = 0;
@@ -54,8 +76,8 @@ public class DownloadTexturesNRL extends DownloadTextures
     	
     	InputStream is2 = null;
 		Bitmap b = null;
-		
-		URLConnection ucon = null;
+
+	    HttpURLConnection ucon = null;
 		URL url = null;
 		
 		// load image from cache
@@ -130,10 +152,13 @@ public class DownloadTexturesNRL extends DownloadTextures
 				url = new URL(myUri + _filename);
 				Log.d("H21lab", "Downloading: " + url.toString());
 					
-				ucon = url.openConnection();
-				ucon.setUseCaches(false);
-				ucon.connect();
-				
+				//ucon = (HttpURLConnection)url.openConnection();
+				//ucon.setUseCaches(false);
+				//ucon.connect();
+
+				// follow redirects
+				ucon = openConnection(url.toString());
+
 				is2 = ucon.getInputStream();
 				
 				ByteArrayOutputStream mis2 = new ByteArrayOutputStream();
@@ -144,10 +169,12 @@ public class DownloadTexturesNRL extends DownloadTextures
 				}
 				mis2.flush();
 				is2.close();
-				
+
+
+
 				byte[] ba = mis2.toByteArray();
 				OpenGLES20Renderer.saveTexture(filename, ba, 2048, 512);
-				
+
 				mis2.close();
 				
 			} catch (IOException e) {

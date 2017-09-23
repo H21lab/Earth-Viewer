@@ -83,7 +83,7 @@ public class DownloadTexturesXplanet extends DownloadTextures {
 			// download from internet
 			try {
 				/* Open a connection to that URL. */
-				url = new URL("http://xplanet.sourceforge.net/clouds/clouds_2048.jpg");
+				url = new URL("http://xplanetclouds.com/free/local/clouds_2048.jpg");
 				Log.d("H21lab", "Downloading: " + url.toString());
 	
 				ucon = url.openConnection();

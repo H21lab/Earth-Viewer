@@ -71,6 +71,7 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
   
 	public static int mBump = 10;
 	public static boolean mLiveLight = false;
+	public static boolean mLightSpecular = true;
 	public static boolean mPlay = false;
 	
 	static M3DVECTOR At = new M3DVECTOR(0.0f, 0.0f, 0.0f); // accelleration vector
@@ -726,7 +727,7 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
    		DEV.Light[2].SR = 1.0f;
 		DEV.Light[2].SG = 0.7f;
 		DEV.Light[2].SB = 0.4f;
-		DEV.Light[2].AT = 0.0f;
+	    DEV.Light[2].AT = 0.0f;
    		DEV.Light[2].Pos = new M3DVECTOR(1.5f, 0.7f, 3.0f);
 
    		

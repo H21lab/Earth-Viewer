@@ -3,7 +3,9 @@
     <string name="app_name">Earth Viewer</string>
     <string name="reset">Reset Time</string>
     <string name="light">Live Light On/Off</string>
-    <string name="play">Play/Pause</string><string name="copyright">Copyright</string>
+    <string name="light_specular">Sun Reflection On/Off</string>
+    <string name="play">Play/Pause</string>
+    <string name="copyright">Copyright</string>
     <string name="xplanet">XPLANET static</string>
     <string name="nrl_rainrate">NRL Rainrate (-24h)</string>
     <string name="meteosat_0_airmass">METEOSAT 0 Airmass (-24h)</string>
@@ -14,7 +16,7 @@
     <string name="meteosat_0_water_vapor">METEOSAT 0 Water Vapor (-24h)</string>
     <string name="meteosat_0_mpe">METEOSAT 0 MPE (-24h)</string>
     <string name="meteosat_0_mpe_hd">METEOSAT 0 MPE HD (-2h)</string>
-    <string name="meteosat_iodc_mpe">METEOSAT IODC IR 11.5 (-24h)</string>
+    <string name="meteosat_iodc_mpe">METEOSAT IODC IR 10.8 (-24h)</string>
     <string name="ssec_ir">SSEC Infrared (-1w)</string>
     <string name="ssec_water">SSEC Water Vapor (-1w)</string>
     <string name="goes_east">GOES EAST Infrared (-24h)</string>

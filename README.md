@@ -23,7 +23,7 @@ METEOSAT 0 degree satellite
 - IR 10.8 (-24h, generated every 1h)
 
 METEOSAT IODC satellite
-- Multi-Sensor Precipitation Estimate (rain rate) (-24h, generated every 30min)
+- IR 10.8 (-24h, generated every 1h)
 
 NASA GOES satellite
 - Goes East Infrared (-24h, generated every 3h)

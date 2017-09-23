@@ -91,7 +91,7 @@ public class DownloadTexturesEumetsat extends DownloadTextures
     		hBack = -1;
     	} else if (urls[0].equals("IODC")) {
     		//myUri = "http://oiswww.eumetsat.org/IPPS/html/MTP/PRODUCTS/MPE/FULLDISC";
-		    myUri = "http://oiswww.eumetsat.org/IPPS/html/MTP/IMAGERY/IR115/BW/FULLDISC";
+		    myUri = "http://oiswww.eumetsat.org/IPPS/html/MSGIODC/IMAGERY/IR108/BW/FULLDISC/";
     		tag = 'F';
     	}
     	

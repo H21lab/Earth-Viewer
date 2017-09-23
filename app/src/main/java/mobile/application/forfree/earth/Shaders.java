@@ -555,9 +555,9 @@ public class Shaders {
 			
 			
 			" mat4 m = mat4( \n" + 
-		    " cos(3.1415*(58.18/180.0)), 0.0, sin(3.1415*(57.5/180.0)), 0.0, \n" +  	// first column 
+		    " cos(3.1415*(41.50/180.0)), 0.0, sin(3.1415*(57.5/180.0)), 0.0, \n" +  	// first column
 		    " 0.0, 1.0, 0.0, 0.0, \n" +  												// second column
-		    " -sin(3.1415*(58.18/180.0)), 0.0, cos(3.1415*(57.5/180.0)), 0.0, \n" +  	// third column
+		    " -sin(3.1415*(41.50/180.0)), 0.0, cos(3.1415*(57.5/180.0)), 0.0, \n" +  	// third column
 		    " 0.0, 0.0, 0.0, 1.0  \n" +  												// forth column
 		    " ); \n" + 
 		    "_vPosition = m*aPosition;	\n" +
@@ -570,7 +570,7 @@ public class Shaders {
 			" 	vTexM[0] = 0.006 + vTexM[0]; \n" +
 			" 	vTexM[1] = 0.0025 + vTexM[1]; \n" +
 			" 	vTexM[0] = 0.5 + (vTexM[0] - 0.5)*(1.0 + 0.15); \n" +
-			" 	vTexM[1] = 0.5 + (vTexM[1] - 0.5)*(1.0 + 0.18); \n" +
+			" 	vTexM[1] = 0.5 + (vTexM[1] - 0.5)*(1.0 + 0.21); \n" +
 			" 	vTexM[0] = 0.5 + (vTexM[0] - 0.5)*(1.0 - 0.125*pow(s,2.1)); \n" +
 			" 	vTexM[1] = 0.5 + (vTexM[1] - 0.5)*(1.0 - 0.165*pow(s,1.85)); \n" +
 

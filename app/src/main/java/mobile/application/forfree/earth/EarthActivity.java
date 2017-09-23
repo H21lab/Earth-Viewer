@@ -36,6 +36,7 @@ public class EarthActivity extends Activity {
 	
 	private final int ID_MENU_TIME_RESET = 1;
 	private final int ID_MENU_LIGHT = 2;
+	private final int ID_MENU_LIGHT_SPECULAR = 50;
 	private final int ID_MENU_PLAY = 3;
 	private final int ID_MENU_COPYRIGHT = 4;
 	private final int ID_MENU_IMAGERY_AIRMASS = 5;
@@ -82,9 +83,10 @@ public class EarthActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(Menu.NONE, ID_MENU_PLAY, Menu.NONE, R.string.play);
 		menu.add(Menu.NONE, ID_MENU_TIME_RESET, Menu.NONE, R.string.reset);
 		menu.add(Menu.NONE, ID_MENU_LIGHT, Menu.NONE, R.string.light);
-		menu.add(Menu.NONE, ID_MENU_PLAY, Menu.NONE, R.string.play);
+		menu.add(Menu.NONE, ID_MENU_LIGHT_SPECULAR, Menu.NONE, R.string.light_specular);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_XPLANET, Menu.NONE, R.string.xplanet);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_CLOUDS, Menu.NONE, R.string.cci_clouds);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_TEMP, Menu.NONE, R.string.cci_temp);
@@ -104,7 +106,7 @@ public class EarthActivity extends Activity {
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_MTSAT, Menu.NONE, R.string.mtsat);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_SSEC_IR, Menu.NONE, R.string.ssec_ir);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_SSEC_WATER, Menu.NONE, R.string.ssec_water);
-		menu.add(Menu.NONE, ID_MENU_COPYRIGHT, Menu.NONE, R.string.copyright);
+		menu.add(Menu.NONE, ID_MENU_COPYRIGHT, Menu.NONE, "Copyright");
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -154,7 +156,24 @@ public class EarthActivity extends Activity {
     		return true;
     	}
 
-    	else if (item.getItemId() == ID_MENU_PLAY) {
+    	else if(item.getItemId() == ID_MENU_LIGHT_SPECULAR)
+		{
+			if (OpenGLES20Renderer.mLightSpecular) {
+				OpenGLES20Renderer.mLightSpecular = false;
+				OpenGLES20Renderer.DEV.Light[0].SR = OpenGLES20Renderer.DEV.Light[1].SR = OpenGLES20Renderer.DEV.Light[2].SR = 0.0f;
+				OpenGLES20Renderer.DEV.Light[0].SG = OpenGLES20Renderer.DEV.Light[1].SG = OpenGLES20Renderer.DEV.Light[2].SG = 0.0f;
+				OpenGLES20Renderer.DEV.Light[0].SB = OpenGLES20Renderer.DEV.Light[1].SB = OpenGLES20Renderer.DEV.Light[2].SB = 0.0f;
+			} else {
+				OpenGLES20Renderer.mLightSpecular = true;
+				OpenGLES20Renderer.DEV.Light[0].SR = OpenGLES20Renderer.DEV.Light[1].SR = OpenGLES20Renderer.DEV.Light[2].SR = 1.0f;
+				OpenGLES20Renderer.DEV.Light[0].SG = OpenGLES20Renderer.DEV.Light[1].SG = OpenGLES20Renderer.DEV.Light[2].SG = 0.7f;
+				OpenGLES20Renderer.DEV.Light[0].SB = OpenGLES20Renderer.DEV.Light[1].SB = OpenGLES20Renderer.DEV.Light[2].SB = 0.4f;
+			}
+
+			return true;
+		}
+
+		else if (item.getItemId() == ID_MENU_PLAY) {
     		
     		OpenGLES20Renderer._e1 = 0L;
     		OpenGLES20Renderer._e2 = 0L;

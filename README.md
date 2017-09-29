@@ -2,6 +2,8 @@
 Android application.
 Animated planet Earth with live weather and satellite data.
 
+![alt tag](https://github.com/H21lab/Earth-Viewer/blob/master/earth_viewer.png)
+
 Imagery included:
 Climate Reanalyzer weather forecast
 - World GFS Precipation and Clouds (+48h)
@@ -21,7 +23,7 @@ METEOSAT 0 degree satellite
 - IR 10.8 (-24h, generated every 1h)
 
 METEOSAT IODC satellite
-- Multi-Sensor Precipitation Estimate (rain rate) (-24h, generated every 30min)
+- IR 10.8 (-24h, generated every 1h)
 
 NASA GOES satellite
 - Goes East Infrared (-24h, generated every 3h)
@@ -42,7 +44,6 @@ Application features:
 - Bump mapping
 - Data cache for offline use
 - Double tap will stop/play animation
-- No Ads
 
 
 Copyright and credit
@@ -64,7 +65,13 @@ Application is distributed as local image viewer which is accessing public avail
 
 Program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY.
 
+## Build Instruction
+
+Import the project into Android Studio, build and run the application.
+
 ## Attribution
 
 This code was created by Martin Kacer, H21 lab, Copyright 2016.
+https://sites.google.com/site/h21lab/android
+
 

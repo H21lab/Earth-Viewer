@@ -44,7 +44,6 @@ Application features:
 - Bump mapping
 - Data cache for offline use
 - Double tap will stop/play animation
-- No Ads
 
 
 Copyright and credit

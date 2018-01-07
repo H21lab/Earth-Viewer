@@ -71,7 +71,7 @@ Import the project into Android Studio, build and run the application.
 
 ## Attribution
 
-This code was created by Martin Kacer, H21 lab, Copyright 2016.
-https://sites.google.com/site/h21lab/android
+This code was created by Martin Kacer, H21 lab, Copyright 2018.
+https://www.h21lab.com/android
 
 

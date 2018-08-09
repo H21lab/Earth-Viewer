@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
@@ -34,11 +35,11 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
+//import org.apache.http.HttpResponse;
+//import org.apache.http.client.HttpClient;
+//import org.apache.http.client.methods.HttpGet;
+//import org.apache.http.impl.client.DefaultHttpClient;
+//import org.apache.http.util.EntityUtils;
 
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -96,15 +97,20 @@ public class DownloadTexturesGoes extends DownloadTextures
 		if (iKeys.size() == 0 || eKeys.size() == 0) {
 			try {
 				
-				HttpClient httpClient = new DefaultHttpClient();
-				HttpGet get = new HttpGet(myUri);
+				//HttpClient httpClient = new DefaultHttpClient();
+				//HttpGet get = new HttpGet(myUri);
 		
-				HttpResponse response = httpClient.execute(get);
+				//HttpResponse response = httpClient.execute(get);
+
+				URL urlObj = new URL(myUri);
+				HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
 				
 				Log.d("H21lab", "HTTP GET OK");
 				
 				// Build up result
-				String bodyHtml = EntityUtils.toString(response.getEntity());
+				//String bodyHtml = EntityUtils.toString(response.getEntity());
+				InputStream is = urlConnection.getInputStream();
+				String bodyHtml = is.toString();
 				
 				BufferedReader bufReader = new BufferedReader(new StringReader(bodyHtml));
 				

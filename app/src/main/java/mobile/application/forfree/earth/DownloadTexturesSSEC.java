@@ -20,10 +20,12 @@
 
 package mobile.application.forfree.earth;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Calendar;
@@ -41,14 +43,14 @@ public class DownloadTexturesSSEC extends DownloadTextures
     	OpenGLES20Renderer.downloadedTextures = 0;
     	OpenGLES20Renderer.reloadedTextures = true;
     	
-    	String myUri = "http://www.ssec.wisc.edu/data/comp/ir/";
+    	String myUri = "https://www.ssec.wisc.edu/data/comp/ir/";
     	char tag = 'I';
     	
     	if (urls[0].equals("IR")) {
-    		myUri = "http://www.ssec.wisc.edu/data/comp/ir/";
+    		myUri = "https://www.ssec.wisc.edu/data/comp/ir/";
         	tag = 'I';
     	} else if (urls[0].equals("WATER")) {
-    		myUri = "http://www.ssec.wisc.edu/data/comp/wv/";
+    		myUri = "https://www.ssec.wisc.edu/data/comp/wv/";
         	tag = 'W';
     	} 
     	
@@ -57,7 +59,7 @@ public class DownloadTexturesSSEC extends DownloadTextures
     	
     	InputStream is2 = null;
 		Bitmap b = null;
-		
+
 		URLConnection ucon = null;
 		URL url = null;
 		
@@ -132,7 +134,8 @@ public class DownloadTexturesSSEC extends DownloadTextures
 				ucon.setUseCaches(false);
 				ucon.connect();
 				
-				is2 = ucon.getInputStream();
+				//is2 = ucon.getInputStream();
+				is2 = new BufferedInputStream(ucon.getInputStream());
 				
 				ByteArrayOutputStream mis2 = new ByteArrayOutputStream();
 				byte data[] = new byte[1024];

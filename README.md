@@ -25,10 +25,6 @@ METEOSAT 0 degree satellite
 METEOSAT IODC satellite
 - IR 10.8 (-24h, generated every 1h)
 
-NASA GOES satellite
-- Goes East Infrared (-24h, generated every 3h)
-- Goes West Infrared (-24h, generated every 3h)
-
 MTSAT satellite
 - Infrared (-24h, generated every 1h)
 

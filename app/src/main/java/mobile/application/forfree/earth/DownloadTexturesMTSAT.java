@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -108,45 +109,44 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 
 				// Build up result
 				//String bodyHtml = EntityUtils.toString(response.getEntity());
-				InputStream is = urlConnection.getInputStream();
-				String bodyHtml = is.toString();
+				//InputStream is = urlConnection.getInputStream();
+				//String bodyHtml = is.toString();
 
-				BufferedReader bufReader = new BufferedReader(new StringReader(bodyHtml));
+				//BufferedReader bufReader = new BufferedReader(new StringReader(bodyHtml));
+				BufferedReader bufReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+
 
 				// <tr><td valign="top"><img src="/icons/image2.gif" alt="[IMG]"></td><td><a href="1501150545G13I04.tif">1501150545G13I04.tif</a></td><td align="right">15-Jan-2015 01:21  </td><td align="right">550K</td></tr>
 				Pattern pattern = Pattern.compile("ImageInfo\\(\\\"(\\d\\S+00-00)\\.png\\\"");
 
+				//  <tr><td valign="top"><img src="/icons/image2.gif" alt="[IMG]"></td><td><a href="1501150545G13I04.tif">1501150545G13I04.tif</a></td><td align="right">15-Jan-2015 01:21  </td><td align="right">550K</td></tr>
+				Pattern pattern2 = Pattern.compile("ImageInfo\\(\\\"(\\d\\S+00)-00\\.png\\\"");
+
 				String line;
 				int i = 0;
+				int j = 0;
 
 				while( (line = bufReader.readLine()) != null )
 				{
 					Matcher matcher = pattern.matcher(line);
 					while (matcher.find()) {
 						Log.d("H21lab", "iKeys: " + i + " " + matcher.group(1));
-						iKeys.put(i, matcher.group(1));
+
+						// Filename is "201808091900-00.png". Remove suffix -00 before storeing the key.
+						iKeys.put(i, matcher.group(1).trim().replaceAll("-00+", ""));
 						i++;
 					}
-				}
 
-
-				//  <tr><td valign="top"><img src="/icons/image2.gif" alt="[IMG]"></td><td><a href="1501150545G13I04.tif">1501150545G13I04.tif</a></td><td align="right">15-Jan-2015 01:21  </td><td align="right">550K</td></tr>
-				pattern = Pattern.compile("ImageInfo\\(\\\"(\\d\\S+00)-00\\.png\\\"");
-
-				bufReader = new BufferedReader(new StringReader(bodyHtml));
-
-				i = 0;
-				while( (line = bufReader.readLine()) != null )
-				{
-					Matcher matcher = pattern.matcher(line);
+					matcher = pattern.matcher(line);
 					while (matcher.find()) {
 						Log.d("H21lab", "eKeys: " + matcher.group(1));
 
 						String str = matcher.group(1);
 						str = str.trim().replaceAll("\\t+", " ");
 						str = str.trim().replaceAll("\\s+", " ");
-						str += "UTC";
-						SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmzzz");
+						str = str.trim().replaceAll("-00+", "");
+						//str += "UTC";
+						SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
 						java.util.Date d = df.parse(str);
 						long e = d.getTime();
 						Log.d("H21lab", "eKeys: " + str + " " + e);
@@ -155,12 +155,11 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 							files_to_download++;
 						}
 
-						Log.d("H21lab", "eKeys: " + i + " " + e);
-						eKeys.put(i, e);
-						i++;
+						Log.d("H21lab", "eKeys: " + j + " " + e);
+						eKeys.put(j, e);
+						j++;
 					}
 				}
-
 
 			} catch (Exception e3) {
 				Log.e("H21lab", "Connection error " + e3.getMessage());
@@ -227,7 +226,7 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 			// download from internet
 			try {
 				//oiswww.eumetsat.org/IPPS/html/MSG/IMAGERY/IR108/BW/FULLDISC/IMAGESDisplay/
-				url = new URL(myUri + iKeys.get(h) + ".png");
+				url = new URL(myUri + iKeys.get(h) + "-00.png");
 
 				Log.d("H21lab", "Downloading: " + url.toString());
 					

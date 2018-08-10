@@ -62,7 +62,7 @@ public class DownloadTexturesNRL extends DownloadTextures
     {
     	OpenGLES20Renderer.downloadedTextures = 0;
     	OpenGLES20Renderer.reloadedTextures = true;
-    	
+
     	String myUri = "http://www.nrlmry.navy.mil/archdat/global/rain/accumulations/geo/3-hour/";
     	char tag = 'R';
     	

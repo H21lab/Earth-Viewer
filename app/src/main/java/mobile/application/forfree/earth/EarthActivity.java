@@ -101,8 +101,8 @@ public class EarthActivity extends Activity {
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_MPE, Menu.NONE, R.string.meteosat_0_mpe);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_INFRARED, Menu.NONE, R.string.meteosat_0_infrared);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_IODC, Menu.NONE, R.string.meteosat_iodc_mpe);
-		menu.add(Menu.NONE, ID_MENU_IMAGERY_GOES_EAST, Menu.NONE, R.string.goes_east);
-		menu.add(Menu.NONE, ID_MENU_IMAGERY_GOES_WEST, Menu.NONE, R.string.goes_west);
+		//menu.add(Menu.NONE, ID_MENU_IMAGERY_GOES_EAST, Menu.NONE, R.string.goes_east);
+		//menu.add(Menu.NONE, ID_MENU_IMAGERY_GOES_WEST, Menu.NONE, R.string.goes_west);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_MTSAT, Menu.NONE, R.string.mtsat);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_SSEC_IR, Menu.NONE, R.string.ssec_ir);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_SSEC_WATER, Menu.NONE, R.string.ssec_water);
@@ -199,7 +199,7 @@ public class EarthActivity extends Activity {
     				+ "CCI DATA: Data obtained using Climate Reanalyzer (http://cci-reanalyzer.org), Climate Change Institute, University of Maine, USA.\nhttp://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/\n\n"
     				+ "NRL DATA: Data obtained using United States Naval Research Laboratory, Marine Meteorology Division (http://www.nrlmry.navy.mil)\n\n"
     				+ "METEOSAT DATA: All METEOSAT images shown in the application are subject to EUMETSAT copyright. "+ "Copyright EUMETSAT " + cal.get(Calendar.YEAR) + "\nhttp://oiswww.eumetsat.org/IPPS/html/MSG/\n\n"
-    				+ "GOES DATA: Credit to NOAA-NASA GOES Project\nhttp://goes.gsfc.nasa.gov/goeseast/fulldisk/\n\n"
+    				//+ "GOES DATA: Credit to NOAA-NASA GOES Project\nhttp://goes.gsfc.nasa.gov/goeseast/fulldisk/\n\n"
     				+ "MTSAT DATA: Credit to Japan Meteorological Agency\nhttp://www.jma.go.jp/en/gms/\n\n"
     				+ "SSEC DATA: Provided courtesy of University of Wisconsin-Madison Space Science and Engineering Center\nhttp://www.ssec.wisc.edu/data/comp/\n\n"
     				+ "XPLANET DATA: Many thanks to Hari Nair author of Xplanet\nhttp://xplanet.sourceforge.net\n\n"

@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -109,16 +110,21 @@ public class DownloadTexturesGoes extends DownloadTextures
 				
 				// Build up result
 				//String bodyHtml = EntityUtils.toString(response.getEntity());
-				InputStream is = urlConnection.getInputStream();
-				String bodyHtml = is.toString();
+				//InputStream is = urlConnection.getInputStream();
+				//String bodyHtml = is.toString();
 				
-				BufferedReader bufReader = new BufferedReader(new StringReader(bodyHtml));
-				
+				//BufferedReader bufReader = new BufferedReader(new StringReader(bodyHtml));
+				BufferedReader bufReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+
 				// <tr><td valign="top"><img src="/icons/image2.gif" alt="[IMG]"></td><td><a href="1501150545G13I04.tif">1501150545G13I04.tif</a></td><td align="right">15-Jan-2015 01:21  </td><td align="right">550K</td></tr>
 				Pattern pattern = Pattern.compile("href=\\\"(\\d\\S+)\\.jpg\\\"");
+
+				//  <tr><td valign="top"><img src="/icons/image2.gif" alt="[IMG]"></td><td><a href="1501150545G13I04.tif">1501150545G13I04.tif</a></td><td align="right">15-Jan-2015 01:21  </td><td align="right">550K</td></tr>
+				Pattern pattern2 = Pattern.compile("href=\\\"(\\d\\S+)\\.jpg\\\"");
 				
 				String line;
 				int i = 0;
+				int j = 0;
 				
 				while( (line = bufReader.readLine()) != null )
 				{
@@ -128,21 +134,11 @@ public class DownloadTexturesGoes extends DownloadTextures
 						iKeys.put(i, matcher.group(1));
 						i++;
 					}
-				}
-				
-				
-				//  <tr><td valign="top"><img src="/icons/image2.gif" alt="[IMG]"></td><td><a href="1501150545G13I04.tif">1501150545G13I04.tif</a></td><td align="right">15-Jan-2015 01:21  </td><td align="right">550K</td></tr>
-				pattern = Pattern.compile("href=\\\"(\\d\\S+)\\.jpg\\\"");
-				
-				bufReader = new BufferedReader(new StringReader(bodyHtml));
-				
-				i = 0;
-				while( (line = bufReader.readLine()) != null )
-				{
-					Matcher matcher = pattern.matcher(line);
+
+					matcher = pattern.matcher(line);
 					while (matcher.find()) {
 						Log.d("H21lab", "eKeys: " + matcher.group(1));
-						
+
 						String str = matcher.group(1);
 						str = str.trim().replaceAll("\\t+", " ");
 						str = str.trim().replaceAll("\\s+", " ");
@@ -153,13 +149,12 @@ public class DownloadTexturesGoes extends DownloadTextures
 						if (current - e <= (24 + 3)*3600*1000) {
 							files_to_download++;
 						}
-						
-						Log.d("H21lab", "eKeys: " + i + " " + e);
+
+						Log.d("H21lab", "eKeys: " + j + " " + e);
 						eKeys.put(i, e);
-						i++;
+						j++;
 					}
 				}
-				
 				
 			} catch (Exception e3) {
 				Log.e("H21lab", "Connection error " + e3.getMessage());	

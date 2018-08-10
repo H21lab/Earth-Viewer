@@ -20,10 +20,12 @@
 
 package mobile.application.forfree.earth;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -97,8 +99,8 @@ public class DownloadTexturesEumetsat extends DownloadTextures
     	}
     	
     	OpenGLES20Renderer.mTag = tag;
-    	
-        InputStream is2 = null;
+
+        BufferedInputStream is2 = null;
 		Bitmap b = null;
 		
 		URLConnection ucon = null;
@@ -140,13 +142,17 @@ public class DownloadTexturesEumetsat extends DownloadTextures
 				
 				// Build up result
 				//String bodyHtml = EntityUtils.toString(response.getEntity());
-				InputStream is = urlConnection.getInputStream();
-				String bodyHtml = is.toString();
+				//InputStream is = urlConnection.getInputStream();
+				//String bodyHtml = is.toString();
 				
-				BufferedReader bufReader = new BufferedReader(new StringReader(bodyHtml));
-				
+				//BufferedReader bufReader = new BufferedReader(new StringReader(bodyHtml));
+				BufferedReader bufReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+
 				// array_nom_imagen[0]="PTwhQddyHWGUL"
 				Pattern pattern = Pattern.compile("array_nom_imagen\\[(\\d+)\\]\\s*=\\s*\\\"(\\S+)\\\"");
+
+				//  <option value="0">13/01/15   11:00 UTC</option>
+				Pattern pattern2 = Pattern.compile("\\<option value=\\\"(\\d+)\\\"\\>(.*)\\<\\/option\\>");
 				
 				String line;
 				while( (line = bufReader.readLine()) != null )
@@ -156,20 +162,11 @@ public class DownloadTexturesEumetsat extends DownloadTextures
 						Log.d("H21lab", "iKeys: " + "array_nom_imagen[" + matcher.group(1) + "] = " + matcher.group(2));
 						iKeys.put(Integer.parseInt(matcher.group(1)), matcher.group(2));	
 					}
-				}
-				
-				
-				//  <option value="0">13/01/15   11:00 UTC</option>
-				pattern = Pattern.compile("\\<option value=\\\"(\\d+)\\\"\\>(.*)\\<\\/option\\>");
-				
-				bufReader = new BufferedReader(new StringReader(bodyHtml));
-				
-				while( (line = bufReader.readLine()) != null )
-				{
-					Matcher matcher = pattern.matcher(line);
+
+					matcher = pattern2.matcher(line);
 					while (matcher.find()) {
 						Log.d("H21lab", "eKeys: " + matcher.group(1) + " " + matcher.group(2));
-						
+
 						String str = matcher.group(2);
 						str = str.trim().replaceAll("\\t+", " ");
 						str = str.trim().replaceAll("\\s+", " ");
@@ -180,11 +177,10 @@ public class DownloadTexturesEumetsat extends DownloadTextures
 						if (current - e <= (hBack + 3)*3600*1000) {
 							files_to_download++;
 						}
-						
+
 						eKeys.put(Integer.parseInt(matcher.group(1)), e);
 					}
 				}
-				
 				
 			} catch (Exception e3) {
 				Log.e("H21lab", "Connection error " + e3.getMessage());	
@@ -252,7 +248,7 @@ public class DownloadTexturesEumetsat extends DownloadTextures
 		
 			// download from internet
 			try {
-				
+				Log.e("H21lab", "!!!!!!!!!!!!!!!!!!!!");
 				
 				//oiswww.eumetsat.org/IPPS/html/MSG/IMAGERY/IR108/BW/FULLDISC/IMAGESDisplay/
 				url = new URL(myUri + "/IMAGESDisplay/" + iKeys.get(h));
@@ -262,13 +258,15 @@ public class DownloadTexturesEumetsat extends DownloadTextures
 				ucon = url.openConnection();
 				ucon.setUseCaches(false);
 				ucon.connect();
-				
-				is2 = ucon.getInputStream();
-				
+
+				//is2 = ucon.getInputStream();
+				is2 = new BufferedInputStream(ucon.getInputStream());
+
 				ByteArrayOutputStream mis2 = new ByteArrayOutputStream();
 				byte data[] = new byte[1024];
 				int count;
 				while ((count = is2.read(data, 0, 1024)) != -1) {
+					Log.d("H21lab", Integer.toString(data.toString().length()));
 					mis2.write(data, 0, count);
 				}
 				mis2.flush();

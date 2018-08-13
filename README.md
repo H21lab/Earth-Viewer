@@ -55,8 +55,6 @@ For Xplanet cloudmap many thanks to Hari Nair author of Xplanet.
 Limitations
 On some devices application will not launch and crash report is seen. This is caused in most cases by low graphical card capabilities or low amount of memory of the target device. Application use OpenGL ES 2.0 and extensive pixel shader with multitexturing.
 
-Time of CCI data is sometimes shifted back by one day. For exact time always the time in the texture is relevant.
-
 Application is distributed as local image viewer which is accessing public available content from internet on behalf of user. Data are internally cached and only delta is downloaded. There is no guarantee for the availability of the downloaded data and the application also works without internet connectivity.
 
 Program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY.

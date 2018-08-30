@@ -39,6 +39,12 @@ public class DownloadTexturesNRL extends DownloadTextures
 
 	// follow redirects
 	private HttpURLConnection openConnection(String url) throws IOException {
+
+		if (url == null) {
+			Log.e("H21lab", "url is null in method HttpURLConnection.");
+			return null;
+		}
+
 		HttpURLConnection connection;
 		boolean redirected;
 		do {
@@ -158,24 +164,24 @@ public class DownloadTexturesNRL extends DownloadTextures
 
 				// follow redirects
 				ucon = openConnection(url.toString());
+				if(ucon != null) {
+					is2 = ucon.getInputStream();
 
-				is2 = ucon.getInputStream();
-				
-				ByteArrayOutputStream mis2 = new ByteArrayOutputStream();
-				byte data[] = new byte[1024];
-				int count;
-				while ((count = is2.read(data, 0, 1024)) != -1) {
-					mis2.write(data, 0, count);
+					ByteArrayOutputStream mis2 = new ByteArrayOutputStream();
+					byte data[] = new byte[1024];
+					int count;
+					while ((count = is2.read(data, 0, 1024)) != -1) {
+						mis2.write(data, 0, count);
+					}
+					mis2.flush();
+					is2.close();
+
+
+					byte[] ba = mis2.toByteArray();
+					OpenGLES20Renderer.saveTexture(filename, ba, 2048, 512);
+
+					mis2.close();
 				}
-				mis2.flush();
-				is2.close();
-
-
-
-				byte[] ba = mis2.toByteArray();
-				OpenGLES20Renderer.saveTexture(filename, ba, 2048, 512);
-
-				mis2.close();
 				
 			} catch (IOException e) {
 				

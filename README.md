@@ -12,7 +12,7 @@ Climate Reanalyzer weather forecast
 - World GFS Precipitable Water (+48h)
 - World GFS Surface Wind Speed (+48h)
 - World GFS Jetstream Wind Speed (+48h)
-- World GFS Snow Depth (+48h)
+
 US Naval Research Laboratory, Marine Meteorology Division
 - World Rainrate (-24h, generated every 3h)
 
@@ -43,7 +43,7 @@ Application features:
 
 
 Copyright and credit
-CCI data has been obtained using Climate Reanalyzer (http://cci-reanalyzer.org), Climate Change Institute, University of Maine, USA.
+CCI data has been obtained using Climate Reanalyzer (https://climatereanalyzer.org), Climate Change Institute, University of Maine, USA.
 NRL DATA has been obtained using United States Naval Research Laboratory, Marine Meteorology Division (http://www.nrlmry.navy.mil)
 All METEOSAT images shown in the application are subject to EUMETSAT copyright.
 For all NASA GOES images credit to NOAA-NASA GOES Project.
@@ -65,7 +65,7 @@ Import the project into Android Studio, build and run the application.
 
 ## Attribution
 
-This code was created by Martin Kacer, H21 lab, Copyright 2018.
+This code was created by Martin Kacer, H21 lab, Copyright 2019.
 https://www.h21lab.com/android
 
 

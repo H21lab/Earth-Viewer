@@ -42,7 +42,7 @@ public class DownloadTexturesCCI extends DownloadTextures
     	OpenGLES20Renderer.reloadedTextures = true;
     	
     	//String myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PRCP/";
-		// Format: https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2/2018-08-08-00z/00.png
+		// Format: https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2/2018-08-08-06z/00.png
 		String myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp/";
 
 
@@ -275,7 +275,7 @@ public class DownloadTexturesCCI extends DownloadTextures
         return "";
     }
 
-	// 2018-08-07-00z
+	// 2018-08-07-06z
 	public static String getDirectoryNameFromEpoch(long epoch) {
 
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
@@ -285,7 +285,7 @@ public class DownloadTexturesCCI extends DownloadTextures
 		String month = String.format("%02d", (int)(c.get(Calendar.MONTH) + 1));
 		String day = String.format("%02d", (int)(c.get(Calendar.DAY_OF_MONTH)));
 
-		String filename = Integer.toString(c.get(Calendar.YEAR)) + "-" + month + "-" + day + "-00z";
+		String filename = Integer.toString(c.get(Calendar.YEAR)) + "-" + month + "-" + day + "-06z";
 
 		return filename;
 

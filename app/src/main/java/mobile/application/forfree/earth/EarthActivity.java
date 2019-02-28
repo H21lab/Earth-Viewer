@@ -94,7 +94,7 @@ public class EarthActivity extends Activity {
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_WATER, Menu.NONE, R.string.cci_water);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_WIND, Menu.NONE, R.string.cci_wind);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_JET, Menu.NONE, R.string.cci_jet);
-		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_SNOW, Menu.NONE, R.string.cci_snow);
+		//menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_SNOW, Menu.NONE, R.string.cci_snow);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_NRL_RAINRATE, Menu.NONE, R.string.nrl_rainrate);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_AIRMASS, Menu.NONE, R.string.meteosat_0_airmass);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_AIRMASS_HD, Menu.NONE, R.string.meteosat_0_airmass_hd);

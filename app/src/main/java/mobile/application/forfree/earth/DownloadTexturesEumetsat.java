@@ -59,42 +59,42 @@ public class DownloadTexturesEumetsat extends DownloadTextures
     	int tHeight = 1024;
     	int hBack = 24;
     	
-    	String myUri = "http://oiswww.eumetsat.org/IPPS/html/MSG/RGB/AIRMASS/FULLDISC";
+    	String myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/AIRMASS/FULLDISC";
     	char tag = 'M';
     	
     	if (urls[0].equals("AIRMASS")) {
-    		myUri = "http://oiswww.eumetsat.org/IPPS/html/MSG/RGB/AIRMASS/FULLDISC";
+    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/AIRMASS/FULLDISC";
     		tag = 'M';
     	} else if (urls[0].equals("AIRMASS_HD")) {
-    		myUri = "http://oiswww.eumetsat.org/IPPS/html/MSG/RGB/AIRMASS/FULLRESOLUTION";
+    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/AIRMASS/FULLRESOLUTION";
     		tag = 'm';
     		tWidth = 4096;
     		tHeight = 4096;
     		hBack = 3;
     	} else if (urls[0].equals("NATURALCOLOR")) {
-    		myUri = "http://oiswww.eumetsat.org/IPPS/html/MSG/RGB/NATURALCOLOR/FULLDISC";
+    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/NATURALCOLOR/FULLDISC";
     		tag = 'N';
     	} else if (urls[0].equals("IR108_BW")) {
-    		myUri = "http://oiswww.eumetsat.org/IPPS/html/MSG/IMAGERY/IR108/BW/FULLDISC";
+    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/IMAGERY/IR108/BW/FULLDISC";
     		tag = 'B';
     	} else if (urls[0].equals("VIS006_BW")) {
-    		myUri = "http://oiswww.eumetsat.org/IPPS/html/MSG/IMAGERY/VIS006/BW/FULLDISC";
+    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/IMAGERY/VIS006/BW/FULLDISC";
     		tag = 'C';
     	} else if (urls[0].equals("WV062_BW")) {
-    		myUri = "http://oiswww.eumetsat.org/IPPS/html/MSG/IMAGERY/WV062/BW/FULLDISC";
+    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/IMAGERY/WV062/BW/FULLDISC";
     		tag = 'D';
     	}  else if (urls[0].equals("MPE")) {
-    		myUri = "http://oiswww.eumetsat.org/IPPS/html/MSG/PRODUCTS/MPE/FULLDISC";
+    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/PRODUCTS/MPE/FULLDISC";
     		tag = 'E';
     	} else if (urls[0].equals("MPE_HD")) {
-    		myUri = "http://oiswww.eumetsat.org/IPPS/html/MSG/PRODUCTS/MPE/FULLRESOLUTION";
+    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/PRODUCTS/MPE/FULLRESOLUTION";
     		tag = 'e';
     		tWidth = 4096;
     		tHeight = 4096;
     		hBack = -1;
     	} else if (urls[0].equals("IODC")) {
     		//myUri = "http://oiswww.eumetsat.org/IPPS/html/MTP/PRODUCTS/MPE/FULLDISC";
-		    myUri = "http://oiswww.eumetsat.org/IPPS/html/MSGIODC/IMAGERY/IR108/BW/FULLDISC/";
+		    myUri = "https://eumetview.eumetsat.int/static-images/MSGIODC/IMAGERY/IR108/BW/FULLDISC/";
     		tag = 'F';
     	}
     	

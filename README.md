@@ -42,14 +42,12 @@ Application features:
 - Double tap will stop/play animation
 
 
-Copyright and credit
-CCI data has been obtained using Climate Reanalyzer (https://climatereanalyzer.org), Climate Change Institute, University of Maine, USA.
-NRL DATA has been obtained using United States Naval Research Laboratory, Marine Meteorology Division (http://www.nrlmry.navy.mil)
-All METEOSAT images shown in the application are subject to EUMETSAT copyright.
-For all NASA GOES images credit to NOAA-NASA GOES Project.
-For all MTSAT images credit to Japan Meteorological Agency.
-For all SSEC images provided courtesy of University of Wisconsin-Madison Space Science and Engineering Center.
-For Xplanet cloudmap many thanks to Hari Nair author of Xplanet.
+Copyright and credit:
+- CCI data has been obtained using Climate Reanalyzer (https://climatereanalyzer.org), Climate Change Institute, University of Maine, USA.
+- NRL DATA has been obtained using United States Naval Research Laboratory, Marine Meteorology Division (http://www.nrlmry.navy.mil).
+- All METEOSAT images shown in the application are subject to EUMETSAT copyright.
+- For all MTSAT images credit to Japan Meteorological Agency.
+- For all SSEC images provided courtesy of University of Wisconsin-Madison Space Science and Engineering Center.
 
 
 Limitations

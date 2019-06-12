@@ -87,7 +87,7 @@ public class EarthActivity extends Activity {
 		menu.add(Menu.NONE, ID_MENU_TIME_RESET, Menu.NONE, R.string.reset);
 		menu.add(Menu.NONE, ID_MENU_LIGHT, Menu.NONE, R.string.light);
 		menu.add(Menu.NONE, ID_MENU_LIGHT_SPECULAR, Menu.NONE, R.string.light_specular);
-		menu.add(Menu.NONE, ID_MENU_IMAGERY_XPLANET, Menu.NONE, R.string.xplanet);
+		//menu.add(Menu.NONE, ID_MENU_IMAGERY_XPLANET, Menu.NONE, R.string.xplanet);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_CLOUDS, Menu.NONE, R.string.cci_clouds);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_TEMP, Menu.NONE, R.string.cci_temp);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_TEMP_AN, Menu.NONE, R.string.cci_temp_an);
@@ -202,7 +202,7 @@ public class EarthActivity extends Activity {
     				//+ "GOES DATA: Credit to NOAA-NASA GOES Project\nhttp://goes.gsfc.nasa.gov/goeseast/fulldisk/\n\n"
     				+ "MTSAT DATA: Credit to Japan Meteorological Agency\nhttp://www.jma.go.jp/en/gms/\n\n"
     				+ "SSEC DATA: Provided courtesy of University of Wisconsin-Madison Space Science and Engineering Center\nhttp://www.ssec.wisc.edu/data/comp/\n\n"
-    				+ "XPLANET DATA: Many thanks to Hari Nair author of Xplanet\nhttp://xplanet.sourceforge.net\n\n"
+    				//+ "XPLANET DATA: Many thanks to Hari Nair author of Xplanet\nhttp://xplanet.sourceforge.net\n\n"
     				+ "Developed by Martin Kacer\n");
     		dlgAlert.setTitle("Copyright");
     		dlgAlert.setPositiveButton("Ok",

@@ -205,7 +205,9 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 	   			earth.setProgram(Shaders.p_cci_jet);
 	   		}  else if (mTag == 's') {
 	   			earth.setProgram(Shaders.p_cci_snow);
-	   		}
+	   		}  else if (mTag == 'O') {
+				earth.setProgram(Shaders.p_cci_oisst_v2);
+			}
 	   		
 	   		else if (mTag == 'm') {
 	   			earth.setProgram(Shaders.p_meteosat_0_hd);
@@ -258,7 +260,9 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 		   		Shaders.p_cci_jet = DEV.CompileProgram(Shaders.vsc_cci_jet, Shaders.fsc_cci_temp);
 	   		} else if (mTag == 's') {
 		   		Shaders.p_cci_snow = DEV.CompileProgram(Shaders.vsc_cci_wind, Shaders.fsc_cci_temp);
-	   		} else if (mTag == 'm') {
+	   		} else if (mTag == 'O') {
+				Shaders.p_cci_oisst_v2 = DEV.CompileProgram(Shaders.vsc_cci_oisst_v2, Shaders.fsc_cci_oisst_v2);
+			} else if (mTag == 'm') {
 		   		Shaders.p_meteosat_0_hd = DEV.CompileProgram(Shaders.vsc_meteosat_0_hd, Shaders.fsc_meteosat_0_hd);
 	   		}
 	   		else {
@@ -890,7 +894,11 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 			// next 48h
 			if ( mTag == 'C' || mTag == 't' || mTag == 'T' || mTag == 'w' || mTag == 'v' || mTag == 'j' || mTag == 's') {
 				mTimeRotate += Tc*6*30*60*1000;
-	   		} 
+	   		}
+			// last 35 years
+			else if ( mTag == 'O' ) {
+				mTimeRotate += 50*((long)365.25*Tc*2*30*60)*1000;
+			}
 			// last 6h
 			else if ( mTag == 'm' ) {
 				mTimeRotate += Tc*2*30*60*1000;
@@ -915,7 +923,14 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 				mTimeRotate -= 48*3600*1000;
 			}
 			mEpoch = now + mTimeRotate;
-   		} 
+   		}
+		// last 35 years
+		else if ( mTag == 'O') {
+			while (mTimeRotate > 35*365.25*24*3600*1000) {
+				mTimeRotate -= 35*365.25*24*3600*1000;
+			}
+			mEpoch = now - (long)(35*365.25*24*3600)*1000 + mTimeRotate;
+		}
 		// last 6h
 		else if ( mTag == 'm' ) {
 			if (mTimeRotate < 18*3600*1000) {

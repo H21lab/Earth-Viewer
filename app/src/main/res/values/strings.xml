@@ -29,4 +29,5 @@
     <string name="cci_wind">CCI Wind (+48h)</string>
     <string name="cci_jet">CCI Jetstream (+48h)</string>
     <string name="cci_snow">CCI Snow Depth (+48h)</string>
+    <string name="cci_oisst_v2">CCI Sea Surface T. Anomaly (-35Y)</string>
 </resources>

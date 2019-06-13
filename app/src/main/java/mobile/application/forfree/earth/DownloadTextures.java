@@ -140,42 +140,60 @@ public class DownloadTextures extends AsyncTask<String, Void, String>
 
 				Log.d("H21lab", "Files: " + file.getName() + " " + OpenGLES20Renderer.getEpochFromName(file.getName()) + " " + file.length());
 
-				// delete older than 6h
-				if ( OpenGLES20Renderer.getTag(file.getName()) == 'm' && (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > (6 + 2) * 3600 * 1000) ) {
-					Log.d("H21lab",
-							"Deleting old for tag m: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
-					file.delete();
-					continue;
+				if ( OpenGLES20Renderer.getTag(file.getName()) == 'm') {
+					// delete older than 6h
+					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > (6 + 2) * 3600 * 1000) {
+						Log.d("H21lab",
+								"Deleting old for tag m: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
+						file.delete();
+						continue;
+					}
 				}
 				
-				// delete older than 2h
-				if ( OpenGLES20Renderer.getTag(file.getName()) == 'h' && (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > (2 + 1) * 3600 * 1000) ) {
-					Log.d("H21lab",
-							"Deleting old for tag m: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
-					file.delete();
-					continue;
+				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'h') {
+					// delete older than 2h
+					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > (2 + 1) * 3600 * 1000) {
+						Log.d("H21lab",
+								"Deleting old for tag h: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
+						file.delete();
+						continue;
+					}
 				}
 				
-				// delete older than 24h
-				if ( OpenGLES20Renderer.getTag(file.getName()) != 'I' && OpenGLES20Renderer.getTag(file.getName()) != 'W' && (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > (24 + 6) * 3600 * 1000) ) {
-					Log.d("H21lab",
-							"Deleting old: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
-					file.delete();
-					continue;
+				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'I' || OpenGLES20Renderer.getTag(file.getName()) == 'W') {
+					// delete older than 168h
+					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > (168 + 6) * 3600 * 1000) {
+						Log.d("H21lab",
+								"Deleting old for tag I or W: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
+						file.delete();
+						continue;
+					}
+				}
+
+				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'O') {
+					// delete older than 60 years
+					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > ((long)((60 + 1) * 365.25 * 24 * 3600)) * 1000) {
+						Log.d("H21lab",
+								"Deleting old for tag O: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
+						file.delete();
+						continue;
+					}
 				}
 				
-				// delete older than 168h
-				if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > (168 + 6) * 3600 * 1000) {
-					Log.d("H21lab",
-							"Deleting old: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
-					file.delete();
-					continue;
+				// default delete older than 24h
+				else {
+					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > (24 + 6) * 3600 * 1000) {
+						Log.d("H21lab",
+								"Deleting old: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
+						file.delete();
+						continue;
+					}
 				}
 
 				// delete newer files
 				if (OpenGLES20Renderer.getEpochFromName(file.getName()) - epoch > (72 + 24) * 3600 * 1000) {
 					Log.d("H21lab",
-							"Deleting old: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
+							"Deleting new: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
 					file.delete();
 					continue;
 				}

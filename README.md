@@ -1,17 +1,21 @@
 # Earth-Viewer
 Android application.
-Animated planet Earth with live weather and satellite data.
+Animated planet Earth with live weather, satellite data, global forecast and historical data. Application visualizes also data-sets useful for Global warming monitoring. 
 
 ![alt tag](https://github.com/H21lab/Earth-Viewer/blob/master/earth_viewer.png)
 
 Imagery included:
+
 Climate Reanalyzer weather forecast
-- World GFS Precipation and Clouds (+48h)
+- World GFS Precipitation and Clouds (+48h)
 - World GFS Air Temperature (+48h)
 - World GFS Air Temperature Anomaly (+48h)
 - World GFS Precipitable Water (+48h)
 - World GFS Surface Wind Speed (+48h)
 - World GFS Jetstream Wind Speed (+48h)
+
+Climate Reanalyzer historical data / Global warming monitoring
+- Sea Surface Temperature Anomaly (past 35 years)
 
 US Naval Research Laboratory, Marine Meteorology Division
 - World Rainrate (-24h, generated every 3h)

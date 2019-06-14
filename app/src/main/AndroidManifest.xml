@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="mobile.application.forfree.earth"
-      android:versionCode="111"
+      android:versionCode="112"
       android:versionName="2.1"
       android:installLocation="auto">
 

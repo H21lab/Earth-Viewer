@@ -88,6 +88,18 @@ public class DownloadTexturesCCI extends DownloadTextures
 			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/snowd-mslp/";
     		tag = 's';
     	}
+		else if (urls[0].equals("TEMP_AN_1Y")) {
+			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
+			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2_anom/";
+			myUri = "https://pamola.um.maine.edu/wxrmaps/clim_frames/t2anom/world-ced/";
+			tag = 'A';
+		}
+		else if (urls[0].equals("OISST2_V2_1Y")) {
+			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
+			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2_anom/";
+			myUri = "https://pamola.um.maine.edu/wxrmaps/clim_frames/sstanom/world-ced2/";
+			tag = 'B';
+		}
         else if (urls[0].equals("OISST2_V2")) {
             //myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";
             //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/SNOW/";
@@ -129,6 +141,10 @@ public class DownloadTexturesCCI extends DownloadTextures
         if ( tag == 'O' ) {
             files_to_download = 35;
         }
+		// last 0.5 years
+		else if ( tag == 'A' || tag == 'B' ) {
+			files_to_download = 365/2 - 15;
+		}
         // next 24h
         else {
             files_to_download = (48)/3;
@@ -144,30 +160,48 @@ public class DownloadTexturesCCI extends DownloadTextures
 		long reload = 0L;
 		
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
-		if (c.get(Calendar.HOUR_OF_DAY) < 9) {
-			epoch -= 24*3600*1000;
-
-			c.set(Calendar.HOUR_OF_DAY, 9);
-			c.set(Calendar.MINUTE, 0);
-			c.set(Calendar.SECOND, 0);
-			c.set(Calendar.MILLISECOND, 0);
-			reload = c.getTimeInMillis();
-			reload -= 24*3600*1000;
-
-		} else {
-			c.set(Calendar.HOUR_OF_DAY, 9);
-			c.set(Calendar.MINUTE, 0);
-			c.set(Calendar.SECOND, 0);
-			c.set(Calendar.MILLISECOND, 0);
-			reload = c.getTimeInMillis();
-
-		}
 
         // last 35 years
         if ( tag == 'O' ) {
+			c.set(Calendar.HOUR_OF_DAY, 9);
+			c.set(Calendar.MINUTE, 0);
+			c.set(Calendar.SECOND, 0);
+			c.set(Calendar.MILLISECOND, 0);
+			reload = c.getTimeInMillis();
+
         	// lets use mid of month, that it can be safely iterated over month by using epoch - (365.24 / 12.0)
             c.set(Calendar.DAY_OF_MONTH, 15);
         }
+		// last 0.5 year
+		else if ( tag == 'A' || tag == 'B' ) {
+			c.set(Calendar.HOUR_OF_DAY, 9);
+			c.set(Calendar.MINUTE, 0);
+			c.set(Calendar.SECOND, 0);
+			c.set(Calendar.MILLISECOND, 0);
+			reload = c.getTimeInMillis();
+		}
+		// next 24h
+		else {
+			if (c.get(Calendar.HOUR_OF_DAY) < 9) {
+				epoch -= 24*3600*1000;
+
+				c.set(Calendar.HOUR_OF_DAY, 9);
+				c.set(Calendar.MINUTE, 0);
+				c.set(Calendar.SECOND, 0);
+				c.set(Calendar.MILLISECOND, 0);
+				reload = c.getTimeInMillis();
+				reload -= 24*3600*1000;
+
+			} else {
+				c.set(Calendar.HOUR_OF_DAY, 9);
+				c.set(Calendar.MINUTE, 0);
+				c.set(Calendar.SECOND, 0);
+				c.set(Calendar.MILLISECOND, 0);
+				reload = c.getTimeInMillis();
+
+			}
+		}
+
 
 		
 		// Download the older files if possible
@@ -186,6 +220,11 @@ public class DownloadTexturesCCI extends DownloadTextures
 			// start loading from beginning and not backward
 			epoch = epoch - 35 * ((long) (365.25) * 24 * 3600) * 1000;
 		}
+		// last 0.5 years
+		else if ( tag == 'A' || tag == 'B' ) {
+			// start loading from beginning and not backward
+			epoch = epoch - ((long) (0.5*365.25) * 24 * 3600) * 1000;
+		}
 		
 		for (int h = 0; h < files_to_download; h+=1) {
 
@@ -201,6 +240,11 @@ public class DownloadTexturesCCI extends DownloadTextures
                 // each 1 year
                 epoch = epoch + ((long) 365.25 * 24 * 3600) * 1000;
             }
+			// last 0.5 years
+			else if ( tag == 'A' || tag == 'B' ) {
+				// each 1 day
+				epoch = epoch + 24 * 3600 * 1000;
+			}
             // next 24h
             else {
                 // each 3h
@@ -230,6 +274,24 @@ public class DownloadTexturesCCI extends DownloadTextures
                 }
 
             }
+			// last 0.5 years
+			else if ( tag == 'A' || tag == 'B' ) {
+				// do not download too new data
+				if (epoch - current_real > ((long) - 15 * 24 * 3600 * 1000)) {
+
+					Log.d("H21lab", "Data fom eKeys too new h = " + h);
+
+					continue;
+				}
+				// do not download old data
+				if (epoch - current_real < ((long) - (0.5 * 365.25) * 24 * 3600 * 1000)) {
+
+					Log.d("H21lab", "Data fom eKeys old h = " + h);
+
+					files_to_download++;
+					continue;
+				}
+			}
             // next 24h
             else {
                 // do not download too new data
@@ -264,6 +326,15 @@ public class DownloadTexturesCCI extends DownloadTextures
                             break;
                         }
                     }
+					// last 0.5 years
+					else if ( tag == 'A' || tag == 'B' ) {
+						// file exist
+
+						if ( filename.equals(file.getName())) {
+							exists = true;
+							break;
+						}
+					}
                     // next 24h
                     else {
                         // file exist and is not newer file
@@ -300,6 +371,16 @@ public class DownloadTexturesCCI extends DownloadTextures
                     url = new URL(myUri + "/"
                             + getOISSTV2NameFromEpoch(epoch) + ".png");
                 }
+				// last 0.5 years
+				else if ( tag == 'A' ) {
+					url = new URL(myUri + "/"
+							+ getTEMP_AN_1Y_NameFromEpoch(epoch) + ".png");
+				}
+				// last 0.5 years
+				else if ( tag == 'B' ) {
+					url = new URL(myUri + "/"
+							+ getOISSTV2_1Y_NameFromEpoch(epoch) + ".png");
+				}
                 // next 24h
                 else {
                     url = new URL(myUri
@@ -367,6 +448,34 @@ public class DownloadTexturesCCI extends DownloadTextures
 		String day = String.format("%02d", (int)(c.get(Calendar.DAY_OF_MONTH)));
 
 		String filename = Integer.toString(c.get(Calendar.YEAR)) + "-" + month + "-" + day + "-06z";
+
+		return filename;
+
+	}
+
+	// 2019/t2anom_world-ced_2019_d151.png
+	public static String getTEMP_AN_1Y_NameFromEpoch(long epoch) {
+		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
+		c.setTimeInMillis(epoch);
+
+		String year = String.format("%04d", (int)(c.get(Calendar.YEAR)));
+		String day = String.format("%03d", (int)(c.get(Calendar.DAY_OF_YEAR)));
+
+		String filename = year + "/" + "t2anom_world-ced_" + year + "_d" +  day;
+
+		return filename;
+
+	}
+
+	// 2019/sstanom_world-ced2_2019_d152.png
+	public static String getOISSTV2_1Y_NameFromEpoch(long epoch) {
+		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
+		c.setTimeInMillis(epoch);
+
+		String year = String.format("%04d", (int)(c.get(Calendar.YEAR)));
+		String day = String.format("%03d", (int)(c.get(Calendar.DAY_OF_YEAR)));
+
+		String filename = year + "/" + "sstanom_world-ced2_" + year + "_d" + day;
 
 		return filename;
 

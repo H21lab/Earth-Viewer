@@ -201,11 +201,15 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 	   			earth.setProgram(Shaders.p_cci_water);
 	   		} else if (mTag == 'v') {
 	   			earth.setProgram(Shaders.p_cci_wind);
-	   		}  else if (mTag == 'j') {
+	   		} else if (mTag == 'j') {
 	   			earth.setProgram(Shaders.p_cci_jet);
-	   		}  else if (mTag == 's') {
+	   		} else if (mTag == 's') {
 	   			earth.setProgram(Shaders.p_cci_snow);
-	   		}  else if (mTag == 'O') {
+	   		} else if (mTag == 'A') {
+				earth.setProgram(Shaders.p_cci_temp_an_1y);
+			} else if (mTag == 'B') {
+				earth.setProgram(Shaders.p_cci_oisst_v2);
+			} else if (mTag == 'O') {
 				earth.setProgram(Shaders.p_cci_oisst_v2);
 			}
 	   		
@@ -260,7 +264,11 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 		   		Shaders.p_cci_jet = DEV.CompileProgram(Shaders.vsc_cci_jet, Shaders.fsc_cci_temp);
 	   		} else if (mTag == 's') {
 		   		Shaders.p_cci_snow = DEV.CompileProgram(Shaders.vsc_cci_wind, Shaders.fsc_cci_temp);
-	   		} else if (mTag == 'O') {
+	   		} else if (mTag == 'A') {
+				Shaders.p_cci_temp_an_1y = DEV.CompileProgram(Shaders.vsc_cci_temp_an_1y, Shaders.fsc_cci_temp_an_1y);
+			} else if (mTag == 'B') {
+				Shaders.p_cci_oisst_v2 = DEV.CompileProgram(Shaders.vsc_cci_oisst_v2, Shaders.fsc_cci_oisst_v2);
+			} else if (mTag == 'O') {
 				Shaders.p_cci_oisst_v2 = DEV.CompileProgram(Shaders.vsc_cci_oisst_v2, Shaders.fsc_cci_oisst_v2);
 			} else if (mTag == 'm') {
 		   		Shaders.p_meteosat_0_hd = DEV.CompileProgram(Shaders.vsc_meteosat_0_hd, Shaders.fsc_meteosat_0_hd);
@@ -897,7 +905,11 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 	   		}
 			// last 35 years
 			else if ( mTag == 'O' ) {
-				mTimeRotate += 50*((long)365.25*Tc*2*30*60)*1000;
+				mTimeRotate += 25*((long)365.25*Tc*2*30*60)*1000;
+			}
+			// last 0.5 years
+			else if ( mTag == 'A' || mTag == 'B' ) {
+				mTimeRotate += 0.3*((long)365.25*Tc*2*30*60)*1000;
 			}
 			// last 6h
 			else if ( mTag == 'm' ) {
@@ -930,6 +942,13 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 				mTimeRotate -= 35*365.25*24*3600*1000;
 			}
 			mEpoch = now - (long)(35*365.25*24*3600)*1000 + mTimeRotate;
+		}
+		// last 1 years
+		else if ( mTag == 'A' || mTag == 'B') {
+			while (mTimeRotate > 0.5*365.25*24*3600*1000) {
+				mTimeRotate -= 0.5*365.25*24*3600*1000;
+			}
+			mEpoch = now - (long)(0.5*365.25*24*3600)*1000 + mTimeRotate;
 		}
 		// last 6h
 		else if ( mTag == 'm' ) {

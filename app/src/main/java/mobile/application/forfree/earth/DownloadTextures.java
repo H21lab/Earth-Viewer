@@ -170,9 +170,19 @@ public class DownloadTextures extends AsyncTask<String, Void, String>
 					}
 				}
 
+				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'A' || OpenGLES20Renderer.getTag(file.getName()) == 'B') {
+					// delete older than 1 year
+					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > ((long)((1) * (365.25 + 6) * 24 * 3600)) * 1000) {
+						Log.d("H21lab",
+								"Deleting old for tag X, Y: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
+						file.delete();
+						continue;
+					}
+				}
+
 				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'O') {
-					// delete older than 60 years
-					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > ((long)((60 + 1) * 365.25 * 24 * 3600)) * 1000) {
+					// delete older than 35 years
+					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > ((long)((35 + 1) * 365.25 * 24 * 3600)) * 1000) {
 						Log.d("H21lab",
 								"Deleting old for tag O: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
 						file.delete();

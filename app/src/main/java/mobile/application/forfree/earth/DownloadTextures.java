@@ -189,6 +189,16 @@ public class DownloadTextures extends AsyncTask<String, Void, String>
 						continue;
 					}
 				}
+
+				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'E') {
+					// delete older than 65 years
+					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > ((long)((65 + 1) * 365.25 * 24 * 3600)) * 1000) {
+						Log.d("H21lab",
+								"Deleting old for tag E: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
+						file.delete();
+						continue;
+					}
+				}
 				
 				// default delete older than 24h
 				else {

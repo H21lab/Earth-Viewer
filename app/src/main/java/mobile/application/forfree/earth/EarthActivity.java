@@ -58,9 +58,10 @@ public class EarthActivity extends Activity {
 	private final int ID_MENU_IMAGERY_CCI_WIND = 22;
 	private final int ID_MENU_IMAGERY_CCI_JET = 23;
 	private final int ID_MENU_IMAGERY_CCI_SNOW = 24;
-    private final int ID_MENU_IMAGERY_CCI_OISST2_V2 = 25;
-	private final int ID_MENU_IMAGERY_CCI_OISST2_V2_1Y = 26;
+    private final int ID_MENU_IMAGERY_CCI_OISST_V2 = 25;
+	private final int ID_MENU_IMAGERY_CCI_OISST_V2_1Y = 26;
 	private final int ID_MENU_IMAGERY_CCI_TEMP_AN_1Y = 27;
+	private final int ID_MENU_IMAGERY_CCI_ERSST_V5 = 28;
 	private final int ID_MENU_IMAGERY_AIRMASS_HD = 30;
 	private final int ID_MENU_IMAGERY_MPE_HD = 31;
 	private final int ID_MENU_IMAGERY_NRL_RAINRATE = 41;
@@ -98,8 +99,9 @@ public class EarthActivity extends Activity {
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_WIND, Menu.NONE, R.string.cci_wind);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_JET, Menu.NONE, R.string.cci_jet);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_TEMP_AN_1Y, Menu.NONE, R.string.cci_temp_an_1y);
-		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_OISST2_V2_1Y, Menu.NONE, R.string.cci_oisst_v2_1y);
-        menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_OISST2_V2, Menu.NONE, R.string.cci_oisst_v2);
+		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_OISST_V2_1Y, Menu.NONE, R.string.cci_oisst_v2_1y);
+        menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_OISST_V2, Menu.NONE, R.string.cci_oisst_v2);
+		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_ERSST_V5, Menu.NONE, R.string.cci_ersst_v5);
 		//menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_SNOW, Menu.NONE, R.string.cci_snow);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_NRL_RAINRATE, Menu.NONE, R.string.nrl_rainrate);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_AIRMASS, Menu.NONE, R.string.meteosat_0_airmass);
@@ -326,18 +328,26 @@ public class EarthActivity extends Activity {
 				OpenGLES20Renderer.mDownloadTextures.progressDialogShow();
 			}
 		}
-		else if (item.getItemId() == ID_MENU_IMAGERY_CCI_OISST2_V2_1Y) {
+		else if (item.getItemId() == ID_MENU_IMAGERY_CCI_OISST_V2_1Y) {
 			if (OpenGLES20Renderer.mDownloadTextures.getStatus() == AsyncTask.Status.FINISHED) {
 				OpenGLES20Renderer.mDownloadTextures = new DownloadTexturesCCI();
-				OpenGLES20Renderer.mDownloadTextures.execute("OISST2_V2_1Y");
+				OpenGLES20Renderer.mDownloadTextures.execute("OISST_V2_1Y");
 			} else if (OpenGLES20Renderer.mDownloadTextures.isCancelled() != true) {
 				OpenGLES20Renderer.mDownloadTextures.progressDialogShow();
 			}
 		}
-		else if (item.getItemId() == ID_MENU_IMAGERY_CCI_OISST2_V2) {
+		else if (item.getItemId() == ID_MENU_IMAGERY_CCI_OISST_V2) {
 			if (OpenGLES20Renderer.mDownloadTextures.getStatus() == AsyncTask.Status.FINISHED) {
 				OpenGLES20Renderer.mDownloadTextures = new DownloadTexturesCCI();
-				OpenGLES20Renderer.mDownloadTextures.execute("OISST2_V2");
+				OpenGLES20Renderer.mDownloadTextures.execute("OISST_V2");
+			} else if (OpenGLES20Renderer.mDownloadTextures.isCancelled() != true) {
+				OpenGLES20Renderer.mDownloadTextures.progressDialogShow();
+			}
+		}
+		else if (item.getItemId() == ID_MENU_IMAGERY_CCI_ERSST_V5) {
+			if (OpenGLES20Renderer.mDownloadTextures.getStatus() == AsyncTask.Status.FINISHED) {
+				OpenGLES20Renderer.mDownloadTextures = new DownloadTexturesCCI();
+				OpenGLES20Renderer.mDownloadTextures.execute("ERSST_V5");
 			} else if (OpenGLES20Renderer.mDownloadTextures.isCancelled() != true) {
 				OpenGLES20Renderer.mDownloadTextures.progressDialogShow();
 			}

@@ -15,9 +15,10 @@ Climate Reanalyzer weather forecast
 - World GFS Jetstream Wind Speed (+48h)
 
 Climate Reanalyzer historical data / Global warming monitoring
-- CCI Temperature Anomaly (past 182 days)
-- CCI Sea Surface Temperature Anomaly (past 182 days)
-- Sea Surface Temperature Anomaly (past 35 years)
+- CCI Temperature Anomaly CFSV2 2m (past 182 days)
+- CCI Sea Surface Temperature Anomaly OISST v2 (past 182 days)
+- Sea Surface Temperature Anomaly OISST v2 (past 35 years)
+- Sea Surface Temperature Anomaly ERSST v5 (past 65 years)
 
 US Naval Research Laboratory, Marine Meteorology Division
 - World Rainrate (-24h, generated every 3h)

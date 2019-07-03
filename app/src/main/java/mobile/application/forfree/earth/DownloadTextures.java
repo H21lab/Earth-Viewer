@@ -170,7 +170,7 @@ public class DownloadTextures extends AsyncTask<String, Void, String>
 					}
 				}
 
-				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'A' || OpenGLES20Renderer.getTag(file.getName()) == 'B') {
+				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'a' || OpenGLES20Renderer.getTag(file.getName()) == 'b') {
 					// delete older than 1 year
 					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > ((long)((1) * (365.25 + 6) * 24 * 3600)) * 1000) {
 						Log.d("H21lab",
@@ -190,7 +190,7 @@ public class DownloadTextures extends AsyncTask<String, Void, String>
 					}
 				}
 
-				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'E') {
+				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'e') {
 					// delete older than 65 years
 					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > ((long)((65 + 1) * 365.25 * 24 * 3600)) * 1000) {
 						Log.d("H21lab",

@@ -86,13 +86,13 @@ public class DownloadTexturesEumetsat extends DownloadTextures
     	}  else if (urls[0].equals("MPE")) {
     		myUri = "https://eumetview.eumetsat.int/static-images/MSG/PRODUCTS/MPE/FULLDISC";
     		tag = 'E';
-    	} else if (urls[0].equals("MPE_HD")) {
+    	}/* else if (urls[0].equals("MPE_HD")) {
     		myUri = "https://eumetview.eumetsat.int/static-images/MSG/PRODUCTS/MPE/FULLRESOLUTION";
     		tag = 'e';
     		tWidth = 4096;
     		tHeight = 4096;
     		hBack = -1;
-    	} else if (urls[0].equals("IODC")) {
+    	}*/ else if (urls[0].equals("IODC")) {
     		//myUri = "http://oiswww.eumetsat.org/IPPS/html/MTP/PRODUCTS/MPE/FULLDISC";
 		    myUri = "https://eumetview.eumetsat.int/static-images/MSGIODC/IMAGERY/IR108/BW/FULLDISC/";
     		tag = 'F';

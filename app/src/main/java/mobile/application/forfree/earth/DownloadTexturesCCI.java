@@ -51,54 +51,61 @@ public class DownloadTexturesCCI extends DownloadTextures
     	if (urls[0].equals("CLOUDS")) {
     		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PRCP/";
 		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/PRCP/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp-tcld-topo/";
-    		tag = 'C';
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp-tcld-topo/";
+            myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/prcp-tcld-topo/";
+            tag = 'C';
     	} else if (urls[0].equals("TEMP")) {
     		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2/";
     		//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2/";
+            myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2/";
 		    tag = 'T';
     	} else if (urls[0].equals("TEMP_AN")) {
     		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
 		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2_anom/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2anom/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2anom/";
+            myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2anom/";
     		tag = 't';
     	}
     	else if (urls[0].equals("WATER")) {
     		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PWTR/";
 		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/PWTR/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/pwtr/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/pwtr/";
+            myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/pwtr/";
 		    tag = 'w';
     	}
     	else if (urls[0].equals("WIND")) {
     		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/WS10/";
 		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/WS10/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws10/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws10/";
+            myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/ws10-mslp/";
     		tag = 'v';
     	}
     	else if (urls[0].equals("JET")) {
     		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/WS250/";
 		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/WS250/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws250-snowc-topo/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws250-snowc-topo/";
+            myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/ws250-snowc-topo/";
     		tag = 'j';
     	}
     	else if (urls[0].equals("SNOW")) {
     		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";
 		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/SNOW/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/snowd-mslp/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/snowd-mslp/";
+            myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/snowd-mslp/";
     		tag = 's';
     	}
 		else if (urls[0].equals("TEMP_AN_1Y")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2_anom/";
 			myUri = "https://pamola.um.maine.edu/wxrmaps/clim_frames/t2anom/world-ced/";
-			tag = 'A';
+			tag = 'a';
 		}
 		else if (urls[0].equals("OISST_V2_1Y")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2_anom/";
 			myUri = "https://pamola.um.maine.edu/wxrmaps/clim_frames/sstanom/world-ced2/";
-			tag = 'B';
+			tag = 'b';
 		}
         else if (urls[0].equals("OISST_V2")) {
             //myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";
@@ -110,7 +117,7 @@ public class DownloadTexturesCCI extends DownloadTextures
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/SNOW/";
 			myUri = "https://pamola.um.maine.edu/cr/clim/sst/frames/ersst5/world-ced2/sstanom/";
-			tag = 'E';
+			tag = 'e';
 		}
     	
     	OpenGLES20Renderer.mTag = tag;
@@ -148,11 +155,11 @@ public class DownloadTexturesCCI extends DownloadTextures
             files_to_download = 35;
         }
 		// last 65 years
-		if ( tag == 'E' ) {
+		if ( tag == 'e' ) {
 			files_to_download = 65;
 		}
 		// last 0.5 years
-		else if ( tag == 'A' || tag == 'B' ) {
+		else if ( tag == 'a' || tag == 'b' ) {
 			files_to_download = 365/2 - 15;
 		}
         // next 24h
@@ -172,7 +179,7 @@ public class DownloadTexturesCCI extends DownloadTextures
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
 
         // last 35 years or last 65 years
-        if ( tag == 'O' || tag == 'E' ) {
+        if ( tag == 'O' || tag == 'e' ) {
 			c.set(Calendar.HOUR_OF_DAY, 9);
 			c.set(Calendar.MINUTE, 0);
 			c.set(Calendar.SECOND, 0);
@@ -184,7 +191,7 @@ public class DownloadTexturesCCI extends DownloadTextures
 			reload = c.getTimeInMillis();
 		}
 		// last 0.5 year
-		else if ( tag == 'A' || tag == 'B' ) {
+		else if ( tag == 'a' || tag == 'b' ) {
 			c.set(Calendar.HOUR_OF_DAY, 9);
 			c.set(Calendar.MINUTE, 0);
 			c.set(Calendar.SECOND, 0);
@@ -214,7 +221,7 @@ public class DownloadTexturesCCI extends DownloadTextures
 		}
 
 		// Historical data
-		if (tag == 'O' || tag =='E' || tag == 'A' || tag == 'B') {
+		if (tag == 'O' || tag =='e' || tag == 'a' || tag == 'b') {
 			epoch = c.getTimeInMillis();
 
 			data_generated_epoch = current_real;
@@ -239,12 +246,12 @@ public class DownloadTexturesCCI extends DownloadTextures
 			epoch = epoch - 35 * (long)(365.25 * 24 * 3600 * 1000);
 		}
 		// last 65 years
-		else if ( tag == 'E' ) {
+		else if ( tag == 'e' ) {
 			// start loading from beginning and not backward
 			epoch = epoch - 65 * (long)(365.25 * 24 * 3600 * 1000);
 		}
 		// last 0.5 years
-		else if ( tag == 'A' || tag == 'B' ) {
+		else if ( tag == 'a' || tag == 'b' ) {
 			// start loading from beginning and not backward
 			epoch = epoch - (long)(0.5*365.25 * 24 * 3600 * 1000);
 		}
@@ -259,12 +266,12 @@ public class DownloadTexturesCCI extends DownloadTextures
             boolean exists = false;
 
             // last 35 years or last 65 years
-            if (tag == 'O' || tag == 'E') {
+            if (tag == 'O' || tag == 'e') {
                 // each 1 year
                 epoch = epoch + (long)(365.25 * 24 * 3600 * 1000);
             }
 			// last 0.5 years
-			else if ( tag == 'A' || tag == 'B' ) {
+			else if ( tag == 'a' || tag == 'b' ) {
 				// each 1 day
 				epoch = epoch + 24 * 3600 * 1000;
 			}
@@ -298,7 +305,7 @@ public class DownloadTexturesCCI extends DownloadTextures
 
             }
 			// last 65 years
-			else if (tag == 'E') {
+			else if (tag == 'e') {
 				// do not download too new data
 				if (epoch - current_real > ((long) -1 * 365.25 * 24 * 3600 * 1000)) {
 
@@ -316,7 +323,7 @@ public class DownloadTexturesCCI extends DownloadTextures
 				}
 			}
 			// last 0.5 years
-			else if ( tag == 'A' || tag == 'B' ) {
+			else if ( tag == 'a' || tag == 'b' ) {
 				// do not download too new data
 				if (epoch - current_real > ((long) - 15 * 24 * 3600 * 1000)) {
 
@@ -359,7 +366,7 @@ public class DownloadTexturesCCI extends DownloadTextures
 			if (subFiles != null) {
 			    for (File file : subFiles) {
                     // last 35 years or last 65 years
-                    if (tag == 'O' || tag == 'E') {
+                    if (tag == 'O' || tag == 'e') {
                         // file exist
 
                         if ( filename.equals(file.getName())) {
@@ -368,7 +375,7 @@ public class DownloadTexturesCCI extends DownloadTextures
                         }
                     }
 					// last 0.5 years
-					else if ( tag == 'A' || tag == 'B' ) {
+					else if ( tag == 'a' || tag == 'b' ) {
 						// file exist
 
 						if ( filename.equals(file.getName())) {
@@ -413,17 +420,17 @@ public class DownloadTexturesCCI extends DownloadTextures
                             + getOISSTV2NameFromEpoch(epoch) + ".png");
                 }
 				// last 65 years
-				else if (tag == 'E') {
+				else if (tag == 'e') {
 					url = new URL(myUri + "/"
 							+ getERSSTV5NameFromEpoch(epoch) + ".png");
 				}
 				// last 0.5 years
-				else if ( tag == 'A' ) {
+				else if ( tag == 'a' ) {
 					url = new URL(myUri + "/"
 							+ getTEMP_AN_1Y_NameFromEpoch(epoch) + ".png");
 				}
 				// last 0.5 years
-				else if ( tag == 'B' ) {
+				else if ( tag == 'b' ) {
 					url = new URL(myUri + "/"
 							+ getOISSTV2_1Y_NameFromEpoch(epoch) + ".png");
 				}

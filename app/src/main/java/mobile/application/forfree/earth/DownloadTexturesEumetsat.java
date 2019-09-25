@@ -84,7 +84,7 @@ public class DownloadTexturesEumetsat extends DownloadTextures
     		myUri = "https://eumetview.eumetsat.int/static-images/MSG/IMAGERY/WV062/BW/FULLDISC";
     		tag = 'D';
     	}  else if (urls[0].equals("MPE")) {
-    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/PRODUCTS/MPE/FULLDISC";
+    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/PRODUCTS/H03B/FULLDISC";
     		tag = 'E';
     	}/* else if (urls[0].equals("MPE_HD")) {
     		myUri = "https://eumetview.eumetsat.int/static-images/MSG/PRODUCTS/MPE/FULLRESOLUTION";

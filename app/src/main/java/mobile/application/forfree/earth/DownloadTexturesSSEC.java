@@ -152,8 +152,12 @@ public class DownloadTexturesSSEC extends DownloadTextures
 				mis2.close();
 				
 			} catch (IOException e) {
-				
-				Log.e("H21lab", "Unable to connect to " + ucon.getURL().toString() + " " + e.getMessage());		
+
+				if (ucon != null) {
+					Log.e("H21lab", "Unable to connect to " + ucon.getURL().toString() + " " + e.getMessage());
+				} else {
+					Log.e("H21lab", "Unable to connect to " + myUri + " " + e.getMessage());
+				}
 				
 			}
 			

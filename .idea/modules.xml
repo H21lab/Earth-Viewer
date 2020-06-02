@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Earth-Viewer.iml" filepath="$PROJECT_DIR$/Earth-Viewer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Earth-Viewer.iml" filepath="$PROJECT_DIR$/Earth-Viewer.iml" group="Earth-Viewer" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Earth-Viewer/app" />
     </modules>
   </component>
 </project>

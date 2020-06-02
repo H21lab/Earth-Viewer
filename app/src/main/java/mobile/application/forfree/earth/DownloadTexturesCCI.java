@@ -51,72 +51,77 @@ public class DownloadTexturesCCI extends DownloadTextures
     	if (urls[0].equals("CLOUDS")) {
     		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PRCP/";
 		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/PRCP/";
-			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp-tcld-topo/";
-            myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/prcp-tcld-topo/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp-tcld-topo/";
+            //myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/prcp-tcld-topo/";
             tag = 'C';
     	} else if (urls[0].equals("TEMP")) {
     		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2/";
     		//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2/";
-			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2/";
-            myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2/";
+            //myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2/";
 		    tag = 'T';
     	} else if (urls[0].equals("TEMP_AN")) {
     		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
 		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2_anom/";
-			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2anom/";
-            myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2anom/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2anom/";
+            //myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2anom/";
     		tag = 't';
     	}
     	else if (urls[0].equals("WATER")) {
     		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PWTR/";
 		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/PWTR/";
-			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/pwtr/";
-            myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/pwtr/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/pwtr/";
+            //myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/pwtr/";
 		    tag = 'w';
     	}
     	else if (urls[0].equals("WIND")) {
     		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/WS10/";
 		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/WS10/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws10/";
-            myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/ws10-mslp/";
+            //myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/ws10-mslp/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws10-mslp/";
     		tag = 'v';
     	}
     	else if (urls[0].equals("JET")) {
     		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/WS250/";
 		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/WS250/";
-			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws250-snowc-topo/";
-            myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/ws250-snowc-topo/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws250-snowc-topo/";
+            //myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/ws250-snowc-topo/";
     		tag = 'j';
     	}
     	else if (urls[0].equals("SNOW")) {
     		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";
 		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/SNOW/";
-			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/snowd-mslp/";
-            myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/snowd-mslp/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/snowd-mslp/";
+            //myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/snowd-mslp/";
     		tag = 's';
     	}
 		else if (urls[0].equals("TEMP_AN_1Y")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2_anom/";
-			myUri = "https://pamola.um.maine.edu/wxrmaps/clim_frames/t2anom/world-ced/";
+			//myUri = "https://pamola.um.maine.edu/wxrmaps/clim_frames/t2anom/world-ced/";
+			myUri = "https://climatereanalyzer.org/reanalysis/daily_maps/clim_frames/t2anom/world-ced/";
 			tag = 'a';
 		}
 		else if (urls[0].equals("OISST_V2_1Y")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2_anom/";
-			myUri = "https://pamola.um.maine.edu/wxrmaps/clim_frames/sstanom/world-ced2/";
+			//myUri = "https://pamola.um.maine.edu/wxrmaps/clim_frames/sstanom/world-ced2/";
+			myUri = "https://climatereanalyzer.org/reanalysis/daily_maps/clim_frames/sstanom/world-ced2/";
 			tag = 'b';
 		}
         else if (urls[0].equals("OISST_V2")) {
             //myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";
             //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/SNOW/";
-            myUri = "https://pamola.um.maine.edu/cr/clim/sst/frames/oisst2/world-ced2/sstanom/";
+            //myUri = "https://pamola.um.maine.edu/cr/clim/sst/frames/oisst2/world-ced2/sstanom/";
+			myUri = "https://climatereanalyzer.org/clim/sst/frames/oisst2/world-ced2/sstanom/";
             tag = 'O';
         }
 		else if (urls[0].equals("ERSST_V5")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/SNOW/";
-			myUri = "https://pamola.um.maine.edu/cr/clim/sst/frames/ersst5/world-ced2/sstanom/";
+			//myUri = "https://pamola.um.maine.edu/cr/clim/sst/frames/ersst5/world-ced2/sstanom/";
+			myUri = "https://climatereanalyzer.org/clim/sst/frames/ersst5/world-ced2/sstanom/";
 			tag = 'e';
 		}
     	
@@ -479,7 +484,11 @@ public class DownloadTexturesCCI extends DownloadTextures
 			} catch (MalformedURLException e1) {
 				Log.e("H21lab", "Connection error " + "MalformedURLException "+ e1.getMessage());
 			} catch (Exception e2) {
-				Log.e("H21lab", "Connection error " + "Unable to connect to " + ucon.getURL().toString() + " " + e2.getMessage());
+				if (ucon != null) {
+					Log.e("H21lab", "Unable to connect to " + ucon.getURL().toString() + " " + e2.getMessage());
+				} else {
+					Log.e("H21lab", "Unable to connect to " + myUri + " " + e2.getMessage());
+				}
 			}
 
 			progressDialogUpdate();

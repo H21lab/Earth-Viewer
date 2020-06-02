@@ -138,7 +138,11 @@ public class DownloadTexturesXplanet extends DownloadTextures {
 						mis2.close();
 	
 					} catch (Exception e2) {
-						Log.e("H21lab", "Connection error " + "Unable to connect to " + ucon.getURL().toString() + " " + e2.getMessage());
+						if (ucon != null) {
+							Log.e("H21lab", "Unable to connect to " + ucon.getURL().toString() + " " + e2.getMessage());
+						} else if (url != null) {
+							Log.e("H21lab", "Unable to connect to " + url.toString() + " " + e2.getMessage());
+						}
 					}
 				}
 	

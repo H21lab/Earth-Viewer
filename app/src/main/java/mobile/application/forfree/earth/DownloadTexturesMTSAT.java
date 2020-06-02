@@ -55,11 +55,11 @@ public class DownloadTexturesMTSAT extends DownloadTextures
     	OpenGLES20Renderer.downloadedTextures = 0;
     	OpenGLES20Renderer.reloadedTextures = true;
     	
-    	String myUri = "http://www.jma.go.jp/en/gms/imgs/6/infrared/1/";
+    	String myUri = "https://www.jma.go.jp/en/gms/imgs/6/infrared/1/";
     	char tag = 'J';
     	
     	if (urls[0].equals("MTSAT")) {
-    		myUri = "http://www.jma.go.jp/en/gms/imgs/6/infrared/1/";
+    		myUri = "https://www.jma.go.jp/en/gms/imgs/6/infrared/1/";
     		tag = 'J';
     	} 
     	
@@ -95,7 +95,7 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 		if (iKeys.size() == 0 || eKeys.size() == 0) {
 			try {
 				
-				String uri = "http://www.jma.go.jp/en/gms/hisjs/infrared-6.js";
+				String uri = "https://www.jma.go.jp/en/gms/hisjs/infrared-6.js";
 				
 				//HttpClient httpClient = new DefaultHttpClient();
 				//HttpGet get = new HttpGet(uri);
@@ -253,8 +253,12 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 
 				
 			} catch (Exception e) {
-				
-				Log.e("H21lab", "Unable to connect to " + ucon.getURL().toString() + " " + e.getMessage());		
+
+				if (ucon != null) {
+					Log.e("H21lab", "Unable to connect to " + ucon.getURL().toString() + " " + e.getMessage());
+				} else {
+					Log.e("H21lab", "Unable to connect to " + myUri + " " + e.getMessage());
+				}
 
 			}
 			

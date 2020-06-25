@@ -179,8 +179,8 @@ public class OpenGLES20SurfaceView extends GLSurfaceView {
 
 								float angle = (_angle - __angle) * 1.0f;
 
-								mRenderer.fearth.Orientation = M3DVECTOR.POINTROTATE(mRenderer.fearth.Orientation, new M3DVECTOR(0.0f, 0.0f, 0.0f), M3DM.CameraOrientation, angle);
-								mRenderer.fearth.Up = M3DVECTOR.POINTROTATE(mRenderer.fearth.Up, new M3DVECTOR(0.0f, 0.0f, 0.0f), M3DM.CameraOrientation, angle);
+								mRenderer.fearth.Orientation = M3DVECTOR.POINTROTATE(mRenderer.fearth.Orientation, new M3DVECTOR(0.0f, 0.0f, 0.0f), mRenderer.DEV.CameraOrientation, angle);
+								mRenderer.fearth.Up = M3DVECTOR.POINTROTATE(mRenderer.fearth.Up, new M3DVECTOR(0.0f, 0.0f, 0.0f), mRenderer.DEV.CameraOrientation, angle);
 								mRenderer.fearth.setWorldM();
 							}
 
@@ -196,26 +196,26 @@ public class OpenGLES20SurfaceView extends GLSurfaceView {
 							float __r = (float) Math.sqrt(__x * __x + __y * __y);
 							float scale = (float) Math.sqrt(__r / _r);
 
-							M3DM.P_fov_horiz *= scale;
-							if (M3DM.P_fov_horiz > M3DM.PI - 1.0f) {
-								M3DM.P_fov_horiz = M3DM.PI - 1.0f;
-							} else if (M3DM.P_fov_horiz <= 0.0f) {
-								M3DM.P_fov_horiz = 0.01f;
+							mRenderer.DEV.P_fov_horiz *= scale;
+							if (mRenderer.DEV.P_fov_horiz > M3DM.PI - 1.0f) {
+								mRenderer.DEV.P_fov_horiz = M3DM.PI - 1.0f;
+							} else if (mRenderer.DEV.P_fov_horiz <= 0.0f) {
+								mRenderer.DEV.P_fov_horiz = 0.01f;
 							}
 
-							M3DM.P_fov_vert *= scale;
-							if (M3DM.P_fov_vert > M3DM.PI - 1.7f) {
-								M3DM.P_fov_vert = M3DM.PI - 1.7f;
-							} else if (M3DM.P_fov_vert <= 0.0f) {
-								M3DM.P_fov_vert = 0.01f;
+							mRenderer.DEV.P_fov_vert *= scale;
+							if (mRenderer.DEV.P_fov_vert > M3DM.PI - 1.7f) {
+								mRenderer.DEV.P_fov_vert = M3DM.PI - 1.7f;
+							} else if (mRenderer.DEV.P_fov_vert <= 0.0f) {
+								mRenderer.DEV.P_fov_vert = 0.01f;
 							}
 
-							float left = -M3DM.P_NPlane * ((float) (M3DM.SCREEN_WIDTH) / (float) (M3DM.SCREEN_HEIGHT)) * (float) Math.tan(M3DM.P_fov_vert / 2.0f);
-							float right = M3DM.P_NPlane * ((float) (M3DM.SCREEN_WIDTH) / (float) (M3DM.SCREEN_HEIGHT)) * (float) Math.tan(M3DM.P_fov_vert / 2.0f);
-							float bottom = -M3DM.P_NPlane * (float) Math.tan(M3DM.P_fov_vert / 2.0f);
-							float top = M3DM.P_NPlane * (float) Math.tan(M3DM.P_fov_vert / 2.0f);
+							float left = -mRenderer.DEV.P_NPlane * ((float) (mRenderer.DEV.SCREEN_WIDTH) / (float) (mRenderer.DEV.SCREEN_HEIGHT)) * (float) Math.tan(mRenderer.DEV.P_fov_vert / 2.0f);
+							float right = mRenderer.DEV.P_NPlane * ((float) (mRenderer.DEV.SCREEN_WIDTH) / (float) (mRenderer.DEV.SCREEN_HEIGHT)) * (float) Math.tan(mRenderer.DEV.P_fov_vert / 2.0f);
+							float bottom = -mRenderer.DEV.P_NPlane * (float) Math.tan(mRenderer.DEV.P_fov_vert / 2.0f);
+							float top = mRenderer.DEV.P_NPlane * (float) Math.tan(mRenderer.DEV.P_fov_vert / 2.0f);
 
-							Matrix.frustumM(M3DM.projectionMatrix, 0, left, right, bottom, top, M3DM.P_NPlane, M3DM.P_FPlane);
+							Matrix.frustumM(mRenderer.DEV.projectionMatrix, 0, left, right, bottom, top, mRenderer.DEV.P_NPlane, mRenderer.DEV.P_FPlane);
 
 
 							mPreviousX = x;

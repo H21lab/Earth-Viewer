@@ -34,26 +34,27 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 
 class M3DM {
 
 	final static String TAG = "M3DM";
 
-	static int SCREEN_WIDTH = 200, SCREEN_HEIGHT = 200;
+	int SCREEN_WIDTH = 200, SCREEN_HEIGHT = 200;
 
 	int ZSORT = 1;      // TODO
 
 	final static float PI = 3.1415926535f;
 	/************************* CAMERA ***********************/
-	static M3DVECTOR CameraPosition, CameraOrientation, CameraUp;
+	M3DVECTOR CameraPosition, CameraOrientation, CameraUp;
 	float[] viewMatrix = new float[16];
-	static float[] projectionMatrix = new float[16];
+	float[] projectionMatrix = new float[16];
 
 	// PROJECTION
-	static float P_NPlane = 1.0f;
-	static float P_FPlane = 200.0f;
-	static float P_fov_vert = 60.0f * (PI / 180.0f); // celkovo
-	static float P_fov_horiz = ((float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT)) * P_fov_vert;
+	float P_NPlane = 1.0f;
+	float P_FPlane = 200.0f;
+	float P_fov_vert = 60.0f * (PI / 180.0f); // celkovo
+	float P_fov_horiz = ((float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT)) * P_fov_vert;
 	/************************ FLAGS *************************/
 	// TODO some parameters are legacy
 	final static int MAXMESHS = 20; // max # of meshs in one mesh or frame
@@ -905,18 +906,23 @@ class M3DM {
 	}
 
 	private void _renderFromBuff_zsort() {
-		Collections.sort(zsort);
+		if (zsort != null) {
+			Collections.sort(zsort);
 
-
-		for (ZSORTstruct zs : zsort) {
-			if ((zs.hMesh.Flags & MD3DMESHF_RENDEREDFIRST) == MD3DMESHF_RENDEREDFIRST) {
-				_renderMesh(zs.hMesh, zs.World, 1);
+			ListIterator<ZSORTstruct> iterator = zsort.listIterator();
+			while (iterator.hasNext()) {
+				ZSORTstruct zs = iterator.next();
+				if ((zs.hMesh.Flags & MD3DMESHF_RENDEREDFIRST) == MD3DMESHF_RENDEREDFIRST) {
+					_renderMesh(zs.hMesh, zs.World, 1);
+				}
 			}
-		}
 
-		for (ZSORTstruct zs : zsort) {
-			if ((zs.hMesh.Flags & MD3DMESHF_RENDEREDFIRST) != MD3DMESHF_RENDEREDFIRST) {
-				_renderMesh(zs.hMesh, zs.World, 1);
+			iterator = zsort.listIterator();
+			while (iterator.hasNext()) {
+				ZSORTstruct zs = iterator.next();
+				if ((zs.hMesh.Flags & MD3DMESHF_RENDEREDFIRST) != MD3DMESHF_RENDEREDFIRST) {
+					_renderMesh(zs.hMesh, zs.World, 1);
+				}
 			}
 		}
 	}
@@ -1706,7 +1712,7 @@ class M3DM {
 	}
 
 	// Method calculates the x, y position on screen into line in 3D space. Set as output POINT and VECT
-	static void getLinefPixel(M3DVECTOR POINT, M3DVECTOR VECT, float Xx, float Yy) {
+	void getLinefPixel(M3DVECTOR POINT, M3DVECTOR VECT, float Xx, float Yy) {
 		M3DVECTOR right = M3DVECTOR.CrossProduct(CameraOrientation, CameraUp);
 		right = M3DVECTOR.Normalize(right);
 		M3DVECTOR up = M3DVECTOR.CrossProduct(right, CameraOrientation);

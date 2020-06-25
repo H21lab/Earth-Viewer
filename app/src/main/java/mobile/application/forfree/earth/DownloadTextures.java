@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.TimeZone;
+
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
@@ -31,22 +32,27 @@ import android.opengl.ETC1Util.ETC1Texture;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class DownloadTextures extends AsyncTask<String, Void, String> 
-{
+public class DownloadTextures extends AsyncTask<String, Void, String> {
+	private OpenGLES20Renderer gles20Renderer = null;
+
+	public DownloadTextures(OpenGLES20Renderer mGLES20Renderer) {
+		super();
+		gles20Renderer = mGLES20Renderer;
+	}
 
 	private ProgressDialog pd = null;
 	private int pd_progress;
-		
+
 	public void progressDialogShow() {
 		try {
 			if (pd != null && this.getStatus() == AsyncTask.Status.RUNNING) {
 				pd.show();
 			}
 		} catch (Exception e) {
-    		Log.e("H21lab", "Unable to create ProgressDialog " + e.getMessage());
-    	}
+			Log.e("H21lab", "Unable to create ProgressDialog " + e.getMessage());
+		}
 	}
-	
+
 	public void progressDialogSetMax(int files_to_download) {
 		try {
 			if (pd != null) {
@@ -56,10 +62,10 @@ public class DownloadTextures extends AsyncTask<String, Void, String>
 			Log.e("H21lab", "Unable to create ProgressDialog " + e.getMessage());
 		}
 	}
-	
+
 	public void progressDialogUpdate() {
 		try {
-			pd_progress ++;
+			pd_progress++;
 			if (pd != null) {
 				pd.setProgress(pd_progress);
 			}
@@ -68,64 +74,62 @@ public class DownloadTextures extends AsyncTask<String, Void, String>
 			Log.e("H21lab", "Unable to create ProgressDialog " + e.getMessage());
 		}
 	}
-	
-    @Override
-    protected void onPreExecute() 
-    {
-    	pd_progress = 0;
-    	
-    	try {
-			pd  = new ProgressDialog(OpenGLES20Renderer.mContext);
+
+	@Override
+	protected void onPreExecute() {
+		pd_progress = 0;
+
+		try {
+			pd = new ProgressDialog(gles20Renderer.mContext);
 
 			if (pd != null) {
-		    	pd.setMessage("Please wait...");
-		    	pd.setCancelable(true);
-		    	
-		    	pd.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-		    	    @Override
-		    	    public void onClick(DialogInterface dialog, int which) {
-		    	        OpenGLES20Renderer.mDownloadTextures.cancel(true);
-		    	        reloadTextures();
-		    	        
-		    	    }
-		    	});
-		    	
-		    	pd.setMax(100);
-		    	pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		    	pd.setProgress(pd_progress);
-		    	pd.show();
-			}
-    	} catch (Exception e) {
-    		Log.e("H21lab", "Unable to create ProgressDialog " + e.getMessage());
-    	}
-        super.onPreExecute();
-	}
-    
-    @Override
-    protected String doInBackground(String... urls) 
-    {
-	
-        return "";
-    }
+				pd.setMessage("Please wait...");
+				pd.setCancelable(true);
 
-    static void reloadTextures() {
-    	File[] subFiles;
-    	Calendar cal;
-    	Long epoch;
-    	File dir = OpenGLES20Renderer.mContext.getFilesDir();
-    	InputStream is2 = null;
-    	
+				pd.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						gles20Renderer.mDownloadTextures.cancel(true);
+						reloadTextures();
+
+					}
+				});
+
+				pd.setMax(100);
+				pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+				pd.setProgress(pd_progress);
+				pd.show();
+			}
+		} catch (Exception e) {
+			Log.e("H21lab", "Unable to create ProgressDialog " + e.getMessage());
+		}
+		super.onPreExecute();
+	}
+
+	@Override
+	protected String doInBackground(String... urls) {
+
+		return "";
+	}
+
+	void reloadTextures() {
+		File[] subFiles;
+		Calendar cal;
+		Long epoch;
+		File dir = gles20Renderer.mContext.getFilesDir();
+		InputStream is2 = null;
+
 		// clean the internal storage and select actual cloadmap
 		subFiles = dir.listFiles();
 		cal = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
 		epoch = cal.getTimeInMillis();
 
-		for (String f : OpenGLES20Renderer.mCloudMapFilename.keySet()) {
+		for (String f : gles20Renderer.mCloudMapFilename.keySet()) {
 			// reload always after download
-			Long e = OpenGLES20Renderer.mCloudMapFilename.get(f);
-			OpenGLES20Renderer.mCloudMap.remove(e);
-			OpenGLES20Renderer.mCloudMapEpochToFilename.remove(e);
-			OpenGLES20Renderer.mCloudMapFilename.remove(f);
+			Long e = gles20Renderer.mCloudMapFilename.get(f);
+			gles20Renderer.mCloudMap.remove(e);
+			gles20Renderer.mCloudMapEpochToFilename.remove(e);
+			gles20Renderer.mCloudMapFilename.remove(f);
 		}
 
 		if (subFiles != null) {
@@ -133,14 +137,14 @@ public class DownloadTextures extends AsyncTask<String, Void, String>
 				if (!file.exists()) {
 					continue;
 				}
-				
-				if (OpenGLES20Renderer.mCloudMapFilename.containsKey(file.getName())) {
-					continue;					
+
+				if (gles20Renderer.mCloudMapFilename.containsKey(file.getName())) {
+					continue;
 				}
 
 				Log.d("H21lab", "Files: " + file.getName() + " " + OpenGLES20Renderer.getEpochFromName(file.getName()) + " " + file.length());
 
-				if ( OpenGLES20Renderer.getTag(file.getName()) == 'm') {
+				if (OpenGLES20Renderer.getTag(file.getName()) == 'm') {
 					// delete older than 6h
 					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > (6 + 2) * 3600 * 1000) {
 						Log.d("H21lab",
@@ -148,9 +152,7 @@ public class DownloadTextures extends AsyncTask<String, Void, String>
 						file.delete();
 						continue;
 					}
-				}
-				
-				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'h') {
+				} else if (OpenGLES20Renderer.getTag(file.getName()) == 'h') {
 					// delete older than 2h
 					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > (2 + 1) * 3600 * 1000) {
 						Log.d("H21lab",
@@ -158,9 +160,7 @@ public class DownloadTextures extends AsyncTask<String, Void, String>
 						file.delete();
 						continue;
 					}
-				}
-				
-				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'I' || OpenGLES20Renderer.getTag(file.getName()) == 'W') {
+				} else if (OpenGLES20Renderer.getTag(file.getName()) == 'I' || OpenGLES20Renderer.getTag(file.getName()) == 'W') {
 					// delete older than 168h
 					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > (168 + 6) * 3600 * 1000) {
 						Log.d("H21lab",
@@ -168,38 +168,32 @@ public class DownloadTextures extends AsyncTask<String, Void, String>
 						file.delete();
 						continue;
 					}
-				}
-
-				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'a' || OpenGLES20Renderer.getTag(file.getName()) == 'b') {
+				} else if (OpenGLES20Renderer.getTag(file.getName()) == 'a' || OpenGLES20Renderer.getTag(file.getName()) == 'b') {
 					// delete older than 1 year
-					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > ((long)((1) * (365.25 + 6) * 24 * 3600)) * 1000) {
+					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > ((long) ((1) * (365.25 + 6) * 24 * 3600)) * 1000) {
 						Log.d("H21lab",
 								"Deleting old for tag X, Y: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
 						file.delete();
 						continue;
 					}
-				}
-
-				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'O') {
+				} else if (OpenGLES20Renderer.getTag(file.getName()) == 'O') {
 					// delete older than 35 years
-					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > ((long)((35 + 1) * 365.25 * 24 * 3600)) * 1000) {
+					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > ((long) ((35 + 1) * 365.25 * 24 * 3600)) * 1000) {
 						Log.d("H21lab",
 								"Deleting old for tag O: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
 						file.delete();
 						continue;
 					}
-				}
-
-				else if ( OpenGLES20Renderer.getTag(file.getName()) == 'e') {
+				} else if (OpenGLES20Renderer.getTag(file.getName()) == 'e') {
 					// delete older than 65 years
-					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > ((long)((65 + 1) * 365.25 * 24 * 3600)) * 1000) {
+					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > ((long) ((65 + 1) * 365.25 * 24 * 3600)) * 1000) {
 						Log.d("H21lab",
 								"Deleting old for tag E: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
 						file.delete();
 						continue;
 					}
 				}
-				
+
 				// default delete older than 24h
 				else {
 					if (epoch - OpenGLES20Renderer.getEpochFromName(file.getName()) > (24 + 6) * 3600 * 1000) {
@@ -218,28 +212,28 @@ public class DownloadTextures extends AsyncTask<String, Void, String>
 					continue;
 				}
 
-				if (OpenGLES20Renderer.getTag(file.getName()) != OpenGLES20Renderer.mTag) {
+				if (OpenGLES20Renderer.getTag(file.getName()) != gles20Renderer.mTag) {
 					continue;
 				}
 
-				ETC1Texture bi = OpenGLES20Renderer.loadTexture(file.getName());
+				ETC1Texture bi = gles20Renderer.loadTexture(file.getName());
 				if (bi != null) {
 					Log.d("H21lab", "PUT file into HASH = " + " " + OpenGLES20Renderer.getEpochFromName(file.getName()) + " " + file.getName());
 					Long e = OpenGLES20Renderer.getEpochFromName(file.getName());
-					OpenGLES20Renderer.mCloudMap.put(e, bi);
-					OpenGLES20Renderer.mCloudMapFilename.put(file.getName(), e);
-					OpenGLES20Renderer.mCloudMapEpochToFilename.put(e, file.getName());
+					gles20Renderer.mCloudMap.put(e, bi);
+					gles20Renderer.mCloudMapFilename.put(file.getName(), e);
+					gles20Renderer.mCloudMapEpochToFilename.put(e, file.getName());
 				}
 
 			}
 		}
 
-		
-		if (OpenGLES20Renderer.mBitmap3 == null) {
 
-			is2 = OpenGLES20Renderer.mContext.getResources().openRawResource(R.raw.clouds);
+		if (gles20Renderer.mBitmap3 == null) {
+
+			is2 = gles20Renderer.mContext.getResources().openRawResource(R.raw.clouds);
 			try {
-				OpenGLES20Renderer.mBitmap3 = BitmapFactory.decodeStream(is2);
+				gles20Renderer.mBitmap3 = BitmapFactory.decodeStream(is2);
 			} finally {
 				try {
 					is2.close();
@@ -249,30 +243,30 @@ public class DownloadTextures extends AsyncTask<String, Void, String>
 			}
 
 		}
-		
-		OpenGLES20Renderer.initializedShaders = false;;
-		
-		OpenGLES20Renderer._e1 = 0L;
-		OpenGLES20Renderer._e2 = 0L;
-		OpenGLES20Renderer._e3 = 0L;
-		OpenGLES20Renderer._e4 = 0L;
-		
-		OpenGLES20Renderer.downloadedTextures = 1;
-		OpenGLES20Renderer.reloadedTextures = true;
-    }
-    
-    @Override
-    protected void onPostExecute(String response1) 
-    {
-    	reloadTextures();
-    	 
-    	
-        //Some Code.....
-    	try {
-    		if (pd != null && pd.isShowing())
-    			pd.dismiss();
-    	} catch (Exception e) {
-    		 e.printStackTrace();
-    	}
-    }
+
+		gles20Renderer.initializedShaders = false;
+		;
+
+		gles20Renderer._e1 = 0L;
+		gles20Renderer._e2 = 0L;
+		gles20Renderer._e3 = 0L;
+		gles20Renderer._e4 = 0L;
+
+		gles20Renderer.downloadedTextures = 1;
+		gles20Renderer.reloadedTextures = true;
+	}
+
+	@Override
+	protected void onPostExecute(String response1) {
+		reloadTextures();
+
+
+		//Some Code.....
+		try {
+			if (pd != null && pd.isShowing())
+				pd.dismiss();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

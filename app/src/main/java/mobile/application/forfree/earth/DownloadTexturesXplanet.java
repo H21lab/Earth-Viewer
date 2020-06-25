@@ -27,71 +27,78 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.TimeZone;
+
 import android.graphics.Bitmap;
 import android.util.Log;
 
 public class DownloadTexturesXplanet extends DownloadTextures {
+	private OpenGLES20Renderer gles20Renderer = null;
+
+	public DownloadTexturesXplanet(OpenGLES20Renderer mGLES20Renderer) {
+		super(mGLES20Renderer);
+		gles20Renderer = mGLES20Renderer;
+	}
 
 	@Override
 	protected String doInBackground(String... urls) {
-		OpenGLES20Renderer.downloadedTextures = 0;
-		OpenGLES20Renderer.reloadedTextures = true;
+		gles20Renderer.downloadedTextures = 0;
+		gles20Renderer.reloadedTextures = true;
 
 		char tag = 'X';
-		OpenGLES20Renderer.mTag = tag;
+		gles20Renderer.mTag = tag;
 
 		InputStream is2 = null;
 		Bitmap b = null;
-		
+
 		URLConnection ucon = null;
 		URL url = null;
-		
+
 		// load image from cache
-		
+
 		// find latest image but not older then 3 hours
 		String filename = null;
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
 
-		cal.set(Calendar.HOUR_OF_DAY, 24*(int)(cal.get(Calendar.HOUR_OF_DAY)/24));
+		cal.set(Calendar.HOUR_OF_DAY, 24 * (int) (cal.get(Calendar.HOUR_OF_DAY) / 24));
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		
-		File dir = OpenGLES20Renderer.mContext.getFilesDir();
+
+		File dir = gles20Renderer.mContext.getFilesDir();
 		File[] subFiles;
 		long epoch = cal.getTimeInMillis();
 		long current = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")).getTimeInMillis();
-		
+
 		int files_to_download = 1;
 		progressDialogSetMax(files_to_download);
 
 		boolean exists = false;
-		
+
 		filename = OpenGLES20Renderer.getNameFromEpoch(tag, epoch);
-		
+
 		subFiles = dir.listFiles();
 		if (subFiles != null) {
-		    for (File file : subFiles) {
-		    	if ( filename.equals(file.getName()) ) {
-		    		exists = true;
-		    		break;				    		
-		    	}
-		    }
+			for (File file : subFiles) {
+				if (filename.equals(file.getName())) {
+					exists = true;
+					break;
+				}
+			}
 		}
-		
+
 		if (exists == false) {
 			// download from internet
 			try {
 				/* Open a connection to that URL. */
 				url = new URL("http://xplanetclouds.com/free/local/clouds_2048.jpg");
 				Log.d("H21lab", "Downloading: " + url.toString());
-	
+
 				ucon = url.openConnection();
 				ucon.setUseCaches(false);
 				ucon.connect();
-	
+
 				is2 = ucon.getInputStream();
-	
+
 				ByteArrayOutputStream mis2 = new ByteArrayOutputStream();
 				byte data[] = new byte[1024];
 				int count;
@@ -100,29 +107,29 @@ public class DownloadTexturesXplanet extends DownloadTextures {
 				}
 				mis2.flush();
 				is2.close();
-	
+
 				// b = BitmapFactory.decodeStream(is2);
 				byte[] ba = mis2.toByteArray();
-				OpenGLES20Renderer.saveTexture(filename, ba, 2048, 1024);
-					
+				gles20Renderer.saveTexture(filename, ba, 2048, 1024);
+
 				mis2.close();
-	
+
 			} catch (Exception e) {
-	
+
 				Log.e("H21lab", "Unable to connect to " + ucon.getURL().toString() + " " + e.getMessage());
-	
+
 				if (ucon != null) {
-	
+
 					try {
 						url = new URL(ucon.getURL().toString().replace(".nyud.net:8080", ""));
 						Log.d("H21lab", "Downloading: " + url.toString());
-	
+
 						ucon = url.openConnection();
 						ucon.setUseCaches(false);
 						ucon.connect();
-	
+
 						is2 = ucon.getInputStream();
-	
+
 						ByteArrayOutputStream mis2 = new ByteArrayOutputStream();
 						byte data[] = new byte[1024];
 						int count;
@@ -131,12 +138,12 @@ public class DownloadTexturesXplanet extends DownloadTextures {
 						}
 						mis2.flush();
 						is2.close();
-	
+
 						byte[] ba = mis2.toByteArray();
-						OpenGLES20Renderer.saveTexture(filename, ba, 2048, 1024);
-	
+						gles20Renderer.saveTexture(filename, ba, 2048, 1024);
+
 						mis2.close();
-	
+
 					} catch (Exception e2) {
 						if (ucon != null) {
 							Log.e("H21lab", "Unable to connect to " + ucon.getURL().toString() + " " + e2.getMessage());
@@ -145,12 +152,12 @@ public class DownloadTexturesXplanet extends DownloadTextures {
 						}
 					}
 				}
-	
+
 			}
 		}
-		
+
 		progressDialogUpdate();
-		
+
 		return "";
 	}
 

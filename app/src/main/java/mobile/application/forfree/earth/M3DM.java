@@ -33,8 +33,10 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 class M3DM {
 
@@ -69,8 +71,8 @@ class M3DM {
 	/* FLAGS for Mesh */
 	final static int MD3DMESHF_SPHERMAP = 1; // mesh has env. mapping
 	final static int MD3DMESHF_DISABLED = 2; // mesh is not rendered
-	final static int MD3DMESHF_NOCULLING = 16;	// mesh no culling
-	final static int MD3DMESHF_FRONTCULLING = 32;	// mesh front culling
+	final static int MD3DMESHF_NOCULLING = 16;    // mesh no culling
+	final static int MD3DMESHF_FRONTCULLING = 32;    // mesh front culling
 	final static int MD3DMESHF_RENDEREDFIRST = 64;  // mesh render first if zsort
 
 	/* FLAGS PRE FLEXIBLE VERTEX FORMAT */
@@ -81,7 +83,7 @@ class M3DM {
 
 	// TODO not used yet
 	/* For Z sort*********** */
-	class ZSORTstruct implements Comparable<ZSORTstruct>{
+	class ZSORTstruct implements Comparable<ZSORTstruct> {
 		float Z;
 		mD3DMesh hMesh;
 		M3DMATRIX World;
@@ -90,11 +92,9 @@ class M3DM {
 		public int compareTo(ZSORTstruct b) {
 			if (this.Z > b.Z) {
 				return 1;
-			}
-			else if (this.Z <  b.Z) {
+			} else if (this.Z < b.Z) {
 				return -1;
-			}
-			else {
+			} else {
 				return 0;
 			}
 		}
@@ -174,7 +174,7 @@ class M3DM {
 					"varying vec2 vTex;			\n" +
 					"uniform sampler2D uTextures[4];\n" +
 					"varying vec3 vEye	;   	\n" +
-					"varying vec2 shiftUV;		\n" +	  // clouds shadow shift
+					"varying vec2 shiftUV;		\n" +      // clouds shadow shift
 
 					"uniform vec4 uLightAmbientColor;  		\n" +
 					"uniform vec4 uLightDiffuseColor;  		\n" +
@@ -256,7 +256,6 @@ class M3DM {
 					" cmS = 0.0 + 1.0*cmS; \n" +
 
 
-
 					" 		float d = (1.0 - texture2D(uTextures[1], vTex).r)*(1.0 - texture2D(uTextures[1], vTex).g)*texture2D(uTextures[1], vTex).b; \n" +
 
 					// cloudmap
@@ -319,7 +318,9 @@ class M3DM {
 			Pos = new M3DVECTOR(0.0f, 0.0f, 0.0f);
 			AR = AG = AB = AA = DR = DG = DB = DA = SR = SG = SB = SA = 0.0f;
 		}
-	};
+	}
+
+	;
 
 	LIGHT Light[] = new LIGHT[8];
 
@@ -331,7 +332,7 @@ class M3DM {
 		float ER, EG, EB, EA; // emission
 		float SH; // shininess
 		float am, dm, sm; // ambient col. index, diffuse, specular
-		char Name[] = new char[NAMELENGHT];		// TODO not used
+		char Name[] = new char[NAMELENGHT];        // TODO not used
 
 		M3DMATERIAL() {
 			AR = 1.0f;
@@ -358,7 +359,7 @@ class M3DM {
 		}
 
 		M3DMATERIAL(float ar, float ag, float ab, float aa, float dr, float dg, float db, float da, float sr, float sg, float sb, float sa, float er, float eg,
-		            float eb, float ea, float sh, float _am, float _dm, float _sm) {
+					float eb, float ea, float sh, float _am, float _dm, float _sm) {
 			AR = ar;
 			AG = ag;
 			AB = ab;
@@ -384,11 +385,11 @@ class M3DM {
 	}
 
 	M3DMATERIAL DEFMATERIAL = new M3DMATERIAL(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 45.0f, 0.0f,
-			                                         1.0f, 1.0f);
+			1.0f, 1.0f);
 
 	static class mD3DTexture {
 		int id = -1;
-		char Name[] = new char[NAMELENGHT];	// TODO Not used
+		char Name[] = new char[NAMELENGHT];    // TODO Not used
 
 		mD3DTexture() {
 			id = 0;
@@ -444,7 +445,7 @@ class M3DM {
 
 		P_fov_horiz = ((float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT)) * P_fov_vert;
 		//	Matrix.frustumM(projectionMatrix, 0, -P_NPlane*(float)Math.tan(P_fov_horiz), P_NPlane*(float)Math.tan(P_fov_horiz), -P_NPlane*(float)Math.tan(P_fov_vert), P_NPlane*(float)Math.tan(P_fov_vert), P_NPlane, P_FPlane);
-		Matrix.frustumM(projectionMatrix, 0, -P_NPlane*(float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT)*(float)Math.tan(P_fov_vert/2.0f), P_NPlane*(float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT)*(float)Math.tan(P_fov_vert/2.0f), -P_NPlane*(float)Math.tan(P_fov_vert/2.0f), P_NPlane*(float)Math.tan(P_fov_vert/2.0f), P_NPlane, P_FPlane);
+		Matrix.frustumM(projectionMatrix, 0, -P_NPlane * (float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT) * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane * (float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT) * (float) Math.tan(P_fov_vert / 2.0f), -P_NPlane * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane, P_FPlane);
 
 
 		for (int i = 0; i < 8; i++) {
@@ -463,7 +464,7 @@ class M3DM {
 		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
 	}
 
-	private int loadGLShader(int type, String shaderCode){
+	private int loadGLShader(int type, String shaderCode) {
 		// create a vertex shader type (GLES20.GL_VERTEX_SHADER)
 		// or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
 		int shader = GLES20.glCreateShader(type);
@@ -504,7 +505,6 @@ class M3DM {
 	}
 
 
-
 	void initialize(int width, int height, float p_nplane, float p_fplane, M3DVECTOR cam_pos, M3DVECTOR cam_or, M3DVECTOR cam_up) {
 		SCREEN_WIDTH = width;
 		SCREEN_HEIGHT = height;
@@ -515,7 +515,7 @@ class M3DM {
 		CameraOrientation = cam_or;
 		CameraUp = cam_up;
 
-		Matrix.frustumM(projectionMatrix, 0, -P_NPlane*(float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT)*(float)Math.tan(P_fov_vert/2.0f), P_NPlane*(float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT)*(float)Math.tan(P_fov_vert/2.0f), -P_NPlane*(float)Math.tan(P_fov_vert/2.0f), P_NPlane*(float)Math.tan(P_fov_vert/2.0f), P_NPlane, P_FPlane);
+		Matrix.frustumM(projectionMatrix, 0, -P_NPlane * (float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT) * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane * (float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT) * (float) Math.tan(P_fov_vert / 2.0f), -P_NPlane * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane, P_FPlane);
 
 	}
 
@@ -536,6 +536,8 @@ class M3DM {
 		mD3DTexture Texture[] = new mD3DTexture[8];
 		int MatFlags; // TODO legacy
 		M3DMATERIAL Material;
+		float bumpLevel = 20.0f;
+		HashMap<String, Float> customAttributes = new HashMap<String, Float>();
 		float[] mMVPMatrixPrev = null;
 
 		int Meshs;
@@ -569,6 +571,14 @@ class M3DM {
 
 		void setMaterial(M3DMATERIAL mat) {
 			Material = mat;
+		}
+
+		void setBumpLevel(float bump) {
+			bumpLevel = bump;
+		}
+
+		void setCustomAttribute(String name, float value) {
+			customAttributes.put(name, value);
 		}
 
 		void setVertex(int N, float handle[]) {
@@ -885,7 +895,7 @@ class M3DM {
 			return;
 		}
 
-		M3DVECTOR center = new M3DVECTOR(0.0f,0.0f,0.0f);
+		M3DVECTOR center = new M3DVECTOR(0.0f, 0.0f, 0.0f);
 		M3DVECTOR transcenter; //transformed center in to world coor.
 		transcenter = M3DMATRIX.VxM(center, world);
 		transcenter = M3DMATRIX.VxM(transcenter, new M3DMATRIX(viewMatrix));
@@ -956,15 +966,15 @@ class M3DM {
 		float[] mMVPMatrix = new float[16];
 		float[] mMVMatrix = new float[16];
 		float[] mVMatrix = new float[16];
-		float[] mIMVMatrix = new float[16];		// inverse model view
+		float[] mIMVMatrix = new float[16];        // inverse model view
 		float[] mIMVPMatrix = new float[16];
 
 
 		mVMatrix = viewMatrix;
 		Matrix.multiplyMM(mMVMatrix, 0, viewMatrix, 0, world.values(), 0);
 		Matrix.multiplyMM(mMVPMatrix, 0, projectionMatrix, 0, mMVMatrix, 0);
-		Matrix.invertM(mIMVMatrix, 0 , mMVMatrix, 0);
-		Matrix.invertM(mIMVPMatrix, 0 , mMVPMatrix, 0);
+		Matrix.invertM(mIMVMatrix, 0, mMVMatrix, 0);
+		Matrix.invertM(mIMVPMatrix, 0, mMVPMatrix, 0);
 
 		if (mesh.mMVPMatrixPrev == null) {
 			mesh.mMVPMatrixPrev = mMVPMatrix.clone();
@@ -1006,89 +1016,49 @@ class M3DM {
 			ByteBuffer vbb = ByteBuffer.allocateDirect(mesh.Vertex.length * 4);
 			vbb.order(ByteOrder.nativeOrder());// use the device hardware's native byte order
 			vertexBuffer = vbb.asFloatBuffer();  // create a floating point buffer from the ByteBuffer
-			vertexBuffer.put(mesh.Vertex); 	   // add the coordinates to the FloatBuffer
+			vertexBuffer.put(mesh.Vertex);       // add the coordinates to the FloatBuffer
 
 			vertexBuffer.position(0);
 			GLES20.glEnableVertexAttribArray(GLES20.glGetAttribLocation(mesh.Program, "aPosition"));
-			GLES20.glVertexAttribPointer(GLES20.glGetAttribLocation(mesh.Program, "aPosition"), 3, GLES20.GL_FLOAT, false, mesh.VertexSize*4, vertexBuffer);
+			GLES20.glVertexAttribPointer(GLES20.glGetAttribLocation(mesh.Program, "aPosition"), 3, GLES20.GL_FLOAT, false, mesh.VertexSize * 4, vertexBuffer);
 
 			vertexBuffer.position(3);
 			GLES20.glEnableVertexAttribArray(GLES20.glGetAttribLocation(mesh.Program, "aNormal"));
-			GLES20.glVertexAttribPointer(GLES20.glGetAttribLocation(mesh.Program, "aNormal"), 3, GLES20.GL_FLOAT, false, mesh.VertexSize*4, vertexBuffer);
+			GLES20.glVertexAttribPointer(GLES20.glGetAttribLocation(mesh.Program, "aNormal"), 3, GLES20.GL_FLOAT, false, mesh.VertexSize * 4, vertexBuffer);
 
 			vertexBuffer.position(6);
 			GLES20.glEnableVertexAttribArray(GLES20.glGetAttribLocation(mesh.Program, "aTex"));
-			GLES20.glVertexAttribPointer(GLES20.glGetAttribLocation(mesh.Program, "aTex"), 2, GLES20.GL_FLOAT, false, mesh.VertexSize*4, vertexBuffer);
+			GLES20.glVertexAttribPointer(GLES20.glGetAttribLocation(mesh.Program, "aTex"), 2, GLES20.GL_FLOAT, false, mesh.VertexSize * 4, vertexBuffer);
 
 			// Light
 			if (N_Lights > 0) {
 				GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uLightPos"), mTransformedLightVector[0], mTransformedLightVector[1], mTransformedLightVector[2], mTransformedLightVector[3]);
 
-				GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uLightAmbientColor"), Light[0].AR, Light[0].AG, Light[0].AB , Light[0].AA );
-				GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uLightDiffuseColor"), Light[0].DR, Light[0].DG, Light[0].DB , Light[0].DA );
-				GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uLightSpecularColor"), Light[0].SR, Light[0].SG, Light[0].SB , Light[0].SA );
-				GLES20.glUniform1f(GLES20.glGetUniformLocation(mesh.Program, "uLightAttenuation"), Light[0].AT );
+				GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uLightAmbientColor"), Light[0].AR, Light[0].AG, Light[0].AB, Light[0].AA);
+				GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uLightDiffuseColor"), Light[0].DR, Light[0].DG, Light[0].DB, Light[0].DA);
+				GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uLightSpecularColor"), Light[0].SR, Light[0].SG, Light[0].SB, Light[0].SA);
+				GLES20.glUniform1f(GLES20.glGetUniformLocation(mesh.Program, "uLightAttenuation"), Light[0].AT);
 			}
 
 			// Material
-			GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uMaterialAmbientColor"), mesh.Material.AR, mesh.Material.AG, mesh.Material.AB , mesh.Material.AA );
-			GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uMaterialDiffuseColor"), mesh.Material.DR, mesh.Material.DG, mesh.Material.DB , mesh.Material.DA );
-			GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uMaterialSpecularColor"), mesh.Material.SR, mesh.Material.SG, mesh.Material.SB , mesh.Material.SA );
-			GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uMaterialEmissiveColor"), mesh.Material.ER, mesh.Material.EG, mesh.Material.EB , mesh.Material.EA );
-			GLES20.glUniform1f(GLES20.glGetUniformLocation(mesh.Program, "uMaterialShinnes"), mesh.Material.SH );
+			GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uMaterialAmbientColor"), mesh.Material.AR, mesh.Material.AG, mesh.Material.AB, mesh.Material.AA);
+			GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uMaterialDiffuseColor"), mesh.Material.DR, mesh.Material.DG, mesh.Material.DB, mesh.Material.DA);
+			GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uMaterialSpecularColor"), mesh.Material.SR, mesh.Material.SG, mesh.Material.SB, mesh.Material.SA);
+			GLES20.glUniform4f(GLES20.glGetUniformLocation(mesh.Program, "uMaterialEmissiveColor"), mesh.Material.ER, mesh.Material.EG, mesh.Material.EB, mesh.Material.EA);
+			GLES20.glUniform1f(GLES20.glGetUniformLocation(mesh.Program, "uMaterialShinnes"), mesh.Material.SH);
 
 			// Bump level
-			float bumpLevel= ((float)OpenGLES20Renderer.mBump) / 100.0f;
-			GLES20.glUniform1f(GLES20.glGetUniformLocation(mesh.Program, "uBumpLevel"), bumpLevel );
+			float bumpLevel = ((float) mesh.bumpLevel) / 100.0f;
+			GLES20.glUniform1f(GLES20.glGetUniformLocation(mesh.Program, "uBumpLevel"), bumpLevel);
 
-			// cloud map weights
-			float tw1 = 1.0f;
-			if (OpenGLES20Renderer._e4 - OpenGLES20Renderer._e1 != 0) {
-				tw1 = (float)(1.0 - ((double)(OpenGLES20Renderer.mEpoch - OpenGLES20Renderer._e1) / (double)(OpenGLES20Renderer._e4 - OpenGLES20Renderer._e1)) );
-
-				if (tw1 > 1.0f) {
-					tw1 = 1.0f;
-				}
-				if (tw1 < 0.0f) {
-					tw1 = 0.0f;
-				}
-
+			// Custom attributes
+			for (Map.Entry<String, Float> entry : mesh.customAttributes.entrySet()) {
+				GLES20.glUniform1f(GLES20.glGetUniformLocation(mesh.Program, entry.getKey()), entry.getValue().floatValue());
 			}
-
-			GLES20.glUniform1f(GLES20.glGetUniformLocation(mesh.Program, "uTW1"), tw1 );
-
-			float tw2 = 1.0f;
-			if (OpenGLES20Renderer._e3 - OpenGLES20Renderer._e2 != 0) {
-				tw2 = (float)(1.0 - (double)(OpenGLES20Renderer.mEpoch - OpenGLES20Renderer._e2) / (double)(OpenGLES20Renderer._e3 - OpenGLES20Renderer._e2) );
-
-				if (tw2 > 1.0f) {
-					tw2 = 1.0f;
-				}
-				if (tw2 < 0.0f) {
-					tw2 = 0.0f;
-				}
-			}
-
-			GLES20.glUniform1f(GLES20.glGetUniformLocation(mesh.Program, "uTW2"), tw2 );
-
-			float tw3 = 1.0f;
-			if (OpenGLES20Renderer._e3 - OpenGLES20Renderer._e1 != 0) {
-				tw3 = (float)(1.0 - (double)(OpenGLES20Renderer.mEpoch - OpenGLES20Renderer._e1) / (double)(OpenGLES20Renderer._e3 - OpenGLES20Renderer._e1) );
-
-				if (tw3 > 1.0f) {
-					tw3 = 1.0f;
-				}
-				if (tw3 < 0.0f) {
-					tw3 = 0.0f;
-				}
-
-			}
-
-			GLES20.glUniform1f(GLES20.glGetUniformLocation(mesh.Program, "uTW3"), tw3 );
 
 			// Texture mapping
 			int texMapping = 0;
-			GLES20.glUniform1i(GLES20.glGetUniformLocation(mesh.Program, "uTexMapping"), texMapping );
+			GLES20.glUniform1i(GLES20.glGetUniformLocation(mesh.Program, "uTexMapping"), texMapping);
 
 			// textures
 			// TODO add multiple textures
@@ -1103,7 +1073,7 @@ class M3DM {
 				GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mesh.Texture[1].id);
 
 				// The {0,1} correspond to the activated textures units.
-				int textureUnits[] = {0,1};
+				int textureUnits[] = {0, 1};
 				IntBuffer intBuffer = IntBuffer.wrap(textureUnits, 0, 2);
 				GLES20.glUniform1iv(GLES20.glGetUniformLocation(mesh.Program, "uTextures"), 2, intBuffer);
 			} else if (mesh.Textures == 3) {
@@ -1117,7 +1087,7 @@ class M3DM {
 				GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mesh.Texture[2].id);
 
 				// The {0,1} correspond to the activated textures units.
-				int textureUnits[] = {0,1,2};
+				int textureUnits[] = {0, 1, 2};
 				IntBuffer intBuffer = IntBuffer.wrap(textureUnits, 0, 3);
 				GLES20.glUniform1iv(GLES20.glGetUniformLocation(mesh.Program, "uTextures"), 3, intBuffer);
 			} else if (mesh.Textures == 4) {
@@ -1134,7 +1104,7 @@ class M3DM {
 				GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mesh.Texture[3].id);
 
 				// The {0,1} correspond to the activated textures units.
-				int textureUnits[] = {0,1,2,3};
+				int textureUnits[] = {0, 1, 2, 3};
 				IntBuffer intBuffer = IntBuffer.wrap(textureUnits, 0, 4);
 				GLES20.glUniform1iv(GLES20.glGetUniformLocation(mesh.Program, "uTextures"), 4, intBuffer);
 			} else if (mesh.Textures == 5) {
@@ -1154,7 +1124,7 @@ class M3DM {
 				GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mesh.Texture[4].id);
 
 				// The {0,1} correspond to the activated textures units.
-				int textureUnits[] = {0,1,2,3,4};
+				int textureUnits[] = {0, 1, 2, 3, 4};
 				IntBuffer intBuffer = IntBuffer.wrap(textureUnits, 0, 5);
 				GLES20.glUniform1iv(GLES20.glGetUniformLocation(mesh.Program, "uTextures"), 5, intBuffer);
 			} else if (mesh.Textures == 6) {
@@ -1177,7 +1147,7 @@ class M3DM {
 				GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mesh.Texture[5].id);
 
 				// The {0,1} correspond to the activated textures units.
-				int textureUnits[] = {0,1,2,3,4,5};
+				int textureUnits[] = {0, 1, 2, 3, 4, 5};
 				IntBuffer intBuffer = IntBuffer.wrap(textureUnits, 0, 6);
 				GLES20.glUniform1iv(GLES20.glGetUniformLocation(mesh.Program, "uTextures"), 6, intBuffer);
 			} else if (mesh.Textures == 7) {
@@ -1203,7 +1173,7 @@ class M3DM {
 				GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mesh.Texture[6].id);
 
 				// The {0,1} correspond to the activated textures units.
-				int textureUnits[] = {0,1,2,3,4,5,6};
+				int textureUnits[] = {0, 1, 2, 3, 4, 5, 6};
 				IntBuffer intBuffer = IntBuffer.wrap(textureUnits, 0, 7);
 				GLES20.glUniform1iv(GLES20.glGetUniformLocation(mesh.Program, "uTextures"), 7, intBuffer);
 			}
@@ -1239,7 +1209,7 @@ class M3DM {
 		M3DMATRIX actual = M3DMATRIX.MUL(frame.world, world_up);
 		int i;
 		for (i = 0; i < frame.Meshs; i++) {
-			if (ZSORT==1){
+			if (ZSORT == 1) {
 				_renderMesh_zsort(frame.Mesh[i], actual, 1);
 			} else {
 				_renderMesh(frame.Mesh[i], actual, 1);
@@ -1258,7 +1228,7 @@ class M3DM {
 			zsort.clear();
 		}
 		_renderFrame(frame, M3DMATRIX.IdentityMatrix());
-		if (ZSORT==1){
+		if (ZSORT == 1) {
 			_renderFromBuff_zsort();
 		}
 	}
@@ -1285,7 +1255,7 @@ class M3DM {
 		float al, be;
 		int i, j, count = 0;
 		M3DVECTOR temp = new M3DVECTOR(0.0f, 1.0f, 0.0f), T = new M3DVECTOR(0.0f, 0.0f, 0.0f), axis = new M3DVECTOR(0.0f, 0.0f, 0.0f), t_axis = new M3DVECTOR(
-				                                                                                                                                                     1.0f, 0.0f, 0.0f);
+				1.0f, 0.0f, 0.0f);
 		for (al = 0; al <= 360; al += StepPol) {
 			axis = M3DVECTOR.POINTROTATE(t_axis, new M3DVECTOR(0.0f, 0.0f, 0.0f), new M3DVECTOR(0.0f, 1.0f, 0.0f), (float) (al * (PI / 180.0f)));
 			for (be = 0; be <= 180; be += StepRov) {
@@ -1296,8 +1266,8 @@ class M3DM {
 				vertex[count].N.x = T.x;
 				vertex[count].N.y = T.y;
 				vertex[count].N.z = T.z;
-				vertex[count].u = U1 + (((float)al) / 360.0f) * xU;
-				vertex[count].v = V1 + (((float)be) / 180.0f) * xV;
+				vertex[count].u = U1 + (((float) al) / 360.0f) * xU;
+				vertex[count].v = V1 + (((float) be) / 180.0f) * xV;
 				count++;
 			}
 		}
@@ -1343,7 +1313,7 @@ class M3DM {
 		float al, be;
 		int i, j, count = 0;
 		M3DVECTOR temp = new M3DVECTOR(0.0f, 1.0f, 0.0f), T = new M3DVECTOR(0.0f, 0.0f, 0.0f), axis = new M3DVECTOR(0.0f, 0.0f, 0.0f), t_axis = new M3DVECTOR(
-				                                                                                                                                                     1.0f, 0.0f, 0.0f);
+				1.0f, 0.0f, 0.0f);
 		for (al = 0; al <= 360; al += StepPol) {
 			axis = M3DVECTOR.POINTROTATE(t_axis, new M3DVECTOR(0.0f, 0.0f, 0.0f), new M3DVECTOR(0.0f, 1.0f, 0.0f), (float) (al * (PI / 180.0f)));
 			for (be = 0; be <= 180; be += StepRov) {
@@ -1355,11 +1325,11 @@ class M3DM {
 				vertex[count].N.y = vertex[count].P.y;
 				vertex[count].N.z = vertex[count].P.z;
 				vertex[count].N = M3DVECTOR.Normalize(vertex[count].N);
-				double u = (double)U1 + (((float)al) / 360.0f) * xU;
-				double v = (double)V1 + (((float)be) / 180.0f) * xV;
+				double u = (double) U1 + (((float) al) / 360.0f) * xU;
+				double v = (double) V1 + (((float) be) / 180.0f) * xV;
 
-				vertex[count].u = (float)u;
-				vertex[count].v = (float)v;
+				vertex[count].u = (float) u;
+				vertex[count].v = (float) v;
 
 				count++;
 			}
@@ -1576,7 +1546,6 @@ class M3DM {
 		data[3] = 10;
 
 
-
 		for (int i = 0; i < vertex.length; i++) {
 			vertex[i].N = M3DVECTOR.Normalize(vertex[i].P);
 		}
@@ -1636,10 +1605,10 @@ class M3DM {
 		count = 0;
 		for (al = 0; al <= 360 - Step; al += Step) {
 
-			data[count + 3] = (short)(((int)(count/4))*2 + 1);
-			data[count + 1] = (short)(((int)(count/4))*2 + 0);
-			data[count + 2] = (short)(((int)(count/4))*2 + 2);
-			data[count + 0] = (short)(((int)(count/4))*2 + 3);
+			data[count + 3] = (short) (((int) (count / 4)) * 2 + 1);
+			data[count + 1] = (short) (((int) (count / 4)) * 2 + 0);
+			data[count + 2] = (short) (((int) (count / 4)) * 2 + 2);
+			data[count + 0] = (short) (((int) (count / 4)) * 2 + 3);
 			count += 4;
 
 		}
@@ -1698,10 +1667,10 @@ class M3DM {
 		count = 0;
 		for (al = 0; al <= 360 - Step; al += Step) {
 
-			data[count + 3] = (short)(((int)(count/4))*2 + 0);
-			data[count + 1] = (short)(((int)(count/4))*2 + 1);
-			data[count + 2] = (short)(((int)(count/4))*2 + 3);
-			data[count + 0] = (short)(((int)(count/4))*2 + 2);
+			data[count + 3] = (short) (((int) (count / 4)) * 2 + 0);
+			data[count + 1] = (short) (((int) (count / 4)) * 2 + 1);
+			data[count + 2] = (short) (((int) (count / 4)) * 2 + 3);
+			data[count + 0] = (short) (((int) (count / 4)) * 2 + 2);
 			count += 4;
 
 		}
@@ -1721,9 +1690,9 @@ class M3DM {
 		M3DVECTOR or = CameraOrientation;
 		// M3DVECTOR or=Normalize(CameraOrientation);
 		float WIDTH, HEIGHT, w, h;
-		WIDTH = P_NPlane * (float) (Math.tan((P_fov_horiz / 2.0f) ));
-		HEIGHT = P_NPlane * (float) (Math.tan((P_fov_vert / 2.0f) ));
-		w = WIDTH * (float) (( Xx / (float) (SCREEN_WIDTH)) * 2.0f - 1.0f);
+		WIDTH = P_NPlane * (float) (Math.tan((P_fov_horiz / 2.0f)));
+		HEIGHT = P_NPlane * (float) (Math.tan((P_fov_vert / 2.0f)));
+		w = WIDTH * (float) ((Xx / (float) (SCREEN_WIDTH)) * 2.0f - 1.0f);
 		h = HEIGHT * (float) (((float) (SCREEN_HEIGHT - Yy) / (float) (SCREEN_HEIGHT)) * 2.0f - 1.0f);
 		right = M3DVECTOR.MUL(right, w);
 		up = M3DVECTOR.MUL(up, h);

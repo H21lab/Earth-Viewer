@@ -29,111 +29,107 @@ import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.TimeZone;
+
 import android.util.Log;
 
-public class DownloadTexturesCCI extends DownloadTextures
-{           
+public class DownloadTexturesCCI extends DownloadTextures {
+	private OpenGLES20Renderer gles20Renderer = null;
 
+	public DownloadTexturesCCI(OpenGLES20Renderer mGLES20Renderer) {
+		super(mGLES20Renderer);
+		gles20Renderer = mGLES20Renderer;
+	}
 
-    @Override
-    protected String doInBackground(String... urls) 
-    {
-    	OpenGLES20Renderer.downloadedTextures = 0;
-    	OpenGLES20Renderer.reloadedTextures = true;
-    	
-    	//String myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PRCP/";
+	@Override
+	protected String doInBackground(String... urls) {
+		gles20Renderer.downloadedTextures = 0;
+		gles20Renderer.reloadedTextures = true;
+
+		//String myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PRCP/";
 		// Format: https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2/2018-08-08-00z/00.png
 		String myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp/";
 
 
 		char tag = 'C';
-    	
-    	if (urls[0].equals("CLOUDS")) {
-    		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PRCP/";
-		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/PRCP/";
+
+		if (urls[0].equals("CLOUDS")) {
+			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PRCP/";
+			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/PRCP/";
 			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp-tcld-topo/";
-            //myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/prcp-tcld-topo/";
-            tag = 'C';
-    	} else if (urls[0].equals("TEMP")) {
-    		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2/";
-    		//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2/";
+			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/prcp-tcld-topo/";
+			tag = 'C';
+		} else if (urls[0].equals("TEMP")) {
+			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2/";
+			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2/";
 			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2/";
-            //myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2/";
-		    tag = 'T';
-    	} else if (urls[0].equals("TEMP_AN")) {
-    		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
-		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2_anom/";
+			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2/";
+			tag = 'T';
+		} else if (urls[0].equals("TEMP_AN")) {
+			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
+			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2_anom/";
 			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2anom/";
-            //myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2anom/";
-    		tag = 't';
-    	}
-    	else if (urls[0].equals("WATER")) {
-    		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PWTR/";
-		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/PWTR/";
+			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2anom/";
+			tag = 't';
+		} else if (urls[0].equals("WATER")) {
+			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PWTR/";
+			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/PWTR/";
 			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/pwtr/";
-            //myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/pwtr/";
-		    tag = 'w';
-    	}
-    	else if (urls[0].equals("WIND")) {
-    		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/WS10/";
-		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/WS10/";
+			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/pwtr/";
+			tag = 'w';
+		} else if (urls[0].equals("WIND")) {
+			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/WS10/";
+			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/WS10/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws10/";
-            //myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/ws10-mslp/";
+			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/ws10-mslp/";
 			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws10-mslp/";
-    		tag = 'v';
-    	}
-    	else if (urls[0].equals("JET")) {
-    		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/WS250/";
-		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/WS250/";
+			tag = 'v';
+		} else if (urls[0].equals("JET")) {
+			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/WS250/";
+			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/WS250/";
 			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws250-snowc-topo/";
-            //myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/ws250-snowc-topo/";
-    		tag = 'j';
-    	}
-    	else if (urls[0].equals("SNOW")) {
-    		//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";
-		    //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/SNOW/";
+			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/ws250-snowc-topo/";
+			tag = 'j';
+		} else if (urls[0].equals("SNOW")) {
+			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";
+			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/SNOW/";
 			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/snowd-mslp/";
-            //myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/snowd-mslp/";
-    		tag = 's';
-    	}
-		else if (urls[0].equals("TEMP_AN_1Y")) {
+			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/snowd-mslp/";
+			tag = 's';
+		} else if (urls[0].equals("TEMP_AN_1Y")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2_anom/";
 			//myUri = "https://pamola.um.maine.edu/wxrmaps/clim_frames/t2anom/world-ced/";
 			myUri = "https://climatereanalyzer.org/reanalysis/daily_maps/clim_frames/t2anom/world-ced/";
 			tag = 'a';
-		}
-		else if (urls[0].equals("OISST_V2_1Y")) {
+		} else if (urls[0].equals("OISST_V2_1Y")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2_anom/";
 			//myUri = "https://pamola.um.maine.edu/wxrmaps/clim_frames/sstanom/world-ced2/";
 			myUri = "https://climatereanalyzer.org/reanalysis/daily_maps/clim_frames/sstanom/world-ced2/";
 			tag = 'b';
-		}
-        else if (urls[0].equals("OISST_V2")) {
-            //myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";
-            //myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/SNOW/";
-            //myUri = "https://pamola.um.maine.edu/cr/clim/sst/frames/oisst2/world-ced2/sstanom/";
+		} else if (urls[0].equals("OISST_V2")) {
+			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";
+			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/SNOW/";
+			//myUri = "https://pamola.um.maine.edu/cr/clim/sst/frames/oisst2/world-ced2/sstanom/";
 			myUri = "https://climatereanalyzer.org/clim/sst/frames/oisst2/world-ced2/sstanom/";
-            tag = 'O';
-        }
-		else if (urls[0].equals("ERSST_V5")) {
+			tag = 'O';
+		} else if (urls[0].equals("ERSST_V5")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/SNOW/";
 			//myUri = "https://pamola.um.maine.edu/cr/clim/sst/frames/ersst5/world-ced2/sstanom/";
 			myUri = "https://climatereanalyzer.org/clim/sst/frames/ersst5/world-ced2/sstanom/";
 			tag = 'e';
 		}
-    	
-    	OpenGLES20Renderer.mTag = tag;
-    	
-	    InputStream is2 = null;
-		
+
+		gles20Renderer.mTag = tag;
+
+		InputStream is2 = null;
+
 		URLConnection ucon = null;
 		URL url = null;
-		
+
 		// load image from cache
-		
+
 		// find latest image but not older then 3 hours
 		String filename = null;
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
@@ -141,62 +137,62 @@ public class DownloadTexturesCCI extends DownloadTextures
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		
-		File dir = OpenGLES20Renderer.mContext.getFilesDir();
+
+		File dir = gles20Renderer.mContext.getFilesDir();
 		File[] subFiles;
 		long epoch;
 		long current_real = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")).getTimeInMillis();
 		long data_generated_epoch;
-		
-		HashMap<Integer, String>  iKeys = new HashMap<Integer, String>();
-		HashMap<Integer, Long>  eKeys = new HashMap<Integer, Long>();
+
+		HashMap<Integer, String> iKeys = new HashMap<Integer, String>();
+		HashMap<Integer, Long> eKeys = new HashMap<Integer, Long>();
 		HashMap<Integer, Long> mKeys = new HashMap<Integer, Long>();
-		
-		
+
+
 		int files_to_download;
 
 		// last 35 years
-        if ( tag == 'O' ) {
-            files_to_download = 35;
-        }
+		if (tag == 'O') {
+			files_to_download = 35;
+		}
 		// last 65 years
-		if ( tag == 'e' ) {
+		if (tag == 'e') {
 			files_to_download = 65;
 		}
 		// last 0.5 years
-		else if ( tag == 'a' || tag == 'b' ) {
-			files_to_download = 365/2 - 15;
+		else if (tag == 'a' || tag == 'b') {
+			files_to_download = 365 / 2 - 15;
 		}
-        // next 24h
-        else {
-            files_to_download = (48)/3;
-        }
+		// next 24h
+		else {
+			files_to_download = (48) / 3;
+		}
 
 		progressDialogSetMax(files_to_download);
-		
-		
+
+
 		// Download the older files if possible
 		epoch = cal.getTimeInMillis();
-		
+
 		// assume that if is less than 9:00 am UTC, the images are old from previous day
 		long reload = 0L;
-		
+
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
 
-        // last 35 years or last 65 years
-        if ( tag == 'O' || tag == 'e' ) {
+		// last 35 years or last 65 years
+		if (tag == 'O' || tag == 'e') {
 			c.set(Calendar.HOUR_OF_DAY, 9);
 			c.set(Calendar.MINUTE, 0);
 			c.set(Calendar.SECOND, 0);
 			c.set(Calendar.MILLISECOND, 0);
 
-        	// lets day, that can be safely iterated
-            c.set(Calendar.DAY_OF_YEAR, 100);
+			// lets day, that can be safely iterated
+			c.set(Calendar.DAY_OF_YEAR, 100);
 
 			reload = c.getTimeInMillis();
 		}
 		// last 0.5 year
-		else if ( tag == 'a' || tag == 'b' ) {
+		else if (tag == 'a' || tag == 'b') {
 			c.set(Calendar.HOUR_OF_DAY, 9);
 			c.set(Calendar.MINUTE, 0);
 			c.set(Calendar.SECOND, 0);
@@ -206,14 +202,14 @@ public class DownloadTexturesCCI extends DownloadTextures
 		// next 24h
 		else {
 			if (c.get(Calendar.HOUR_OF_DAY) < 9) {
-				epoch -= 24*3600*1000;
+				epoch -= 24 * 3600 * 1000;
 
 				c.set(Calendar.HOUR_OF_DAY, 9);
 				c.set(Calendar.MINUTE, 0);
 				c.set(Calendar.SECOND, 0);
 				c.set(Calendar.MILLISECOND, 0);
 				reload = c.getTimeInMillis();
-				reload -= 24*3600*1000;
+				reload -= 24 * 3600 * 1000;
 
 			} else {
 				c.set(Calendar.HOUR_OF_DAY, 9);
@@ -226,7 +222,7 @@ public class DownloadTexturesCCI extends DownloadTextures
 		}
 
 		// Historical data
-		if (tag == 'O' || tag =='e' || tag == 'a' || tag == 'b') {
+		if (tag == 'O' || tag == 'e' || tag == 'a' || tag == 'b') {
 			epoch = c.getTimeInMillis();
 
 			data_generated_epoch = current_real;
@@ -246,69 +242,69 @@ public class DownloadTexturesCCI extends DownloadTextures
 		}
 
 		// last 35 years
-		if ( tag == 'O' ) {
+		if (tag == 'O') {
 			// start loading from beginning and not backward
-			epoch = epoch - 35 * (long)(365.25 * 24 * 3600 * 1000);
+			epoch = epoch - 35 * (long) (365.25 * 24 * 3600 * 1000);
 		}
 		// last 65 years
-		else if ( tag == 'e' ) {
+		else if (tag == 'e') {
 			// start loading from beginning and not backward
-			epoch = epoch - 65 * (long)(365.25 * 24 * 3600 * 1000);
+			epoch = epoch - 65 * (long) (365.25 * 24 * 3600 * 1000);
 		}
 		// last 0.5 years
-		else if ( tag == 'a' || tag == 'b' ) {
+		else if (tag == 'a' || tag == 'b') {
 			// start loading from beginning and not backward
-			epoch = epoch - (long)(0.5*365.25 * 24 * 3600 * 1000);
+			epoch = epoch - (long) (0.5 * 365.25 * 24 * 3600 * 1000);
 		}
-		
-		for (int h = 0; h < files_to_download; h+=1) {
 
-            if (isCancelled() == true) {
-                break;
-            }
+		for (int h = 0; h < files_to_download; h += 1) {
+
+			if (isCancelled() == true) {
+				break;
+			}
 
 
-            boolean exists = false;
+			boolean exists = false;
 
-            // last 35 years or last 65 years
-            if (tag == 'O' || tag == 'e') {
-                // each 1 year
-                epoch = epoch + (long)(365.25 * 24 * 3600 * 1000);
-            }
+			// last 35 years or last 65 years
+			if (tag == 'O' || tag == 'e') {
+				// each 1 year
+				epoch = epoch + (long) (365.25 * 24 * 3600 * 1000);
+			}
 			// last 0.5 years
-			else if ( tag == 'a' || tag == 'b' ) {
+			else if (tag == 'a' || tag == 'b') {
 				// each 1 day
 				epoch = epoch + 24 * 3600 * 1000;
 			}
-            // next 24h
-            else {
-                // each 3h
-                epoch = epoch + 3 * 3600 * 1000;
-            }
+			// next 24h
+			else {
+				// each 3h
+				epoch = epoch + 3 * 3600 * 1000;
+			}
 
 
-            Log.d("H21lab", "h = " + h);
+			Log.d("H21lab", "h = " + h);
 
 
-            // last 35 years
-            if (tag == 'O') {
-                // do not download too new data
-                if (epoch - current_real > ((long) - 1 * 365.25 * 24 * 3600 * 1000)) {
+			// last 35 years
+			if (tag == 'O') {
+				// do not download too new data
+				if (epoch - current_real > ((long) -1 * 365.25 * 24 * 3600 * 1000)) {
 
-                    Log.d("H21lab", "Data fom eKeys too new h = " + h);
+					Log.d("H21lab", "Data fom eKeys too new h = " + h);
 
-                    continue;
-                }
-                // do not download old data
-                if (epoch - current_real < ((long) - 35 * 365.25 * 24 * 3600 * 1000)) {
+					continue;
+				}
+				// do not download old data
+				if (epoch - current_real < ((long) -35 * 365.25 * 24 * 3600 * 1000)) {
 
-                    Log.d("H21lab", "Data fom eKeys old h = " + h);
+					Log.d("H21lab", "Data fom eKeys old h = " + h);
 
-                    files_to_download++;
-                    continue;
-                }
+					files_to_download++;
+					continue;
+				}
 
-            }
+			}
 			// last 65 years
 			else if (tag == 'e') {
 				// do not download too new data
@@ -328,16 +324,16 @@ public class DownloadTexturesCCI extends DownloadTextures
 				}
 			}
 			// last 0.5 years
-			else if ( tag == 'a' || tag == 'b' ) {
+			else if (tag == 'a' || tag == 'b') {
 				// do not download too new data
-				if (epoch - current_real > ((long) - 15 * 24 * 3600 * 1000)) {
+				if (epoch - current_real > ((long) -15 * 24 * 3600 * 1000)) {
 
 					Log.d("H21lab", "Data fom eKeys too new h = " + h);
 
 					continue;
 				}
 				// do not download old data
-				if (epoch - current_real < ((long) - (0.5 * 365.25) * 24 * 3600 * 1000)) {
+				if (epoch - current_real < ((long) -(0.5 * 365.25) * 24 * 3600 * 1000)) {
 
 					Log.d("H21lab", "Data fom eKeys old h = " + h);
 
@@ -345,106 +341,104 @@ public class DownloadTexturesCCI extends DownloadTextures
 					continue;
 				}
 			}
-            // next 24h
-            else {
-                // do not download too new data
-                if (epoch - current_real > (48) * 3600 * 1000) {
+			// next 24h
+			else {
+				// do not download too new data
+				if (epoch - current_real > (48) * 3600 * 1000) {
 
-                    Log.d("H21lab", "Data fom eKeys too new h = " + h);
+					Log.d("H21lab", "Data fom eKeys too new h = " + h);
 
-                    continue;
-                }
-                // do not download old data
-                if (epoch - current_real < -3 * 3600 * 1000) {
+					continue;
+				}
+				// do not download old data
+				if (epoch - current_real < -3 * 3600 * 1000) {
 
-                    Log.d("H21lab", "Data fom eKeys old h = " + h);
+					Log.d("H21lab", "Data fom eKeys old h = " + h);
 
-                    files_to_download++;
-                    continue;
-                }
-            }
+					files_to_download++;
+					continue;
+				}
+			}
 
-            filename = OpenGLES20Renderer.getNameFromEpoch(tag, epoch);
+			filename = OpenGLES20Renderer.getNameFromEpoch(tag, epoch);
 
 			exists = false;
 			subFiles = dir.listFiles();
 			if (subFiles != null) {
-			    for (File file : subFiles) {
-                    // last 35 years or last 65 years
-                    if (tag == 'O' || tag == 'e') {
-                        // file exist
-
-                        if ( filename.equals(file.getName())) {
-                            exists = true;
-                            break;
-                        }
-                    }
-					// last 0.5 years
-					else if ( tag == 'a' || tag == 'b' ) {
+				for (File file : subFiles) {
+					// last 35 years or last 65 years
+					if (tag == 'O' || tag == 'e') {
 						// file exist
 
-						if ( filename.equals(file.getName())) {
+						if (filename.equals(file.getName())) {
 							exists = true;
 							break;
 						}
 					}
-                    // next 24h
-                    else {
-                        // file exist and is not newer file
+					// last 0.5 years
+					else if (tag == 'a' || tag == 'b') {
+						// file exist
 
-                        if ( filename.equals(file.getName()) && (file.lastModified() - reload > 0) ) {
-                            exists = true;
-                            break;
-                        }
-                    }
-			    }
+						if (filename.equals(file.getName())) {
+							exists = true;
+							break;
+						}
+					}
+					// next 24h
+					else {
+						// file exist and is not newer file
+
+						if (filename.equals(file.getName()) && (file.lastModified() - reload > 0)) {
+							exists = true;
+							break;
+						}
+					}
+				}
 			}
 			// do not download already existing
 			if (exists) {
-				
+
 				progressDialogUpdate();
-				
-				Log.d("H21lab", "File already exists from eKeys h = " + h);	
-				
+
+				Log.d("H21lab", "File already exists from eKeys h = " + h);
+
 				continue;
 			}
 			// change filename
-			Log.d("H21lab", "New filename = " + filename + " e = " + epoch);	
-			
-		
-			
-		
+			Log.d("H21lab", "New filename = " + filename + " e = " + epoch);
+
+
 			// download from internet
 
 			try {
 
 
-                // last 35 years
-                if (tag == 'O') {
-                    url = new URL(myUri + "/"
-                            + getOISSTV2NameFromEpoch(epoch) + ".png");
-                }
+				// last 35 years
+				if (tag == 'O') {
+					url = new URL(myUri + "/"
+							+ getOISSTV2NameFromEpoch(epoch) + ".png");
+				}
 				// last 65 years
 				else if (tag == 'e') {
 					url = new URL(myUri + "/"
 							+ getERSSTV5NameFromEpoch(epoch) + ".png");
 				}
 				// last 0.5 years
-				else if ( tag == 'a' ) {
+				else if (tag == 'a') {
 					url = new URL(myUri + "/"
 							+ getTEMP_AN_1Y_NameFromEpoch(epoch) + ".png");
 				}
 				// last 0.5 years
-				else if ( tag == 'b' ) {
+				else if (tag == 'b') {
 					url = new URL(myUri + "/"
 							+ getOISSTV2_1Y_NameFromEpoch(epoch) + ".png");
 				}
-                // next 24h
-                else {
-                    url = new URL(myUri
-                            + getDirectoryNameFromEpoch(data_generated_epoch) + "/"
-                            + String.format("%02d", h) + ".png");
-                }
+				// next 24h
+				else {
+					url = new URL(myUri
+							+ getDirectoryNameFromEpoch(data_generated_epoch) + "/"
+							+ String.format("%02d", h) + ".png");
+				}
 
 
 				Log.d("H21lab", "Downloading: " + url.toString());
@@ -469,20 +463,20 @@ public class DownloadTexturesCCI extends DownloadTextures
 				// delete previous files
 				subFiles = dir.listFiles();
 				if (subFiles != null) {
-				    for (File file : subFiles) {
-				        if (file.getName().startsWith(filename)) {
-				            OpenGLES20Renderer.mContext.deleteFile(file.getName());
-				        }
-				    }
+					for (File file : subFiles) {
+						if (file.getName().startsWith(filename)) {
+							gles20Renderer.mContext.deleteFile(file.getName());
+						}
+					}
 				}
 
 				//save texture
-				OpenGLES20Renderer.saveTexture(filename, ba, 1024, 1024);
+				gles20Renderer.saveTexture(filename, ba, 1024, 1024);
 
 				mis2.close();
 
 			} catch (MalformedURLException e1) {
-				Log.e("H21lab", "Connection error " + "MalformedURLException "+ e1.getMessage());
+				Log.e("H21lab", "Connection error " + "MalformedURLException " + e1.getMessage());
 			} catch (Exception e2) {
 				if (ucon != null) {
 					Log.e("H21lab", "Unable to connect to " + ucon.getURL().toString() + " " + e2.getMessage());
@@ -492,12 +486,12 @@ public class DownloadTexturesCCI extends DownloadTextures
 			}
 
 			progressDialogUpdate();
-			
+
 		}
-		
-		
-        return "";
-    }
+
+
+		return "";
+	}
 
 	// 2018-08-07-00z
 	public static String getDirectoryNameFromEpoch(long epoch) {
@@ -505,9 +499,9 @@ public class DownloadTexturesCCI extends DownloadTextures
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
 		c.setTimeInMillis(epoch);
 
-		String year = String.format("%04d", (int)(c.get(Calendar.YEAR)));
-		String month = String.format("%02d", (int)(c.get(Calendar.MONTH) + 1));
-		String day = String.format("%02d", (int)(c.get(Calendar.DAY_OF_MONTH)));
+		String year = String.format("%04d", (int) (c.get(Calendar.YEAR)));
+		String month = String.format("%02d", (int) (c.get(Calendar.MONTH) + 1));
+		String day = String.format("%02d", (int) (c.get(Calendar.DAY_OF_MONTH)));
 
 		String filename = Integer.toString(c.get(Calendar.YEAR)) + "-" + month + "-" + day + "-00z";
 
@@ -520,10 +514,10 @@ public class DownloadTexturesCCI extends DownloadTextures
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
 		c.setTimeInMillis(epoch);
 
-		String year = String.format("%04d", (int)(c.get(Calendar.YEAR)));
-		String day = String.format("%03d", (int)(c.get(Calendar.DAY_OF_YEAR)));
+		String year = String.format("%04d", (int) (c.get(Calendar.YEAR)));
+		String day = String.format("%03d", (int) (c.get(Calendar.DAY_OF_YEAR)));
 
-		String filename = year + "/" + "t2anom_world-ced_" + year + "_d" +  day;
+		String filename = year + "/" + "t2anom_world-ced_" + year + "_d" + day;
 
 		return filename;
 
@@ -534,8 +528,8 @@ public class DownloadTexturesCCI extends DownloadTextures
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
 		c.setTimeInMillis(epoch);
 
-		String year = String.format("%04d", (int)(c.get(Calendar.YEAR)));
-		String day = String.format("%03d", (int)(c.get(Calendar.DAY_OF_YEAR)));
+		String year = String.format("%04d", (int) (c.get(Calendar.YEAR)));
+		String day = String.format("%03d", (int) (c.get(Calendar.DAY_OF_YEAR)));
 
 		String filename = year + "/" + "sstanom_world-ced2_" + year + "_d" + day;
 
@@ -543,27 +537,27 @@ public class DownloadTexturesCCI extends DownloadTextures
 
 	}
 
-    // oisst2_world-ced2_sstanom_2019-03.png
-    public static String getOISSTV2NameFromEpoch(long epoch) {
-        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
-        c.setTimeInMillis(epoch);
+	// oisst2_world-ced2_sstanom_2019-03.png
+	public static String getOISSTV2NameFromEpoch(long epoch) {
+		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
+		c.setTimeInMillis(epoch);
 
-        String year = String.format("%04d", (int)(c.get(Calendar.YEAR)));
-        //String month = String.format("%02d", (int)(c.get(Calendar.MONTH) + 1));
-        //String day = String.format("%02d", (int)(c.get(Calendar.DAY_OF_MONTH)));
+		String year = String.format("%04d", (int) (c.get(Calendar.YEAR)));
+		//String month = String.format("%02d", (int)(c.get(Calendar.MONTH) + 1));
+		//String day = String.format("%02d", (int)(c.get(Calendar.DAY_OF_MONTH)));
 
-        String filename = "oisst2_world-ced2_sstanom_" + Integer.toString(c.get(Calendar.YEAR)) + "-" + "13";
+		String filename = "oisst2_world-ced2_sstanom_" + Integer.toString(c.get(Calendar.YEAR)) + "-" + "13";
 
-        return filename;
+		return filename;
 
-    }
+	}
 
 	// ersst5_world-ced2_sstanom_1886-13.png
 	public static String getERSSTV5NameFromEpoch(long epoch) {
 		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
 		c.setTimeInMillis(epoch);
 
-		String year = String.format("%04d", (int)(c.get(Calendar.YEAR)));
+		String year = String.format("%04d", (int) (c.get(Calendar.YEAR)));
 		//String month = String.format("%02d", (int)(c.get(Calendar.MONTH) + 1));
 		//String day = String.format("%02d", (int)(c.get(Calendar.DAY_OF_MONTH)));
 

@@ -25,53 +25,55 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class OpenGLErrorDialog extends AsyncTask<String, Void, String> 
-{
-	
+public class OpenGLErrorDialog extends AsyncTask<String, Void, String> {
+	private OpenGLES20Renderer gles20Renderer = null;
+
+	public OpenGLErrorDialog(OpenGLES20Renderer mGLES20Renderer) {
+		super();
+		gles20Renderer = mGLES20Renderer;
+	}
+
 	AlertDialog.Builder dlgAlert;
 	String errorMsg = null;
-	
-    @Override
-    protected void onPreExecute() 
-    {
-	
-    	dlgAlert  = new AlertDialog.Builder(OpenGLES20Renderer.mContext);
-		
-        super.onPreExecute();
-        
-	}
-    
-    @Override
-    protected String doInBackground(String... urls) 
-    {
-    	errorMsg = urls[0];
-    	return "";
-    }
 
-    @Override
-    protected void onPostExecute(String response1) 
-    {
-    	
-    	Log.e("H21lab", errorMsg);
-    	
-    	dlgAlert.setMessage(errorMsg);
+	@Override
+	protected void onPreExecute() {
+
+		dlgAlert = new AlertDialog.Builder(gles20Renderer.mContext);
+
+		super.onPreExecute();
+
+	}
+
+	@Override
+	protected String doInBackground(String... urls) {
+		errorMsg = urls[0];
+		return "";
+	}
+
+	@Override
+	protected void onPostExecute(String response1) {
+
+		Log.e("H21lab", errorMsg);
+
+		dlgAlert.setMessage(errorMsg);
 		dlgAlert.setTitle("Rendering Device Error");
 		dlgAlert.setNegativeButton("Crash & Report",
-			    new DialogInterface.OnClickListener() {
-			        public void onClick(DialogInterface dialog, int which) {
-			          //dismiss the dialog  
-			    		throw new IllegalArgumentException(errorMsg); 
-			        }
-			    });
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						//dismiss the dialog
+						throw new IllegalArgumentException(errorMsg);
+					}
+				});
 		dlgAlert.setPositiveButton("Ignore Error",
-			    new DialogInterface.OnClickListener() {
-			        public void onClick(DialogInterface dialog, int which) {
-			          //dismiss the dialog  
-			    	
-			        }
-			    });
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						//dismiss the dialog
+
+					}
+				});
 		dlgAlert.setCancelable(true);
 		dlgAlert.create().show();
-	
-    }
+
+	}
 }

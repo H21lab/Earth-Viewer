@@ -36,13 +36,13 @@ public class M3DVECTOR {
 		y = Y;
 		z = Z;
 	}
-	
+
 	M3DVECTOR(M3DVECTOR v) {
 		x = v.x;
 		y = v.y;
 		z = v.z;
 	}
-	
+
 	float[] values() {
 		float[] v = new float[4];
 		v[0] = x;
@@ -51,23 +51,23 @@ public class M3DVECTOR {
 		v[3] = 1.0f;
 		return v;
 	}
-	
+
 	void set(M3DVECTOR v) {
 		x = v.x;
 		y = v.y;
 		z = v.z;
 	}
-	
+
 	void set(float X, float Y, float Z) {
 		x = X;
 		y = Y;
 		z = Z;
 	}
-	
+
 	boolean equals(M3DVECTOR v) {
-		return x == v.x && y == v.y && z == v.y; 
+		return x == v.x && y == v.y && z == v.y;
 	}
-	
+
 
 	static M3DVECTOR ADD(M3DVECTOR A, M3DVECTOR B) {
 		M3DVECTOR C = new M3DVECTOR(A.x + B.x, A.y + B.y, A.z + B.z);

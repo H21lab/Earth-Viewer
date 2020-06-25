@@ -46,105 +46,108 @@ import java.util.regex.Pattern;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-public class DownloadTexturesEumetsat extends DownloadTextures 
-{           
+public class DownloadTexturesEumetsat extends DownloadTextures {
+	private OpenGLES20Renderer gles20Renderer = null;
 
+	public DownloadTexturesEumetsat(OpenGLES20Renderer mGLES20Renderer) {
+		super(mGLES20Renderer);
+		gles20Renderer = mGLES20Renderer;
+	}
 
-    @Override
-    protected String doInBackground(String... urls) 
-    {
-    	OpenGLES20Renderer.downloadedTextures = 0;
-    	OpenGLES20Renderer.reloadedTextures = true;
-    	int tWidth = 1024;
-    	int tHeight = 1024;
-    	int hBack = 24;
-    	
-    	String myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/AIRMASS/FULLDISC";
-    	char tag = 'M';
-    	
-    	if (urls[0].equals("AIRMASS")) {
-    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/AIRMASS/FULLDISC";
-    		tag = 'M';
-    	} else if (urls[0].equals("AIRMASS_HD")) {
-    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/AIRMASS/FULLRESOLUTION";
-    		tag = 'm';
-    		tWidth = 4096;
-    		tHeight = 4096;
-    		hBack = 3;
-    	} else if (urls[0].equals("NATURALCOLOR")) {
-    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/NATURALCOLOR/FULLDISC";
-    		tag = 'N';
-    	} else if (urls[0].equals("IR108_BW")) {
-    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/IMAGERY/IR108/BW/FULLDISC";
-    		tag = 'B';
-    	} else if (urls[0].equals("VIS006_BW")) {
-    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/IMAGERY/VIS006/BW/FULLDISC";
-    		tag = 'C';
-    	} else if (urls[0].equals("WV062_BW")) {
-    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/IMAGERY/WV062/BW/FULLDISC";
-    		tag = 'D';
-    	}  else if (urls[0].equals("MPE")) {
-    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/PRODUCTS/H03B/FULLDISC";
-    		tag = 'E';
-    	}/* else if (urls[0].equals("MPE_HD")) {
+	@Override
+	protected String doInBackground(String... urls) {
+		gles20Renderer.downloadedTextures = 0;
+		gles20Renderer.reloadedTextures = true;
+		int tWidth = 1024;
+		int tHeight = 1024;
+		int hBack = 24;
+
+		String myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/AIRMASS/FULLDISC";
+		char tag = 'M';
+
+		if (urls[0].equals("AIRMASS")) {
+			myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/AIRMASS/FULLDISC";
+			tag = 'M';
+		} else if (urls[0].equals("AIRMASS_HD")) {
+			myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/AIRMASS/FULLRESOLUTION";
+			tag = 'm';
+			tWidth = 4096;
+			tHeight = 4096;
+			hBack = 3;
+		} else if (urls[0].equals("NATURALCOLOR")) {
+			myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/NATURALCOLOR/FULLDISC";
+			tag = 'N';
+		} else if (urls[0].equals("IR108_BW")) {
+			myUri = "https://eumetview.eumetsat.int/static-images/MSG/IMAGERY/IR108/BW/FULLDISC";
+			tag = 'B';
+		} else if (urls[0].equals("VIS006_BW")) {
+			myUri = "https://eumetview.eumetsat.int/static-images/MSG/IMAGERY/VIS006/BW/FULLDISC";
+			tag = 'C';
+		} else if (urls[0].equals("WV062_BW")) {
+			myUri = "https://eumetview.eumetsat.int/static-images/MSG/IMAGERY/WV062/BW/FULLDISC";
+			tag = 'D';
+		} else if (urls[0].equals("MPE")) {
+			myUri = "https://eumetview.eumetsat.int/static-images/MSG/PRODUCTS/H03B/FULLDISC";
+			tag = 'E';
+		}/* else if (urls[0].equals("MPE_HD")) {
     		myUri = "https://eumetview.eumetsat.int/static-images/MSG/PRODUCTS/MPE/FULLRESOLUTION";
     		tag = 'e';
     		tWidth = 4096;
     		tHeight = 4096;
     		hBack = -1;
     	}*/ else if (urls[0].equals("IODC")) {
-    		//myUri = "http://oiswww.eumetsat.org/IPPS/html/MTP/PRODUCTS/MPE/FULLDISC";
-		    myUri = "https://eumetview.eumetsat.int/static-images/MSGIODC/IMAGERY/IR108/BW/FULLDISC/";
-    		tag = 'F';
-    	}
-    	
-    	OpenGLES20Renderer.mTag = tag;
+			//myUri = "http://oiswww.eumetsat.org/IPPS/html/MTP/PRODUCTS/MPE/FULLDISC";
+			myUri = "https://eumetview.eumetsat.int/static-images/MSGIODC/IMAGERY/IR108/BW/FULLDISC/";
+			tag = 'F';
+		}
 
-        BufferedInputStream is2 = null;
+		gles20Renderer.mTag = tag;
+
+		BufferedInputStream is2 = null;
 		Bitmap b = null;
-		
+
 		URLConnection ucon = null;
 		URL url = null;
-		
+
 		// load image from cache
-		
+
 		// find latest image but not older then 3 hours
 		String filename = null;
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
 
-	    cal.set(Calendar.HOUR_OF_DAY, 1*((int)(cal.get(Calendar.HOUR_OF_DAY)/1)));
+		cal.set(Calendar.HOUR_OF_DAY, 1 * ((int) (cal.get(Calendar.HOUR_OF_DAY) / 1)));
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		
-		File dir = OpenGLES20Renderer.mContext.getFilesDir();
+
+		File dir = gles20Renderer.mContext.getFilesDir();
 		File[] subFiles;
 		long epoch;
 		long current = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")).getTimeInMillis();
-		
-		HashMap<Integer, String>  iKeys = new HashMap<Integer, String>();
-		HashMap<Integer, Long>  eKeys = new HashMap<Integer, Long>();
-		
+
+		HashMap<Integer, String> iKeys = new HashMap<Integer, String>();
+		HashMap<Integer, Long> eKeys = new HashMap<Integer, Long>();
+
 		int files_to_download = 0;
-		
+
 		if (iKeys.size() == 0 || eKeys.size() == 0) {
 			try {
-				
+
 				//HttpClient httpClient = new DefaultHttpClient();
 				//HttpGet get = new HttpGet(myUri + "/index.htm");
-		
+
 				//HttpResponse response = httpClient.execute(get);
 
 				URL urlObj = new URL(myUri + "/index.htm");
 				HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
 
 				Log.d("H21lab", "HTTP GET OK");
-				
+
 				// Build up result
 				//String bodyHtml = EntityUtils.toString(response.getEntity());
 				//InputStream is = urlConnection.getInputStream();
 				//String bodyHtml = is.toString();
-				
+
 				//BufferedReader bufReader = new BufferedReader(new StringReader(bodyHtml));
 				BufferedReader bufReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 
@@ -153,14 +156,13 @@ public class DownloadTexturesEumetsat extends DownloadTextures
 
 				//  <option value="0">13/01/15   11:00 UTC</option>
 				Pattern pattern2 = Pattern.compile("\\<option value=\\\"(\\d+)\\\"\\>(.*)\\<\\/option\\>");
-				
+
 				String line;
-				while( (line = bufReader.readLine()) != null )
-				{
+				while ((line = bufReader.readLine()) != null) {
 					Matcher matcher = pattern.matcher(line);
 					while (matcher.find()) {
 						Log.d("H21lab", "iKeys: " + "array_nom_imagen[" + matcher.group(1) + "] = " + matcher.group(2));
-						iKeys.put(Integer.parseInt(matcher.group(1)), matcher.group(2));	
+						iKeys.put(Integer.parseInt(matcher.group(1)), matcher.group(2));
 					}
 
 					matcher = pattern2.matcher(line);
@@ -174,87 +176,87 @@ public class DownloadTexturesEumetsat extends DownloadTextures
 						java.util.Date d = df.parse(str);
 						long e = d.getTime();
 
-						if (current - e <= (hBack + 3)*3600*1000) {
+						if (current - e <= (hBack + 3) * 3600 * 1000) {
 							files_to_download++;
 						}
 
 						eKeys.put(Integer.parseInt(matcher.group(1)), e);
 					}
 				}
-				
+
 			} catch (Exception e3) {
-				Log.e("H21lab", "Connection error " + e3.getMessage());	
+				Log.e("H21lab", "Connection error " + e3.getMessage());
 				e3.printStackTrace();
 			}
 		}
-		
+
 		progressDialogSetMax(files_to_download);
-		
+
 		// Download the older files if possible
 		epoch = cal.getTimeInMillis();
-		for (int h = 0; h < eKeys.size(); h+=1) {
-			
+		for (int h = 0; h < eKeys.size(); h += 1) {
+
 			if (isCancelled() == true) {
 				break;
 			}
-			
+
 			boolean exists = false;
-			
+
 			Log.d("H21lab", "h = " + h);
 
-				
+
 			if (!eKeys.containsKey(h)) {
 				progressDialogUpdate();
-					
-				Log.d("H21lab", "Does not conain eKeys h = " + h);	
-				
+
+				Log.d("H21lab", "Does not conain eKeys h = " + h);
+
 				continue;
-			} 
-			
+			}
+
 			epoch = eKeys.get(h);
 
-			
+
 			// do not download too old data
-			if (current - epoch > (hBack + 3)*3600*1000) {
+			if (current - epoch > (hBack + 3) * 3600 * 1000) {
 				progressDialogUpdate();
-				
-				Log.d("H21lab", "Data from eKeys too old h = " + h);	
-				
+
+				Log.d("H21lab", "Data from eKeys too old h = " + h);
+
 				continue;
 			}
 			filename = OpenGLES20Renderer.getNameFromEpoch(tag, epoch);
 			exists = false;
 			subFiles = dir.listFiles();
 			if (subFiles != null) {
-			    for (File file : subFiles) {
-			    	if ( filename.equals(file.getName()) ) {
-			    		exists = true;
-			    		break;				    		
-			    	}
-			    }
+				for (File file : subFiles) {
+					if (filename.equals(file.getName())) {
+						exists = true;
+						break;
+					}
+				}
 			}
 			// do not download already existing
 			if (exists) {
-				
+
 				progressDialogUpdate();
-				
-				Log.d("H21lab", "File already exists from eKeys h = " + h);	
-				
+
+				Log.d("H21lab", "File already exists from eKeys h = " + h);
+
 				continue;
 			}
 			// change filename
-			Log.d("H21lab", "New filename = " + filename + " e = " + epoch);	
+			Log.d("H21lab", "New filename = " + filename + " e = " + epoch);
 
-		
+
 			// download from internet
 			try {
 				Log.e("H21lab", "!!!!!!!!!!!!!!!!!!!!");
-				
+
 				//oiswww.eumetsat.org/IPPS/html/MSG/IMAGERY/IR108/BW/FULLDISC/IMAGESDisplay/
 				url = new URL(myUri + "/IMAGESDisplay/" + iKeys.get(h));
-				
+
 				Log.d("H21lab", "Downloading: " + url.toString());
-					
+
 				ucon = url.openConnection();
 				ucon.setUseCaches(false);
 				ucon.connect();
@@ -271,15 +273,14 @@ public class DownloadTexturesEumetsat extends DownloadTextures
 				}
 				mis2.flush();
 				is2.close();
-				
+
 				byte[] ba = mis2.toByteArray();
 
-				OpenGLES20Renderer.saveTexture(filename, ba, tWidth, tHeight);
-				
+				gles20Renderer.saveTexture(filename, ba, tWidth, tHeight);
+
 				mis2.close();
-			
-				
-				
+
+
 			} catch (Exception e) {
 
 				if (ucon != null) {
@@ -289,14 +290,13 @@ public class DownloadTexturesEumetsat extends DownloadTextures
 				}
 
 			}
-			
-			
-			
+
+
 			progressDialogUpdate();
-				
+
 		}
 
-        return "";
-    }
+		return "";
+	}
 
 }

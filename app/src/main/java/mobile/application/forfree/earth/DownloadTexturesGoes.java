@@ -45,74 +45,77 @@ import java.util.regex.Pattern;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-public class DownloadTexturesGoes extends DownloadTextures 
-{           
+public class DownloadTexturesGoes extends DownloadTextures {
+	private OpenGLES20Renderer gles20Renderer = null;
 
+	public DownloadTexturesGoes(OpenGLES20Renderer mGLES20Renderer) {
+		super(mGLES20Renderer);
+		gles20Renderer = mGLES20Renderer;
+	}
 
-    @Override
-    protected String doInBackground(String... urls) 
-    {
-    	OpenGLES20Renderer.downloadedTextures = 0;
-    	OpenGLES20Renderer.reloadedTextures = true;
-    	
-    	String myUri = "https://goes.gsfc.nasa.gov/goeseast/fulldisk/3band_color/";
-    	char tag = 'G';
-    	
-    	if (urls[0].equals("GOES_EAST")) {
-    		myUri = "https://goes.gsfc.nasa.gov/goeseast/fulldisk/3band_color/";
-    		tag = 'G';
-    	} else if (urls[0].equals("GOES_WEST")) {
-    		myUri = "https://goes.gsfc.nasa.gov/goeswest/fulldisk/3band_color/";
-    		tag = 'H';
-    	}
-    	
-    	OpenGLES20Renderer.mTag = tag;
-    	
-	    InputStream is2 = null;
+	@Override
+	protected String doInBackground(String... urls) {
+		gles20Renderer.downloadedTextures = 0;
+		gles20Renderer.reloadedTextures = true;
+
+		String myUri = "https://goes.gsfc.nasa.gov/goeseast/fulldisk/3band_color/";
+		char tag = 'G';
+
+		if (urls[0].equals("GOES_EAST")) {
+			myUri = "https://goes.gsfc.nasa.gov/goeseast/fulldisk/3band_color/";
+			tag = 'G';
+		} else if (urls[0].equals("GOES_WEST")) {
+			myUri = "https://goes.gsfc.nasa.gov/goeswest/fulldisk/3band_color/";
+			tag = 'H';
+		}
+
+		gles20Renderer.mTag = tag;
+
+		InputStream is2 = null;
 		Bitmap b = null;
 
 		URLConnection ucon = null;
 		URL url = null;
-		
+
 		// load image from cache
-		
+
 		// find latest image but not older then 3 hours
 		String filename = null;
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
 
-	    cal.set(Calendar.HOUR_OF_DAY, 1*((int)(cal.get(Calendar.HOUR_OF_DAY)/1)));
+		cal.set(Calendar.HOUR_OF_DAY, 1 * ((int) (cal.get(Calendar.HOUR_OF_DAY) / 1)));
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		
-		File dir = OpenGLES20Renderer.mContext.getFilesDir();
+
+		File dir = gles20Renderer.mContext.getFilesDir();
 		File[] subFiles;
 		long epoch;
 		long current = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")).getTimeInMillis();
-		
-		HashMap<Integer, String>  iKeys = new HashMap<Integer, String>();
-		HashMap<Integer, Long>  eKeys = new HashMap<Integer, Long>();
-		
+
+		HashMap<Integer, String> iKeys = new HashMap<Integer, String>();
+		HashMap<Integer, Long> eKeys = new HashMap<Integer, Long>();
+
 		int files_to_download = 0;
-		
+
 		if (iKeys.size() == 0 || eKeys.size() == 0) {
 			try {
-				
+
 				//HttpClient httpClient = new DefaultHttpClient();
 				//HttpGet get = new HttpGet(myUri);
-		
+
 				//HttpResponse response = httpClient.execute(get);
 
 				URL urlObj = new URL(myUri);
 				HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
-				
+
 				Log.d("H21lab", "HTTP GET OK");
-				
+
 				// Build up result
 				//String bodyHtml = EntityUtils.toString(response.getEntity());
 				//InputStream is = urlConnection.getInputStream();
 				//String bodyHtml = is.toString();
-				
+
 				//BufferedReader bufReader = new BufferedReader(new StringReader(bodyHtml));
 				BufferedReader bufReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 
@@ -121,13 +124,12 @@ public class DownloadTexturesGoes extends DownloadTextures
 
 				//  <tr><td valign="top"><img src="/icons/image2.gif" alt="[IMG]"></td><td><a href="1501150545G13I04.tif">1501150545G13I04.tif</a></td><td align="right">15-Jan-2015 01:21  </td><td align="right">550K</td></tr>
 				Pattern pattern2 = Pattern.compile("href=\\\"(\\d\\S+)\\.jpg\\\"");
-				
+
 				String line;
 				int i = 0;
 				int j = 0;
-				
-				while( (line = bufReader.readLine()) != null )
-				{
+
+				while ((line = bufReader.readLine()) != null) {
 					Matcher matcher = pattern.matcher(line);
 					while (matcher.find()) {
 						Log.d("H21lab", "iKeys: " + i + " " + matcher.group(1));
@@ -146,7 +148,7 @@ public class DownloadTexturesGoes extends DownloadTextures
 						java.util.Date d = df.parse(str);
 						long e = d.getTime();
 
-						if (current - e <= (24 + 3)*3600*1000) {
+						if (current - e <= (24 + 3) * 3600 * 1000) {
 							files_to_download++;
 						}
 
@@ -155,62 +157,62 @@ public class DownloadTexturesGoes extends DownloadTextures
 						j++;
 					}
 				}
-				
+
 			} catch (Exception e3) {
-				Log.e("H21lab", "Connection error " + e3.getMessage());	
+				Log.e("H21lab", "Connection error " + e3.getMessage());
 				e3.printStackTrace();
 			}
 		}
-		
+
 		progressDialogSetMax(files_to_download);
-			
+
 		// Download the older files if possible
 		epoch = cal.getTimeInMillis();
-		for (int h = 0; h < eKeys.size(); h+=1) {
-			
+		for (int h = 0; h < eKeys.size(); h += 1) {
+
 			if (isCancelled() == true) {
 				break;
 			}
-			
+
 			boolean exists = false;
-			
+
 			Log.d("H21lab", "h = " + h);
 
 			if (!eKeys.containsKey(h)) {
 
 				Log.d("H21lab", "Does not conain eKeys h = " + h);
-				
+
 				continue;
-			} 
-			
+			}
+
 			epoch = eKeys.get(h);
 
-			
+
 			// do not download too old data
-			if (current - epoch > (24 + 3)*3600*1000) {
+			if (current - epoch > (24 + 3) * 3600 * 1000) {
 
 				Log.d("H21lab", "Data fom eKeys too old h = " + h);
-				
+
 				continue;
 			}
 			filename = OpenGLES20Renderer.getNameFromEpoch(tag, epoch);
 			exists = false;
 			subFiles = dir.listFiles();
 			if (subFiles != null) {
-			    for (File file : subFiles) {
-			    	if ( filename.equals(file.getName()) ) {
-			    		exists = true;
-			    		break;				    		
-			    	}
-			    }
+				for (File file : subFiles) {
+					if (filename.equals(file.getName())) {
+						exists = true;
+						break;
+					}
+				}
 			}
 			// do not download already existing
 			if (exists) {
-				
+
 				progressDialogUpdate();
-					
+
 				Log.d("H21lab", "File already exists from eKeys h = " + h);
-				
+
 				continue;
 			}
 			// change filename
@@ -221,9 +223,9 @@ public class DownloadTexturesGoes extends DownloadTextures
 			try {
 				//oiswww.eumetsat.org/IPPS/html/MSG/IMAGERY/IR108/BW/FULLDISC/IMAGESDisplay/
 				url = new URL(myUri + iKeys.get(h) + ".jpg");
-				
+
 				Log.d("H21lab", "Downloading: " + url.toString());
-					
+
 				ucon = url.openConnection();
 				ucon.setUseCaches(false);
 				ucon.connect();
@@ -241,10 +243,9 @@ public class DownloadTexturesGoes extends DownloadTextures
 
 				byte[] ba = mis2.toByteArray();
 
-				OpenGLES20Renderer.saveTexture(filename, ba, 2048, 2048);
-				
-				mis2.close();
+				gles20Renderer.saveTexture(filename, ba, 2048, 2048);
 
+				mis2.close();
 
 
 			} catch (Exception e) {
@@ -254,14 +255,14 @@ public class DownloadTexturesGoes extends DownloadTextures
 				} else {
 					Log.e("H21lab", "Unable to connect to " + myUri + " " + e.getMessage());
 				}
-				
+
 			}
 
 			progressDialogUpdate();
-			
+
 		}
 
-        return "";
-    }
+		return "";
+	}
 
 }

@@ -32,62 +32,68 @@ public class OpenGLES20SurfaceView extends GLSurfaceView {
 	private OpenGLES20Renderer mRenderer;
 	private float mPreviousX = -1.0f;
 	private float mPreviousY = -1.0f;
-	
+
 	private float mPreviousX2 = -1.0f;
 	private float mPreviousY2 = -1.0f;
-	
+
 	private float mPreviousxtheta = 0.0f;
 	private float mPreviousytheta = 0.0f;
-	
+
 	private int previousPointerCount = 0;
-	
+
 	GestureDetector gestureDetector;
-	
-    public OpenGLES20SurfaceView(Context context){
-        super(context);
-        
-        // Create an OpenGL ES 2.0 context.
-        setEGLContextClientVersion(2);
-        // Set the Renderer for drawing on the GLSurfaceView
-        
-        mRenderer = new OpenGLES20Renderer(context);
-        setRenderer(mRenderer);
-        
-        gestureDetector = new GestureDetector(context, new GestureListener());
-    }
-    
-    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+	public float test;
 
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return true;
-        }
-        // event when double tap occurs
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            
-        	// paly/stop
-        	OpenGLES20Renderer.mPlay = !OpenGLES20Renderer.mPlay;
-        	
-            return true;
-        }
-    }
-    
-    @Override 
-    public boolean onTouchEvent(MotionEvent e) {
-    	
-    	gestureDetector.onTouchEvent(e);
-    	
-        // MotionEvent reports input details from the touch screen
-        // and other input controls. In this case, you are only
-        // interested in events where the touch position changed.
+	public OpenGLES20SurfaceView(Context context) {
+		super(context);
 
-    	float x;
-    	float y;
-    	float x2;
-    	float y2;
+		// Create an OpenGL ES 2.0 context.
+		setEGLContextClientVersion(2);
+		// Set the Renderer for drawing on the GLSurfaceView
 
-		if (mRenderer != null && OpenGLES20Renderer.initialized == true) {
+		mRenderer = new OpenGLES20Renderer(context);
+		setRenderer(mRenderer);
+
+		gestureDetector = new GestureDetector(context, new GestureListener());
+	}
+
+	public OpenGLES20Renderer getOpenGLES20Renderer() {
+		return mRenderer;
+	}
+
+	private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return true;
+		}
+
+		// event when double tap occurs
+		@Override
+		public boolean onDoubleTap(MotionEvent e) {
+
+			// paly/stop
+			mRenderer.mPlay = !mRenderer.mPlay;
+
+			return true;
+		}
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent e) {
+
+		gestureDetector.onTouchEvent(e);
+
+		// MotionEvent reports input details from the touch screen
+		// and other input controls. In this case, you are only
+		// interested in events where the touch position changed.
+
+		float x;
+		float y;
+		float x2;
+		float y2;
+
+		if (mRenderer != null && mRenderer.initialized == true) {
 
 			try {
 
@@ -243,6 +249,6 @@ public class OpenGLES20SurfaceView extends GLSurfaceView {
 			}
 		}
 
-        return true;
-    } 
+		return true;
+	}
 }

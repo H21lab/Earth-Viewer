@@ -45,66 +45,69 @@ import java.util.regex.Pattern;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-public class DownloadTexturesMTSAT extends DownloadTextures 
-{           
+public class DownloadTexturesMTSAT extends DownloadTextures {
+	private OpenGLES20Renderer gles20Renderer = null;
 
+	public DownloadTexturesMTSAT(OpenGLES20Renderer mGLES20Renderer) {
+		super(mGLES20Renderer);
+		gles20Renderer = mGLES20Renderer;
+	}
 
-    @Override
-    protected String doInBackground(String... urls) 
-    {
-    	OpenGLES20Renderer.downloadedTextures = 0;
-    	OpenGLES20Renderer.reloadedTextures = true;
-    	
-    	String myUri = "https://www.jma.go.jp/en/gms/imgs/6/infrared/1/";
-    	char tag = 'J';
-    	
-    	if (urls[0].equals("MTSAT")) {
-    		myUri = "https://www.jma.go.jp/en/gms/imgs/6/infrared/1/";
-    		tag = 'J';
-    	} 
-    	
-    	OpenGLES20Renderer.mTag = tag;
-    	
+	@Override
+	protected String doInBackground(String... urls) {
+		gles20Renderer.downloadedTextures = 0;
+		gles20Renderer.reloadedTextures = true;
+
+		String myUri = "https://www.jma.go.jp/en/gms/imgs/6/infrared/1/";
+		char tag = 'J';
+
+		if (urls[0].equals("MTSAT")) {
+			myUri = "https://www.jma.go.jp/en/gms/imgs/6/infrared/1/";
+			tag = 'J';
+		}
+
+		gles20Renderer.mTag = tag;
+
 		InputStream is2 = null;
 		Bitmap b = null;
 
 		URLConnection ucon = null;
 		URL url = null;
-		
+
 		// load image from cache
-		
+
 		// find latest image but not older then 3 hours
 		String filename = null;
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
 
-		cal.set(Calendar.HOUR_OF_DAY, 1*((int)(cal.get(Calendar.HOUR_OF_DAY)/1)));
+		cal.set(Calendar.HOUR_OF_DAY, 1 * ((int) (cal.get(Calendar.HOUR_OF_DAY) / 1)));
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		
-		File dir = OpenGLES20Renderer.mContext.getFilesDir();
+
+		File dir = gles20Renderer.mContext.getFilesDir();
 		File[] subFiles;
 		long epoch;
 		long current = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")).getTimeInMillis();
-		
-		HashMap<Integer, String>  iKeys = new HashMap<Integer, String>();
-		HashMap<Integer, Long>  eKeys = new HashMap<Integer, Long>();
-		
+
+		HashMap<Integer, String> iKeys = new HashMap<Integer, String>();
+		HashMap<Integer, Long> eKeys = new HashMap<Integer, Long>();
+
 		int files_to_download = 0;
-		
+
 		if (iKeys.size() == 0 || eKeys.size() == 0) {
 			try {
-				
+
 				String uri = "https://www.jma.go.jp/en/gms/hisjs/infrared-6.js";
-				
+
 				//HttpClient httpClient = new DefaultHttpClient();
 				//HttpGet get = new HttpGet(uri);
-		
+
 				//HttpResponse response = httpClient.execute(get);
 
 				URL urlObj = new URL(uri);
 				HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
-				
+
 				Log.d("H21lab", "HTTP GET OK");
 
 				// Build up result
@@ -126,8 +129,7 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 				int i = 0;
 				int j = 0;
 
-				while( (line = bufReader.readLine()) != null )
-				{
+				while ((line = bufReader.readLine()) != null) {
 					Matcher matcher = pattern.matcher(line);
 					while (matcher.find()) {
 						Log.d("H21lab", "iKeys: " + i + " " + matcher.group(1));
@@ -151,7 +153,7 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 						long e = d.getTime();
 						Log.d("H21lab", "eKeys: " + str + " " + e);
 
-						if (current - e <= (24 + 3)*3600*1000) {
+						if (current - e <= (24 + 3) * 3600 * 1000) {
 							files_to_download++;
 						}
 
@@ -171,7 +173,7 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 
 		// Download the older files if possible
 		epoch = cal.getTimeInMillis();
-		for (int h = 0; h < eKeys.size(); h+=1) {
+		for (int h = 0; h < eKeys.size(); h += 1) {
 
 			if (isCancelled() == true) {
 				break;
@@ -193,7 +195,7 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 
 
 			// do not download too old data
-			if (current - epoch > (24 + 3)*3600*1000) {
+			if (current - epoch > (24 + 3) * 3600 * 1000) {
 
 				Log.d("H21lab", "Data fom eKeys too old h = " + h);
 
@@ -203,12 +205,12 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 			exists = false;
 			subFiles = dir.listFiles();
 			if (subFiles != null) {
-			    for (File file : subFiles) {
-			    	if ( filename.equals(file.getName()) ) {
-			    		exists = true;
-			    		break;
-			    	}
-			    }
+				for (File file : subFiles) {
+					if (filename.equals(file.getName())) {
+						exists = true;
+						break;
+					}
+				}
 			}
 			// do not download already existing
 			if (exists) {
@@ -229,13 +231,13 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 				url = new URL(myUri + iKeys.get(h) + "-00.png");
 
 				Log.d("H21lab", "Downloading: " + url.toString());
-					
+
 				ucon = url.openConnection();
 				ucon.setUseCaches(false);
 				ucon.connect();
-				
+
 				is2 = ucon.getInputStream();
-				
+
 				ByteArrayOutputStream mis2 = new ByteArrayOutputStream();
 				byte data[] = new byte[1024];
 				int count;
@@ -244,14 +246,14 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 				}
 				mis2.flush();
 				is2.close();
-				
+
 				byte[] ba = mis2.toByteArray();
 
-				OpenGLES20Renderer.saveTexture(filename, ba, 1024, 1024);
-				
+				gles20Renderer.saveTexture(filename, ba, 1024, 1024);
+
 				mis2.close();
 
-				
+
 			} catch (Exception e) {
 
 				if (ucon != null) {
@@ -261,14 +263,13 @@ public class DownloadTexturesMTSAT extends DownloadTextures
 				}
 
 			}
-			
-			
-			
+
+
 			progressDialogUpdate();
-			
+
 		}
 
-        return "";
-    }
+		return "";
+	}
 
 }

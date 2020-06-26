@@ -72,7 +72,7 @@ public class OpenGLES20SurfaceView extends GLSurfaceView {
 		@Override
 		public boolean onDoubleTap(MotionEvent e) {
 
-			// paly/stop
+			// play/stop
 			mRenderer.mPlay = !mRenderer.mPlay;
 
 			return true;

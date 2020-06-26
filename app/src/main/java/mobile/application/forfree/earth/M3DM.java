@@ -55,7 +55,7 @@ class M3DM {
 	// PROJECTION
 	float P_NPlane = 1.0f;
 	float P_FPlane = 200.0f;
-	float P_fov_vert = 60.0f * (PI / 180.0f); // celkovo
+	float P_fov_vert = 60.0f * (PI / 180.0f); // overall
 	float P_fov_horiz = ((float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT)) * P_fov_vert;
 	/************************ FLAGS *************************/
 	// TODO some parameters are legacy
@@ -71,8 +71,8 @@ class M3DM {
 	/* FLAGS for Mesh */
 	final static int MD3DMESHF_SPHERMAP = 1; // mesh has env. mapping
 	final static int MD3DMESHF_DISABLED = 2; // mesh is not rendered
-	final static int MD3DMESHF_NOCULLING = 16;    // mesh no culling
-	final static int MD3DMESHF_FRONTCULLING = 32;    // mesh front culling
+	final static int MD3DMESHF_NOCULLING = 16;	// mesh no culling
+	final static int MD3DMESHF_FRONTCULLING = 32;	// mesh front culling
 	final static int MD3DMESHF_RENDEREDFIRST = 64;  // mesh render first if zsort
 
 	/* FLAGS PRE FLEXIBLE VERTEX FORMAT */
@@ -80,6 +80,8 @@ class M3DM {
 	final static int M3DFVF_NORMAL = 0x00000002;
 	final static int M3DFVF_COLOR = 0x00000004;
 	final static int M3DFVF_TEX1 = 0x00000008;
+	final static int M3DFVF_TAN = 0x00000010;
+	final static int M3DFVF_BITAN = 0x00000020;
 
 	// TODO not used yet
 	/* For Z sort*********** */
@@ -100,7 +102,7 @@ class M3DM {
 		}
 	}
 
-	static List<ZSORTstruct> zsort = new ArrayList<ZSORTstruct>();
+	List<ZSORTstruct> zsort = new ArrayList<ZSORTstruct>();
 
 	/* OpenGL */
 	// TODO only for 1 light and texture required
@@ -174,7 +176,7 @@ class M3DM {
 					"varying vec2 vTex;			\n" +
 					"uniform sampler2D uTextures[4];\n" +
 					"varying vec3 vEye	;   	\n" +
-					"varying vec2 shiftUV;		\n" +      // clouds shadow shift
+					"varying vec2 shiftUV;		\n" +	  // clouds shadow shift
 
 					"uniform vec4 uLightAmbientColor;  		\n" +
 					"uniform vec4 uLightDiffuseColor;  		\n" +
@@ -318,9 +320,7 @@ class M3DM {
 			Pos = new M3DVECTOR(0.0f, 0.0f, 0.0f);
 			AR = AG = AB = AA = DR = DG = DB = DA = SR = SG = SB = SA = 0.0f;
 		}
-	}
-
-	;
+	};
 
 	LIGHT Light[] = new LIGHT[8];
 
@@ -332,7 +332,7 @@ class M3DM {
 		float ER, EG, EB, EA; // emission
 		float SH; // shininess
 		float am, dm, sm; // ambient col. index, diffuse, specular
-		char Name[] = new char[NAMELENGHT];        // TODO not used
+		char Name[] = new char[NAMELENGHT];		// TODO not used
 
 		M3DMATERIAL() {
 			AR = 1.0f;
@@ -359,7 +359,7 @@ class M3DM {
 		}
 
 		M3DMATERIAL(float ar, float ag, float ab, float aa, float dr, float dg, float db, float da, float sr, float sg, float sb, float sa, float er, float eg,
-					float eb, float ea, float sh, float _am, float _dm, float _sm) {
+		            float eb, float ea, float sh, float _am, float _dm, float _sm) {
 			AR = ar;
 			AG = ag;
 			AB = ab;
@@ -389,7 +389,7 @@ class M3DM {
 
 	static class mD3DTexture {
 		int id = -1;
-		char Name[] = new char[NAMELENGHT];    // TODO Not used
+		char Name[] = new char[NAMELENGHT];	// TODO Not used
 
 		mD3DTexture() {
 			id = 0;
@@ -543,7 +543,10 @@ class M3DM {
 		int Meshs;
 		mD3DMesh Mesh[];
 
-		// TODO legacy, used in c++
+		int getFlags() {
+			return Flags;
+		}
+
 		void setFlags(int par) {
 			Flags = par;
 		}
@@ -614,77 +617,123 @@ class M3DM {
 		// all normals are counted and than normalized
 		void generateNormals() {
 			int NVERTEX; // index of just modified vertex
-			int i, j, k, n;
+			int j, k, n;
 			// deletion of original normals
-			for (i = 0; i < VertexCount; i++) {
+			for (int i = 0; i < VertexCount; i++) {
 				for (j = 3; j < 6; j++) {
 					Vertex[i * VertexSize + j] = 0.0f;
 				}
 			}
 			M3DVECTOR N, v0, v1, v2;
 			v0 = new M3DVECTOR(0.0f, 0.0f, 0.0f); // required for compilation
-			M3DVECTOR Norm[] = new M3DVECTOR[MAXNFACE];
-			i = 0;
+			M3DVECTOR Norm[] = new M3DVECTOR[VertexCount];
+
+			for (j = 0; j < VertexCount; j++) {
+				Norm[j] = new M3DVECTOR(0.0f, 0.0f, 0.0f);
+			}
+
 			float TT;
-			while (Data[i] != 0) {
-				for (j = 0; j < MAXNFACE; j++) {
-					Norm[j] = new M3DVECTOR(0.0f, 0.0f, 0.0f);
-				}
-				k = i + 1;
-				n = 0;
-				for (j = 0; j < Data[i]; j++) {
-					n++;
-					if (n == 1) {
-						NVERTEX = Data[i + 1] * VertexSize;
-						v0 = new M3DVECTOR(Vertex[NVERTEX], Vertex[NVERTEX + 1], Vertex[NVERTEX + 2]);
-					}
-					if (n == 3) {
-						n = 2;
+			for (int i = 0; i < Data.length; i++) {
+					if (i > 3) {
+						k = i;
 						// get vertexs
+						NVERTEX = Data[k - 2] * VertexSize;
+						v0 = new M3DVECTOR(Vertex[NVERTEX], Vertex[NVERTEX + 1], Vertex[NVERTEX + 2]);
 						NVERTEX = Data[k - 1] * VertexSize;
 						v1 = new M3DVECTOR(Vertex[NVERTEX], Vertex[NVERTEX + 1], Vertex[NVERTEX + 2]);
 						NVERTEX = Data[k] * VertexSize;
 						v2 = new M3DVECTOR(Vertex[NVERTEX], Vertex[NVERTEX + 1], Vertex[NVERTEX + 2]);
-						N = M3DVECTOR.CrossProduct(M3DVECTOR.DIF(v1, v0), M3DVECTOR.DIF(v2, v0));
+						N = M3DVECTOR.CrossProduct(M3DVECTOR.DIF(v2, v1), M3DVECTOR.DIF(v2, v0));
 						TT = N.x * N.x + N.y * N.y + N.z * N.z;
+
 						if (TT == 0.0) {
 							N = new M3DVECTOR(0.0f, 0.0f, 0.0f);
 						} else {
 							N = M3DVECTOR.MUL(N, 1.0f / (float) Math.sqrt(TT));
 						}
-						Norm[0] = M3DVECTOR.ADD(Norm[0], N);
-						Norm[j - 1] = M3DVECTOR.ADD(Norm[j - 1], N);
-						Norm[j] = M3DVECTOR.ADD(Norm[j], N);
+
+						// Invert every 2nd face because of GL_TRIANGLE_STRIP
+						if (i % 2 == 0) {
+							N = M3DVECTOR.MUL(N, -1.0f);
+						}
+
+
+						Norm[Data[k - 2]] = M3DVECTOR.ADD(Norm[Data[k - 2]], N);
+						Norm[Data[k - 1]] = M3DVECTOR.ADD(Norm[Data[k - 1]], N);
+						Norm[Data[k]] = M3DVECTOR.ADD(Norm[Data[k]], N);
+
 					}
-					k++;
-				}
-				for (j = 1; j <= Data[i]; j++) {
-					NVERTEX = Data[i + j] * VertexSize;
-					Vertex[NVERTEX + 3] += Norm[j - 1].x;
-					Vertex[NVERTEX + 4] += Norm[j - 1].y;
-					Vertex[NVERTEX + 5] += Norm[j - 1].z;
-				}
-				i = k;
 			}
 			// normalization of normals
-			i = 0;
-			while (Data[i] != 0) {
-				for (j = 1; j <= Data[i]; j++) {
-					NVERTEX = Data[i + j] * VertexSize;
-					Norm[0].x = Vertex[NVERTEX + 3];
-					Norm[0].y = Vertex[NVERTEX + 4];
-					Norm[0].z = Vertex[NVERTEX + 5];
-					TT = Norm[0].x * Norm[0].x + Norm[0].y * Norm[0].y + Norm[0].z * Norm[0].z;
+			for (int i = 0; i < Data.length; i++) {
+					NVERTEX = Data[i] * VertexSize;
+					TT = Norm[Data[i]].x * Norm[Data[i]].x + Norm[Data[i]].y * Norm[Data[i]].y + Norm[Data[i]].z * Norm[Data[i]].z;
 					if (TT == 0.0) {
-						Norm[0] = new M3DVECTOR(0.0f, 0.0f, 0.0f);
+						Norm[Data[i]] = new M3DVECTOR(0.0f, 0.0f, 0.0f);
 					} else {
-						Norm[0] = M3DVECTOR.MUL(Norm[0], 1.0f / (float) Math.sqrt(TT));
+						Norm[Data[i]] = M3DVECTOR.MUL(Norm[Data[i]], 1.0f / (float) Math.sqrt(TT));
 					}
-					Vertex[NVERTEX + 3] = Norm[0].x;
-					Vertex[NVERTEX + 4] = Norm[0].y;
-					Vertex[NVERTEX + 5] = Norm[0].z;
+					Vertex[NVERTEX + 3] = Norm[Data[i]].x;
+					Vertex[NVERTEX + 4] = Norm[Data[i]].y;
+					Vertex[NVERTEX + 5] = Norm[Data[i]].z;
+			}
+		}
+
+		void generateTangentsBitangets() {
+			int NVERTEX; // index of just modified vertex
+			int j, k, n;
+			// deletion of original tangents, bitangetns
+			for (int i = 0; i < VertexCount; i++) {
+				for (j = 8; j < 14; j++) {
+					Vertex[i * VertexSize + j] = 0.0f;
 				}
-				i += Data[i] + 1;
+			}
+
+			M3DVECTOR N, v0, v1, v2;
+			float v0_u, v0_v, v1_u, v1_v, v2_u, v2_v;
+			v0 = new M3DVECTOR(0.0f, 0.0f, 0.0f); // required for compilation
+			v0_u = v0_v = v1_u = v1_v = v2_u = v2_v = 0.0f;
+			float TT;
+			for (int i = 0; i < Data.length; i++) {
+				if (i >= 2) {
+					k = i;
+
+					// get vertexs
+					NVERTEX = Data[k - 2] * VertexSize;
+					v0 = new M3DVECTOR(Vertex[NVERTEX], Vertex[NVERTEX + 1], Vertex[NVERTEX + 2]);
+					v0_u = Vertex[NVERTEX + 6]; v0_v = Vertex[NVERTEX + 7];
+					NVERTEX = Data[k - 1] * VertexSize;
+					v1 = new M3DVECTOR(Vertex[NVERTEX], Vertex[NVERTEX + 1], Vertex[NVERTEX + 2]);
+					v1_u = Vertex[NVERTEX + 6]; v1_v = Vertex[NVERTEX + 7];
+					NVERTEX = Data[k] * VertexSize;
+					v2 = new M3DVECTOR(Vertex[NVERTEX], Vertex[NVERTEX + 1], Vertex[NVERTEX + 2]);
+					v2_u = Vertex[NVERTEX + 6]; v2_v = Vertex[NVERTEX + 7];
+
+
+					// Edges of the triangle : position delta
+					M3DVECTOR deltaPos1 = M3DVECTOR.DIF(v1, v0);
+					M3DVECTOR deltaPos2 = M3DVECTOR.DIF(v2, v0);
+
+					// UV delta
+					float deltaUV1_u = v1_u - v0_u; float deltaUV1_v = v1_v - v0_v;
+					float deltaUV2_u = v2_u - v0_u; float deltaUV2_v = v2_v - v0_v;
+
+					if ((deltaUV1_u * deltaUV2_v - deltaUV1_v * deltaUV2_u) != 0.0f) {
+						float r = 1.0f / (deltaUV1_u * deltaUV2_v - deltaUV1_v * deltaUV2_u);
+						M3DVECTOR tangent = M3DVECTOR.MUL((M3DVECTOR.DIF(M3DVECTOR.MUL(deltaPos1, deltaUV2_v), M3DVECTOR.MUL(deltaPos2, deltaUV1_v))), r);
+						tangent = M3DVECTOR.Normalize(tangent);
+						M3DVECTOR bitangent = M3DVECTOR.MUL((M3DVECTOR.DIF(M3DVECTOR.MUL(deltaPos2, deltaUV1_u), M3DVECTOR.MUL(deltaPos1, deltaUV2_u))), r);
+						bitangent = M3DVECTOR.Normalize(bitangent);
+
+						Vertex[NVERTEX + 8] = tangent.x;
+						Vertex[NVERTEX + 9] = tangent.y;
+						Vertex[NVERTEX + 10] = tangent.z;
+
+						Vertex[NVERTEX + 11] = bitangent.x;
+						Vertex[NVERTEX + 12] = bitangent.y;
+						Vertex[NVERTEX + 13] = bitangent.z;
+					}
+				}
 			}
 		}
 
@@ -717,7 +766,7 @@ class M3DM {
 		}
 
 		mD3DMesh(M3DVERTEX V[], short D[], int D_length) {
-			int strsize = 8;
+			int strsize = 14;
 			VertexSize = strsize;
 			Flags = 0;
 			Textures = 0;
@@ -734,7 +783,7 @@ class M3DM {
 				Data[j] = D[j];
 			}
 
-			VertexStruct = M3DFVF_XYZ | M3DFVF_NORMAL | M3DFVF_TEX1;
+			VertexStruct = M3DFVF_XYZ | M3DFVF_NORMAL | M3DFVF_TEX1 | M3DFVF_TAN | M3DFVF_BITAN;
 			if (VertexCount > 0) {
 				Vertex = new float[VertexCount * strsize];
 				for (j = 0; j < VertexCount; j++) {
@@ -966,7 +1015,7 @@ class M3DM {
 		float[] mMVPMatrix = new float[16];
 		float[] mMVMatrix = new float[16];
 		float[] mVMatrix = new float[16];
-		float[] mIMVMatrix = new float[16];        // inverse model view
+		float[] mIMVMatrix = new float[16];		// inverse model view
 		float[] mIMVPMatrix = new float[16];
 
 
@@ -1014,21 +1063,46 @@ class M3DM {
 			// TODO add possibility to have no texture U, V in vertex
 			FloatBuffer vertexBuffer;
 			ByteBuffer vbb = ByteBuffer.allocateDirect(mesh.Vertex.length * 4);
-			vbb.order(ByteOrder.nativeOrder());// use the device hardware's native byte order
+			vbb.order(ByteOrder.nativeOrder());  // use the device hardware's native byte order
 			vertexBuffer = vbb.asFloatBuffer();  // create a floating point buffer from the ByteBuffer
 			vertexBuffer.put(mesh.Vertex);       // add the coordinates to the FloatBuffer
 
-			vertexBuffer.position(0);
-			GLES20.glEnableVertexAttribArray(GLES20.glGetAttribLocation(mesh.Program, "aPosition"));
-			GLES20.glVertexAttribPointer(GLES20.glGetAttribLocation(mesh.Program, "aPosition"), 3, GLES20.GL_FLOAT, false, mesh.VertexSize * 4, vertexBuffer);
+			int p;
 
-			vertexBuffer.position(3);
-			GLES20.glEnableVertexAttribArray(GLES20.glGetAttribLocation(mesh.Program, "aNormal"));
-			GLES20.glVertexAttribPointer(GLES20.glGetAttribLocation(mesh.Program, "aNormal"), 3, GLES20.GL_FLOAT, false, mesh.VertexSize * 4, vertexBuffer);
+			p = GLES20.glGetAttribLocation(mesh.Program, "aPosition");
+			if (p >= 0) {
+				vertexBuffer.position(0);
+				GLES20.glEnableVertexAttribArray(p);
+				GLES20.glVertexAttribPointer(p, 3, GLES20.GL_FLOAT, false, mesh.VertexSize * 4, vertexBuffer);
+			}
 
-			vertexBuffer.position(6);
-			GLES20.glEnableVertexAttribArray(GLES20.glGetAttribLocation(mesh.Program, "aTex"));
-			GLES20.glVertexAttribPointer(GLES20.glGetAttribLocation(mesh.Program, "aTex"), 2, GLES20.GL_FLOAT, false, mesh.VertexSize * 4, vertexBuffer);
+			p = GLES20.glGetAttribLocation(mesh.Program, "aNormal");
+			if (p >= 0) {
+				vertexBuffer.position(3);
+				GLES20.glEnableVertexAttribArray(p);
+				GLES20.glVertexAttribPointer(p, 3, GLES20.GL_FLOAT, false, mesh.VertexSize * 4, vertexBuffer);
+			}
+
+			p = GLES20.glGetAttribLocation(mesh.Program, "aTex");
+			if (p >= 0) {
+				vertexBuffer.position(6);
+				GLES20.glEnableVertexAttribArray(p);
+				GLES20.glVertexAttribPointer(p, 2, GLES20.GL_FLOAT, false, mesh.VertexSize * 4, vertexBuffer);
+			}
+
+			p = GLES20.glGetAttribLocation(mesh.Program, "aTangent");
+			if (p >= 0) {
+				vertexBuffer.position(8);
+				GLES20.glEnableVertexAttribArray(p);
+				GLES20.glVertexAttribPointer(p, 3, GLES20.GL_FLOAT, false, mesh.VertexSize*4, vertexBuffer);
+			}
+
+			p = GLES20.glGetAttribLocation(mesh.Program, "aBitangent");
+			if (p >= 0) {
+				vertexBuffer.position(11);
+				GLES20.glEnableVertexAttribArray(p);
+				GLES20.glVertexAttribPointer(p, 3, GLES20.GL_FLOAT, false, mesh.VertexSize*4, vertexBuffer);
+			}
 
 			// Light
 			if (N_Lights > 0) {
@@ -1266,8 +1340,8 @@ class M3DM {
 				vertex[count].N.x = T.x;
 				vertex[count].N.y = T.y;
 				vertex[count].N.z = T.z;
-				vertex[count].u = U1 + (((float) al) / 360.0f) * xU;
-				vertex[count].v = V1 + (((float) be) / 180.0f) * xV;
+				vertex[count].u = U1 + (((float)al) / 360.0f) * xU;
+				vertex[count].v = V1 + (((float)be) / 180.0f) * xV;
 				count++;
 			}
 		}
@@ -1325,11 +1399,11 @@ class M3DM {
 				vertex[count].N.y = vertex[count].P.y;
 				vertex[count].N.z = vertex[count].P.z;
 				vertex[count].N = M3DVECTOR.Normalize(vertex[count].N);
-				double u = (double) U1 + (((float) al) / 360.0f) * xU;
-				double v = (double) V1 + (((float) be) / 180.0f) * xV;
+				double u = (double)U1 + (((float)al) / 360.0f) * xU;
+				double v = (double)V1 + (((float)be) / 180.0f) * xV;
 
-				vertex[count].u = (float) u;
-				vertex[count].v = (float) v;
+				vertex[count].u = (float)u;
+				vertex[count].v = (float)v;
 
 				count++;
 			}
@@ -1426,30 +1500,30 @@ class M3DM {
 
 		// back
 		vertex[8] = new M3DVERTEX();
-		vertex[8].P.x = -a;
-		vertex[8].P.y = a;
-		vertex[8].P.z = 0.0f;
+		vertex[8].P.x = a;
+		vertex[8].P.y = -a;
+		vertex[8].P.z = -a;
 		vertex[8].u = 0.0f;
 		vertex[8].v = 1.0f;
 
 		vertex[9] = new M3DVERTEX();
-		vertex[9].P.x = -a;
-		vertex[9].P.y = -a;
-		vertex[9].P.z = 0.0f;
+		vertex[9].P.x = a;
+		vertex[9].P.y = a;
+		vertex[9].P.z = -a;
 		vertex[9].u = 0.0f;
 		vertex[9].v = 0.0f;
 
 		vertex[10] = new M3DVERTEX();
-		vertex[10].P.x = a;
-		vertex[10].P.y = -a;
-		vertex[10].P.z = 0.0f;
+		vertex[10].P.x = -a;
+		vertex[10].P.y = a;
+		vertex[10].P.z = -a;
 		vertex[10].u = 1.0f;
 		vertex[10].v = 0.0f;
 
 		vertex[11] = new M3DVERTEX();
-		vertex[11].P.x = a;
-		vertex[11].P.y = a;
-		vertex[11].P.z = 0.0f;
+		vertex[11].P.x = -a;
+		vertex[11].P.y = -a;
+		vertex[11].P.z = -a;
 		vertex[11].u = 1.0f;
 		vertex[11].v = 1.0f;
 

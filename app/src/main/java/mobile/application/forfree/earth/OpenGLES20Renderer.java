@@ -762,6 +762,8 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 		// create object
 		earth = M3DM.createEllipsoid(1.0f, 0.996f, 3, 6, 0.0f, 0.0f, 1.0f, 1.0f);
 
+		earth.generateTangentsBitangets();
+
 		earth.Textures = 0;
 
 		M3DM.M3DMATERIAL material = new M3DM.M3DMATERIAL(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 3.0f, 0.0f, 1.0f, 1.0f);

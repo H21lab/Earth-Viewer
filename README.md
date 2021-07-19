@@ -20,9 +20,6 @@ Climate Reanalyzer historical data / Global warming monitoring
 - Sea Surface Temperature Anomaly OISST v2 (past 35 years)
 - Sea Surface Temperature Anomaly ERSST v5 (past 65 years)
 
-US Naval Research Laboratory, Marine Meteorology Division
-- World Rainrate (-24h, generated every 3h)
-
 METEOSAT 0 degree satellite
 - Airmass realtime imagery (-24h, generated every 1h)
 - Airmass realtime imagery full resolution (-6h, generated every 1h)
@@ -31,9 +28,6 @@ METEOSAT 0 degree satellite
 
 METEOSAT IODC satellite
 - IR 10.8 (-24h, generated every 1h)
-
-MTSAT satellite
-- Infrared (-24h, generated every 1h)
 
 SSEC
 - Infrared low res global composite (-1w, generated every 3h)

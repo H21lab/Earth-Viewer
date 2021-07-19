@@ -86,8 +86,7 @@ public class DownloadTexturesCCI extends DownloadTextures {
 		} else if (urls[0].equals("JET")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/WS250/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/WS250/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws250-snowc-topo/";
-			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/ws250-snowc-topo/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws250-mslp/";
 			tag = 'j';
 		} else if (urls[0].equals("SNOW")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";

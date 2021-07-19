@@ -7,7 +7,7 @@
     <string name="play">Play/Pause</string>
     <string name="copyright">Copyright</string>
     <string name="xplanet">XPLANET static</string>
-    <string name="nrl_rainrate">NRL Rainrate (-24h)</string>
+    <!--<string name="nrl_rainrate">NRL Rainrate (-24h)</string>-->
     <string name="meteosat_0_airmass">METEOSAT 0 Airmass (-24h)</string>
     <string name="meteosat_0_airmass_hd">METEOSAT 0 Airmass HD (-6h)</string>
     <string name="meteosat_0_natural_color">METEOSAT 0 Natural Color (-24h)</string>
@@ -21,7 +21,7 @@
     <string name="ssec_water">SSEC Water Vapor (-1w)</string>
     <string name="goes_east">GOES EAST Infrared (-24h)</string>
     <string name="goes_west">GOES WEST Infrared (-24h)</string>
-    <string name="mtsat">MTSAT Infrared (-24h)</string>
+    <!--<string name="mtsat">MTSAT Infrared (-24h)</string>-->
     <string name="cci_clouds">CCI Clouds (+48h)</string>
     <string name="cci_temp">CCI Temperature (+48h)</string>
     <string name="cci_temp_an">CCI T. Anomaly (+48h)</string>

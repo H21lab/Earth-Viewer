@@ -459,7 +459,7 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 		Long e1 = 0L;
 		for (Long e : mCloudMapId.keySet()) {
 
-			if ((e < mEpoch) && (Math.abs(mEpoch - e) < Math.abs(mEpoch - e1))) {
+			if ((e < mEpoch) && ((mEpoch - e) < (mEpoch - e1))) {
 				e1 = e;
 			}
 		}
@@ -475,7 +475,7 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 			Long e3 = 0L;
 			for (Long e : mCloudMapId.keySet()) {
 
-				if ((e >= mEpoch) && (Math.abs(mEpoch - e) <= Math.abs(mEpoch - e3))) {
+				if ((e >= mEpoch) && ((e - mEpoch) <= (e3 - mEpoch))) {
 					e3 = e;
 				}
 			}
@@ -1002,36 +1002,36 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 
 
 		// Update texture
-		long e1 = 1L;    // nearest
-		long e2 = 1L;    // second nearest
-		long e3 = 1L;    // nearest in future
-		long e4 = 1L;    // second nearest in future
+		long e1 = Long.MIN_VALUE/2 + 1L;    // nearest in past
+		long e2 = Long.MIN_VALUE/2 + 1L;    // second nearest in past
+		long e3 = Long.MAX_VALUE/2 - 1L;    // nearest in future
+		long e4 = Long.MAX_VALUE/2 - 1L;    // second nearest in future
 
 		// find nearest epoch in past
 		for (Long e : mCloudMapId.keySet()) {
 
-			if ((e < mEpoch) && (Math.abs(mEpoch - e) < Math.abs(mEpoch - e1))) {
+			if ((e < mEpoch) && ((mEpoch - e) < (mEpoch - e1))) {
 				e1 = e;
 			}
 		}
 
 		// find second nearest in past
 		for (Long e : mCloudMapId.keySet()) {
-			if ((e < mEpoch) && (e != e1) && (Math.abs(mEpoch - e) < Math.abs(mEpoch - e2))) {
+			if ((e < mEpoch) && (e != e1) && ((mEpoch - e) < (mEpoch - e2))) {
 				e2 = e;
 			}
 		}
 
 		// find nearest in future
 		for (Long e : mCloudMapId.keySet()) {
-			if ((e >= mEpoch) && (Math.abs(e - mEpoch) < Math.abs(e3 - mEpoch))) {
+			if ((e >= mEpoch) && ((e - mEpoch) < (e3 - mEpoch))) {
 				e3 = e;
 			}
 		}
 
 		// find second nearest in future
 		for (Long e : mCloudMapId.keySet()) {
-			if ((e >= mEpoch) && (e != e3) && (Math.abs(e - mEpoch) < Math.abs(e4 - mEpoch))) {
+			if ((e >= mEpoch) && (e != e3) && ((e - mEpoch) < (e4 - mEpoch))) {
 				e4 = e;
 			}
 		}

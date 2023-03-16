@@ -2,7 +2,7 @@
  * DownloadTexturesCCI class
  *
  * This file is part of Earth Viewer
- * Copyright 2016, Martin Kacer, H21 lab
+ * Copyright 2023, Martin Kacer, H21 lab
  *
  * Earth Viewer is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -47,7 +47,8 @@ public class DownloadTexturesCCI extends DownloadTextures {
 
 		//String myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PRCP/";
 		// Format: https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2/2018-08-08-00z/00.png
-		String myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp/";
+		//String myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp/";
+		String myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/prcp/";
 
 
 		char tag = 'C';
@@ -55,25 +56,29 @@ public class DownloadTexturesCCI extends DownloadTextures {
 		if (urls[0].equals("CLOUDS")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PRCP/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/PRCP/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp-tcld-topo/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp-tcld-topo/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/prcp-tcld-topo/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/prcp-tcld-topo/";
 			tag = 'C';
 		} else if (urls[0].equals("TEMP")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/t2/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2/";
 			tag = 'T';
 		} else if (urls[0].equals("TEMP_AN")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2_anom/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2anom/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2anom/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/t2anom/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2anom/";
 			tag = 't';
 		} else if (urls[0].equals("WATER")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PWTR/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/PWTR/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/pwtr/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/pwtr/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/pwtr/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/pwtr/";
 			tag = 'w';
 		} else if (urls[0].equals("WIND")) {
@@ -81,17 +86,20 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/WS10/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws10/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/ws10-mslp/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws10-mslp/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws10-mslp/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/ws10-mslp/";
 			tag = 'v';
 		} else if (urls[0].equals("JET")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/WS250/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/WS250/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws250-mslp/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws250-mslp/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/ws250-mslp/";
 			tag = 'j';
 		} else if (urls[0].equals("SNOW")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/SNOW/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/snowd-mslp/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/snowd-mslp/";
+			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/snowd-mslp/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/snowd-mslp/";
 			tag = 's';
 		} else if (urls[0].equals("TEMP_AN_1Y")) {

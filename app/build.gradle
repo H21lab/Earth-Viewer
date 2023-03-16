@@ -15,4 +15,5 @@ android {
             proguardFiles 'proguard.cfg'
         }
     }
+    namespace 'mobile.application.forfree.earth'
 }

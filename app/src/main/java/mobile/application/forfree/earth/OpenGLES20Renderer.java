@@ -2,7 +2,7 @@
  * OpenGLES20Renderer class
  *
  * This file is part of Earth Viewer
- * Copyright 2016, Martin Kacer, H21 lab
+ * Copyright 2023, Martin Kacer, H21 lab
  *
  * Earth Viewer is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -65,7 +65,9 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 	M3DM.mD3DFrame scene;
 	public M3DM.mD3DFrame fearth;
 	public M3DM.mD3DMesh earth;
-	M3DM.mD3DTexture tcube;
+
+	public M3DM.mD3DFrame flabel;
+	public M3DM.mD3DMesh label;
 
 	Context mContext;
 
@@ -78,9 +80,6 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 
 	M3DVECTOR At = new M3DVECTOR(0.0f, 0.0f, 0.0f); // accelleration vector
 	M3DVECTOR Gt = new M3DVECTOR(0.0f, 0.0f, 0.0f); // vertical gravity vector m/(s*s)
-
-	M3DVECTOR O = new M3DVECTOR(0.0f, 0.0f, -1.0f);
-	M3DVECTOR U = new M3DVECTOR(0.0f, 1.0f, 0.0f);
 
 	boolean reloadedTextures = false;
 	int downloadedTextures = 0;
@@ -178,52 +177,75 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 	public void setShaders() {
 		if (DEV != null) {
 
+			label.setProgram(Shaders.p_label);
 			if (mTag == 'X') {
 				earth.setProgram(Shaders.p_xplanet);
+				label.setFlags(label.getFlags() | M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'R') {
 				earth.setProgram(Shaders.p_nrl_rainrate);
+				label.setFlags(label.getFlags() | M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'I') {
 				earth.setProgram(Shaders.p_ssec_ir);
+				label.setFlags(label.getFlags() | M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'W') {
 				earth.setProgram(Shaders.p_ssec_water);
+				label.setFlags(label.getFlags() | M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'F') {
 				earth.setProgram(Shaders.p_meteosat_iodc);
+				label.setFlags(label.getFlags() | M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'G') {
 				earth.setProgram(Shaders.p_goes_east);
+				label.setFlags(label.getFlags() | M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'H') {
 				earth.setProgram(Shaders.p_goes_west);
+				label.setFlags(label.getFlags() | M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'J') {
 				earth.setProgram(Shaders.p_mtsat);
+				label.setFlags(label.getFlags() | M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'C') {
 				earth.setProgram(Shaders.p_cci);
+				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'T') {
 				earth.setProgram(Shaders.p_cci_temp);
+				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 't') {
 				earth.setProgram(Shaders.p_cci_temp_an);
+				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'w') {
 				earth.setProgram(Shaders.p_cci_water);
+				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'v') {
 				earth.setProgram(Shaders.p_cci_wind);
+				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'j') {
 				earth.setProgram(Shaders.p_cci_jet);
+				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 's') {
 				earth.setProgram(Shaders.p_cci_snow);
+				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'a') {
 				earth.setProgram(Shaders.p_cci_temp_an_1y);
+				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'b') {
 				earth.setProgram(Shaders.p_cci_oisst_v2);
+				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'O') {
 				earth.setProgram(Shaders.p_cci_oisst_v2);
+				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'e') {
 				earth.setProgram(Shaders.p_cci_oisst_v2);
+				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'm') {
 				earth.setProgram(Shaders.p_meteosat_0_hd);
+				label.setFlags(label.getFlags() | M3DM.MD3DMESHF_DISABLED);
 			} else {
 				earth.setProgram(Shaders.p_meteosat_0);
+				label.setFlags(label.getFlags() | M3DM.MD3DMESHF_DISABLED);
 			}
 
 			int p = earth.getProgram();
 			earth.flushProgram();
+			label.flushProgram();
 			if (p != -1 && p != earth.getNewProgram()) {
 				DEV.DeleteProgram(p);
 			}
@@ -235,6 +257,8 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 		if (DEV != null) {
 
 			// initialize Shaders
+
+			Shaders.p_label = DEV.CompileProgram(Shaders.vsc_label, Shaders.fsc_label);
 
 			if (mTag == 'X') {
 				Shaders.p_xplanet = DEV.CompileProgram(Shaders.vsc_xplanet, Shaders.fsc_xplanet);
@@ -404,6 +428,9 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 		earth.setTexture(5, texture2);
 		earth.setTexture(6, texture2);
 
+		label.Textures = 1;
+		label.setTexture(0, texture1);
+
 
 		// delete textures
 		for (Long e : mCloudMapId.keySet()) {
@@ -466,6 +493,7 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 		if (mCloudMapId.containsKey(e1)) {
 			texture = new M3DM.mD3DTexture();
 			texture.id = mCloudMapId.get(e1);
+			label.setTexture(0, texture);
 			earth.setTexture(2, texture);
 			earth.setTexture(4, texture);
 			earth.setTexture(5, texture);
@@ -482,6 +510,7 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 			if (mCloudMapId.containsKey(e3)) {
 				texture = new M3DM.mD3DTexture();
 				texture.id = mCloudMapId.get(e3);
+				label.setTexture(0, texture);
 				earth.setTexture(2, texture);
 				earth.setTexture(4, texture);
 				earth.setTexture(5, texture);
@@ -761,21 +790,75 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 
 		// create object
 		earth = M3DM.createEllipsoid(1.0f, 0.996f, 3, 6, 0.0f, 0.0f, 1.0f, 1.0f);
-
+		//earth.generateNormals();
 		earth.generateTangentsBitangets();
-
 		earth.Textures = 0;
-
 		M3DM.M3DMATERIAL material = new M3DM.M3DMATERIAL(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 3.0f, 0.0f, 1.0f, 1.0f);
-
 		earth.setMaterial(material);
+
 		fearth = new M3DM.mD3DFrame(scene);
 		fearth.Position = new M3DVECTOR(0.0f, 0.0f, 0.0f);
-
-		fearth.Up = U;
-		fearth.Orientation = O;
-
+		fearth.Up = new M3DVECTOR(0.0f, 1.0f, 0.0f);
+		fearth.Orientation = new M3DVECTOR(0.0f, 0.0f, -1.0f);
 		fearth.addMesh(earth);
+
+		// create label
+		M3DM.mD3DMesh mesh;
+
+		M3DM.M3DVERTEX vertex[] = new M3DM.M3DVERTEX[4];
+		short data[] = new short[4];
+
+		float a = 0.35f;
+		vertex[0] = new M3DM.M3DVERTEX();
+		vertex[0].P.x = -a;
+		vertex[0].P.y = -a*0.2f;
+		vertex[0].P.z = a;
+		vertex[0].u = 0.0f;
+		vertex[0].v = 1.0f;
+
+		vertex[1] = new M3DM.M3DVERTEX();
+		vertex[1].P.x = -a;
+		vertex[1].P.y = a*0.2f;
+		vertex[1].P.z = a;
+		vertex[1].u = 0.0f;
+		vertex[1].v = 1.0f - 0.076f;
+
+		vertex[2] = new M3DM.M3DVERTEX();
+		vertex[2].P.x = a;
+		vertex[2].P.y = a*0.2f;
+		vertex[2].P.z = a;
+		vertex[2].u = 1.0f;
+		vertex[2].v = 1.0f - 0.076f;
+
+		vertex[3] = new M3DM.M3DVERTEX();
+		vertex[3].P.x = a;
+		vertex[3].P.y = -a*0.2f;
+		vertex[3].P.z = a;
+		vertex[3].u = 1.0f;
+		vertex[3].v = 1.0f;
+
+		data[0] = 1;
+		data[1] = 0;
+		data[2] = 2;
+		data[3] = 3;
+
+		for (int i = 0; i < vertex.length; i++) {
+			vertex[i].N = M3DVECTOR.Normalize(vertex[i].P);
+		}
+
+		label = new M3DM.mD3DMesh(vertex, data, data.length);
+		label.setFlags(M3DM.MD3DMESHF_DISABLED);
+
+		label.Textures = 1;
+		label.setMaterial(material);
+
+		flabel = new M3DM.mD3DFrame(scene);
+		flabel.Position = new M3DVECTOR(0.0f, -0.5f, 1.0f);
+		flabel.Up = new M3DVECTOR(0.0f, 1.0f, 0.0f);
+		flabel.Orientation = new M3DVECTOR(0.0f, 0.0f, 1.0f);
+		flabel.addMesh(label);
+		flabel.setWorldM();
+		label.setFlags(M3DM.MD3DMESHF_UI);
 
 		mRotation = M3DMATRIX.IdentityMatrix();
 		// -------------------------------------------
@@ -872,6 +955,7 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 
 
 		fearth.setWorldM();
+		flabel.setWorldM();
 
 
 		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
@@ -1042,6 +1126,7 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 
 				texture = new M3DM.mD3DTexture();
 				texture.id = mCloudMapId.get(e1);
+				label.setTexture(0, texture);
 				earth.setTexture(2, texture);
 
 				_e1 = e1;
@@ -1053,12 +1138,14 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 				Log.d("H21lab", "Changing texture e2 " + e2 + " " + _e2 + " ID " + mCloudMapId.get(e2));
 				texture = new M3DM.mD3DTexture();
 				texture.id = mCloudMapId.get(e2);
+				label.setTexture(0, texture);
 				earth.setTexture(4, texture);
 				_e2 = e2;
 			} else if (_e2 != e1 && mCloudMapId.containsKey(e1)) {
 				Log.d("H21lab", "Changing texture e1 no e2 " + e1 + " " + _e1 + " ID " + mCloudMapId.get(e1));
 				texture = new M3DM.mD3DTexture();
 				texture.id = mCloudMapId.get(e1);
+				label.setTexture(0, texture);
 				earth.setTexture(4, texture);
 				_e2 = e1;
 			}
@@ -1069,12 +1156,14 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 				Log.d("H21lab", "Changing texture e3 " + e3 + " " + _e3 + " ID " + mCloudMapId.get(e3));
 				texture = new M3DM.mD3DTexture();
 				texture.id = mCloudMapId.get(e3);
+				label.setTexture(0, texture);
 				earth.setTexture(5, texture);
 				_e3 = e3;
 			} else if (_e3 != _e1 && mCloudMapId.containsKey(e1)) {
 				Log.d("H21lab", "Changing texture e1 no e3 " + e1 + " " + _e1 + " ID " + mCloudMapId.get(e1));
 				texture = new M3DM.mD3DTexture();
 				texture.id = mCloudMapId.get(e1);
+				label.setTexture(0, texture);
 				earth.setTexture(5, texture);
 				_e3 = e1;
 			}
@@ -1085,18 +1174,21 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 				Log.d("H21lab", "Changing texture e4 " + e4 + " " + _e4 + " ID " + mCloudMapId.get(e4));
 				texture = new M3DM.mD3DTexture();
 				texture.id = mCloudMapId.get(e4);
+				label.setTexture(0, texture);
 				earth.setTexture(6, texture);
 				_e4 = e4;
 			} else if (_e4 != _e3 && mCloudMapId.containsKey(e3)) {
 				Log.d("H21lab", "Changing texture e3 no e4 " + e1 + " " + _e3 + " ID " + mCloudMapId.get(e3));
 				texture = new M3DM.mD3DTexture();
 				texture.id = mCloudMapId.get(e3);
+				label.setTexture(0, texture);
 				earth.setTexture(6, texture);
 				_e4 = e3;
 			} else if (_e4 != _e1 && _e4 != _e3 && mCloudMapId.containsKey(e1)) {
 				Log.d("H21lab", "Changing texture e1 no e4 " + e1 + " " + _e1 + " ID " + mCloudMapId.get(e1));
 				texture = new M3DM.mD3DTexture();
 				texture.id = mCloudMapId.get(e1);
+				label.setTexture(0, texture);
 				earth.setTexture(6, texture);
 				_e4 = e1;
 			}

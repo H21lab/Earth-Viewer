@@ -2,7 +2,7 @@
  * OpenGLES20SurfaceView class
  *
  * This file is part of Earth Viewer
- * Copyright 2016, Martin Kacer, H21 lab
+ * Copyright 2023, Martin Kacer, H21 lab
  *
  * Earth Viewer is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -188,6 +188,7 @@ public class OpenGLES20SurfaceView extends GLSurfaceView {
 								mRenderer.fearth.Orientation = M3DVECTOR.POINTROTATE(mRenderer.fearth.Orientation, new M3DVECTOR(0.0f, 0.0f, 0.0f), mRenderer.DEV.CameraOrientation, angle);
 								mRenderer.fearth.Up = M3DVECTOR.POINTROTATE(mRenderer.fearth.Up, new M3DVECTOR(0.0f, 0.0f, 0.0f), mRenderer.DEV.CameraOrientation, angle);
 								mRenderer.fearth.setWorldM();
+
 							}
 
 
@@ -223,6 +224,7 @@ public class OpenGLES20SurfaceView extends GLSurfaceView {
 
 							Matrix.frustumM(mRenderer.DEV.projectionMatrix, 0, left, right, bottom, top, mRenderer.DEV.P_NPlane, mRenderer.DEV.P_FPlane);
 
+							Matrix.frustumM(mRenderer.DEV.orthoProjectionMatrix, 0, -mRenderer.DEV.P_NPlane * (float) (mRenderer.DEV.SCREEN_WIDTH) / (float) (mRenderer.DEV.SCREEN_HEIGHT) * (float) Math.tan(mRenderer.DEV._P_fov_vert / 2.0f), mRenderer.DEV.P_NPlane * (float) (mRenderer.DEV.SCREEN_WIDTH) / (float) (mRenderer.DEV.SCREEN_HEIGHT) * (float) Math.tan(mRenderer.DEV._P_fov_vert / 2.0f), -mRenderer.DEV.P_NPlane * (float) Math.tan(mRenderer.DEV._P_fov_vert / 2.0f), mRenderer.DEV.P_NPlane * (float) Math.tan(mRenderer.DEV._P_fov_vert / 2.0f), mRenderer.DEV.P_NPlane, mRenderer.DEV.P_FPlane);
 
 							mPreviousX = x;
 							mPreviousY = y;

@@ -2,7 +2,7 @@
  * M3DM class
  *
  * This file is part of Earth Viewer
- * Copyright 2016, Martin Kacer, H21 lab
+ * Copyright 2023, Martin Kacer, H21 lab
  *
  * Earth Viewer is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -52,11 +52,15 @@ class M3DM {
 	float[] viewMatrix = new float[16];
 	float[] projectionMatrix = new float[16];
 
+	float[] orthoProjectionMatrix = new float[16];
+
 	// PROJECTION
 	float P_NPlane = 1.0f;
 	float P_FPlane = 200.0f;
 	float P_fov_vert = 60.0f * (PI / 180.0f); // overall
+	float _P_fov_vert = 60.0f * (PI / 180.0f); // UI overall
 	float P_fov_horiz = ((float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT)) * P_fov_vert;
+	float _P_fov_horiz = ((float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT)) * _P_fov_vert;
 	/************************ FLAGS *************************/
 	// TODO some parameters are legacy
 	final static int MAXMESHS = 20; // max # of meshs in one mesh or frame
@@ -74,6 +78,7 @@ class M3DM {
 	final static int MD3DMESHF_NOCULLING = 16;	// mesh no culling
 	final static int MD3DMESHF_FRONTCULLING = 32;	// mesh front culling
 	final static int MD3DMESHF_RENDEREDFIRST = 64;  // mesh render first if zsort
+	final static int MD3DMESHF_UI = 128;	// mesh UI, no projection and view transformation
 
 	/* FLAGS PRE FLEXIBLE VERTEX FORMAT */
 	final static int M3DFVF_XYZ = 0x00000001;
@@ -447,6 +452,10 @@ class M3DM {
 		//	Matrix.frustumM(projectionMatrix, 0, -P_NPlane*(float)Math.tan(P_fov_horiz), P_NPlane*(float)Math.tan(P_fov_horiz), -P_NPlane*(float)Math.tan(P_fov_vert), P_NPlane*(float)Math.tan(P_fov_vert), P_NPlane, P_FPlane);
 		Matrix.frustumM(projectionMatrix, 0, -P_NPlane * (float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT) * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane * (float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT) * (float) Math.tan(P_fov_vert / 2.0f), -P_NPlane * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane, P_FPlane);
 
+		_P_fov_horiz = ((float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT)) * _P_fov_vert;
+		//Matrix.orthoM(orthoProjectionMatrix, 0, -1.0f, 1.0f, -1.0f * (float) SCREEN_HEIGHT / (float) SCREEN_WIDTH, 1.0f * (float) SCREEN_HEIGHT / (float) SCREEN_WIDTH, -1.0f, 1.0f);
+		Matrix.frustumM(orthoProjectionMatrix, 0, -P_NPlane * (float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT) * (float) Math.tan(_P_fov_vert / 2.0f), P_NPlane * (float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT) * (float) Math.tan(_P_fov_vert / 2.0f), -P_NPlane * (float) Math.tan(_P_fov_vert / 2.0f), P_NPlane * (float) Math.tan(_P_fov_vert / 2.0f), P_NPlane, P_FPlane);
+
 
 		for (int i = 0; i < 8; i++) {
 			_Texture[i] = new mD3DTexture();
@@ -516,7 +525,7 @@ class M3DM {
 		CameraUp = cam_up;
 
 		Matrix.frustumM(projectionMatrix, 0, -P_NPlane * (float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT) * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane * (float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT) * (float) Math.tan(P_fov_vert / 2.0f), -P_NPlane * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane, P_FPlane);
-
+		Matrix.frustumM(orthoProjectionMatrix, 0, -P_NPlane * (float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT) * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane * (float) (SCREEN_WIDTH) / (float) (SCREEN_HEIGHT) * (float) Math.tan(P_fov_vert / 2.0f), -P_NPlane * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane * (float) Math.tan(P_fov_vert / 2.0f), P_NPlane, P_FPlane);
 	}
 
 	/************************ mD3DMesh *****************************/
@@ -615,6 +624,7 @@ class M3DM {
 		}
 
 		// all normals are counted and than normalized
+		// TODO verify this function, the vertices are mapped by TRIANGLE_STRIP now
 		void generateNormals() {
 			int NVERTEX; // index of just modified vertex
 			int j, k, n;
@@ -1020,8 +1030,14 @@ class M3DM {
 
 
 		mVMatrix = viewMatrix;
-		Matrix.multiplyMM(mMVMatrix, 0, viewMatrix, 0, world.values(), 0);
-		Matrix.multiplyMM(mMVPMatrix, 0, projectionMatrix, 0, mMVMatrix, 0);
+		if ((mesh.Flags & MD3DMESHF_UI) == MD3DMESHF_UI) {
+			//Matrix.setIdentityM(mMVMatrix, 0);
+			Matrix.multiplyMM(mMVMatrix, 0, viewMatrix, 0, world.values(), 0);
+			Matrix.multiplyMM(mMVPMatrix, 0, orthoProjectionMatrix, 0, mMVMatrix, 0);
+		} else {
+			Matrix.multiplyMM(mMVMatrix, 0, viewMatrix, 0, world.values(), 0);
+			Matrix.multiplyMM(mMVPMatrix, 0, projectionMatrix, 0, mMVMatrix, 0);
+		}
 		Matrix.invertM(mIMVMatrix, 0, mMVMatrix, 0);
 		Matrix.invertM(mIMVPMatrix, 0, mMVPMatrix, 0);
 
@@ -1434,11 +1450,12 @@ class M3DM {
 
 	/****************** ELLIPSOID ********************/
 
+	// TODO, create it for GL_TRIANGLE_STRIP https://stackoverflow.com/questions/28375338/cube-using-single-gl-triangle-strip
 	static mD3DMesh createCube(float a) {
 		mD3DMesh mesh;
 
 		M3DVERTEX vertex[] = new M3DVERTEX[24];
-		short data[] = new short[4]; //short[31];
+		short data[] = new short[10];
 
 		// front
 		vertex[0] = new M3DVERTEX();
@@ -1614,17 +1631,37 @@ class M3DM {
 		vertex[23].u = 0.0f;
 		vertex[23].v = 0.0f;
 
+		// back
 		data[0] = 8;
 		data[1] = 9;
 		data[2] = 11;
 		data[3] = 10;
 
+		// left
+		data[4] = 15;
+		data[5] = 14;
+
+		// front
+		data[6] = 3;
+		data[7] = 2;
+
+		// right
+		data[8] = 7;
+		data[9] = 6;
+
+		/*// top
+		data[7] = 17;
+		data[8] = 18;
+
+		// right
+		data[7] = 17;
+		data[8] = 18;*/
 
 		for (int i = 0; i < vertex.length; i++) {
 			vertex[i].N = M3DVECTOR.Normalize(vertex[i].P);
 		}
 
-		mesh = new mD3DMesh(vertex, data, 4);
+		mesh = new mD3DMesh(vertex, data, data.length);
 
 		return mesh;
 	}

@@ -2,7 +2,7 @@
  * Shaders class
  *
  * This file is part of Earth Viewer
- * Copyright 2016, Martin Kacer, H21 lab
+ * Copyright 2023, Martin Kacer, H21 lab
  *
  * Earth Viewer is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,6 +27,102 @@ public class Shaders {
 	
 	/* OpenGL */
 	// TODO only for 1 light and texture required
+
+	public static int p_label;
+
+	public static String vsc_label =
+			"uniform mat4 uMVPMatrix;   \n" +
+					"uniform mat4 uMVMatrix;   	\n" +
+					"uniform mat4 uVMatrix;   	\n" +
+					"varying mat4 vMVMatrix;   	\n" +
+					"uniform mat4 uIMVMatrix;	\n" +
+
+					"attribute vec4 aPosition; 	\n" +
+					"attribute vec3 aNormal;  	\n" +
+					"attribute vec2 aTex;		\n" +
+
+					"varying vec3 vPosition;	\n" +
+					"varying vec3 vNormal;		\n" +
+					"varying vec3 vMVNormal;		\n" +
+					"varying vec2 vTex;			\n" +
+
+					"uniform vec4 uLightPos;  	\n" +
+					"varying vec3 vLightPos;	\n" +
+					"varying vec3 lightVector;	\n" +
+
+
+					"varying vec3 vEye;	\n" +
+
+					// Atmosphere
+					"varying vec3 vPositionA;	\n" +
+					// clouds shadow shift
+					"varying vec2 shiftUV;		\n" +
+
+					"void main(){              	\n" +
+					" gl_Position = uMVPMatrix * aPosition; \n" +
+					" vec4 position = aPosition; \n" +
+					" vPosition = vec3(position.x, position.y, position.z); \n" +
+
+					// only rotate the normals
+					" vec4 normal = vec4(aNormal, 0.0); \n" +
+					" vNormal = vec3(normal.x, normal.y, normal.z); \n" +
+					" normal = uMVMatrix*vec4(aNormal, 0.0); \n" +
+					" vMVNormal = vec3(normal.x, normal.y, normal.z); \n" +
+
+
+					" vTex = aTex; \n" +
+
+					" vec4 lightPos = uIMVMatrix * uLightPos; \n" +
+					" vLightPos = vec3(lightPos.x, lightPos.y, lightPos.z); \n" +
+
+					" vec4 eye = uIMVMatrix * vec4(0.0, 0.0, 0.0, 1.0); \n" +
+					" vEye = vec3(eye.x, eye.y, eye.z); \n" +
+
+
+					" lightVector = normalize(vLightPos - vPosition);   \n" +
+
+					// clouds shadow
+					" vec3 _y = vec3(0.0, 1.0, 0.0); \n" +
+					" vec3 _x = cross(_y, vNormal); \n" +
+					" vec3 _z = vNormal; \n" +
+					" shiftUV = vec2( dot(lightVector, _x), -dot(lightVector, _y) ); \n" +
+
+
+					"}                         \n";
+
+	public static String fsc_label=
+			"precision mediump float;  	\n" +
+					"varying vec3 vLightPos;  	\n" +
+					"varying vec3 vPosition;	\n" +     // Interpolated position for this fragment.
+					"varying vec3 lightVector;	\n" +
+					"uniform vec4 uColor;  		\n" +     // This is the color from the vertex shader interpolated across the triangle per fragment.
+					"varying vec3 vNormal;   	\n" +     // Interpolated normal for this fragment.
+					"varying vec3 vMVNormal;	\n" +
+					"varying vec2 vTex;			\n" +
+					"uniform sampler2D uTextures[4];\n" +
+					"varying vec3 vEye	;   	\n" +
+					"varying vec2 shiftUV;		\n" +	  // clouds shadow shift
+
+					"uniform vec4 uLightAmbientColor;  		\n" +
+					"uniform vec4 uLightDiffuseColor;  		\n" +
+					"uniform vec4 uLightSpecularColor;  	\n" +
+					"uniform float uLightAttenuation;  		\n" +
+					"uniform vec4 uMaterialAmbientColor;  	\n" +
+					"uniform vec4 uMaterialDiffuseColor; 	\n" +
+					"uniform vec4 uMaterialSpecularColor;  	\n" +
+					"uniform vec4 uMaterialEmissiveColor;  	\n" +
+					"uniform float uMaterialShinnes;  		\n" +
+					"uniform float uBumpLevel;				\n" +
+					"uniform int uTexMapping;				\n" +
+
+					// The entry point for our fragment shader.
+					"void main()  				\n" +
+					"{  						\n" +
+
+					"    gl_FragColor =  texture2D(uTextures[0], vTex);\n" +
+
+					"}   \n";
+
 	public static final String vsc_meteosat_0 = 
 			"uniform mat4 uMVPMatrix;   \n" +
 			"uniform mat4 uMVMatrix;   	\n" +

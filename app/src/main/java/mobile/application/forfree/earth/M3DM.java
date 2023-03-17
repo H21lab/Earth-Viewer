@@ -595,7 +595,7 @@ class M3DM {
 
 		void setVertex(int N, float handle[]) {
 			for (int i = 0; i < VertexSize; i++) {
-				Vertex[i] = handle[i];
+				Vertex[N * VertexSize + i] = handle[i];
 			}
 		}
 
@@ -618,7 +618,7 @@ class M3DM {
 		float[] getVertex(int N) {
 			float ret[] = new float[VertexSize];
 			for (int i = 0; i < VertexSize; i++) {
-				ret[i] = Vertex[i];
+				ret[i] = Vertex[N * VertexSize + i];
 			}
 			return ret;
 		}

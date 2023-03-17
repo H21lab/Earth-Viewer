@@ -205,36 +205,69 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 			} else if (mTag == 'C') {
 				earth.setProgram(Shaders.p_cci);
 				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
+				// change label UV
+				label.Vertex[1 * label.VertexSize + 7] = 1.0f - 0.090f;
+				label.Vertex[2 * label.VertexSize + 7] = 1.0f - 0.090f;
 			} else if (mTag == 'T') {
 				earth.setProgram(Shaders.p_cci_temp);
 				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
+				// change label UV
+				label.Vertex[1 * label.VertexSize + 7] = 1.0f - 0.076f;
+				label.Vertex[2 * label.VertexSize + 7] = 1.0f - 0.076f;
 			} else if (mTag == 't') {
 				earth.setProgram(Shaders.p_cci_temp_an);
 				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
+				// change label UV
+				label.Vertex[1 * label.VertexSize + 7] = 1.0f - 0.076f;
+				label.Vertex[2 * label.VertexSize + 7] = 1.0f - 0.076f;
 			} else if (mTag == 'w') {
 				earth.setProgram(Shaders.p_cci_water);
 				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
+				// change label UV
+				label.Vertex[1 * label.VertexSize + 7] = 1.0f - 0.076f;
+				label.Vertex[2 * label.VertexSize + 7] = 1.0f - 0.076f;
 			} else if (mTag == 'v') {
 				earth.setProgram(Shaders.p_cci_wind);
 				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
+				// change label UV
+				label.Vertex[1 * label.VertexSize + 7] = 1.0f - 0.076f;
+				label.Vertex[2 * label.VertexSize + 7] = 1.0f - 0.076f;
 			} else if (mTag == 'j') {
 				earth.setProgram(Shaders.p_cci_jet);
 				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
+				// change label UV
+				label.Vertex[1 * label.VertexSize + 7] = 1.0f - 0.076f;
+				label.Vertex[2 * label.VertexSize + 7] = 1.0f - 0.076f;
 			} else if (mTag == 's') {
 				earth.setProgram(Shaders.p_cci_snow);
 				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
+				// change label UV
+				label.Vertex[1 * label.VertexSize + 7] = 1.0f - 0.076f;
+				label.Vertex[2 * label.VertexSize + 7] = 1.0f - 0.076f;
 			} else if (mTag == 'a') {
 				earth.setProgram(Shaders.p_cci_temp_an_1y);
 				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
+				// change label UV
+				label.Vertex[1 * label.VertexSize + 7] = 1.0f - 0.13f;
+				label.Vertex[2 * label.VertexSize + 7] = 1.0f - 0.13f;
 			} else if (mTag == 'b') {
 				earth.setProgram(Shaders.p_cci_oisst_v2);
 				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
+				// change label UV
+				label.Vertex[1 * label.VertexSize + 7] = 1.0f - 0.076f;
+				label.Vertex[2 * label.VertexSize + 7] = 1.0f - 0.076f;
 			} else if (mTag == 'O') {
 				earth.setProgram(Shaders.p_cci_oisst_v2);
 				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
+				// change label UV
+				label.Vertex[1 * label.VertexSize + 7] = 1.0f - 0.076f;
+				label.Vertex[2 * label.VertexSize + 7] = 1.0f - 0.076f;
 			} else if (mTag == 'e') {
 				earth.setProgram(Shaders.p_cci_oisst_v2);
 				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
+				// change label UV
+				label.Vertex[1 * label.VertexSize + 7] = 1.0f - 0.076f;
+				label.Vertex[2 * label.VertexSize + 7] = 1.0f - 0.076f;
 			} else if (mTag == 'm') {
 				earth.setProgram(Shaders.p_meteosat_0_hd);
 				label.setFlags(label.getFlags() | M3DM.MD3DMESHF_DISABLED);

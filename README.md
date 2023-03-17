@@ -33,6 +33,10 @@ SSEC
 - Infrared low res global composite (-1w, generated every 3h)
 - Water vapor low res global composite (-1w, generated every 3h)
 
+NOAA
+- Aurora 30 Minute Forecast Northern Hemisphere (-24h)
+- Aurora 30 Minute Forecast Southern Hemisphere (-24h)
+
 
 Application features:
 - Interpolation between images

@@ -262,6 +262,12 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 				// change label UV
 				label.Vertex[1 * label.VertexSize + 7] = 1.0f - 0.076f;
 				label.Vertex[2 * label.VertexSize + 7] = 1.0f - 0.076f;
+			} else if (mTag == 'N') {
+				earth.setProgram(Shaders.p_noaa_aurora_n);
+				label.setFlags(label.getFlags() | M3DM.MD3DMESHF_DISABLED);
+			}  else if (mTag == 'S') {
+				earth.setProgram(Shaders.p_noaa_aurora_s);
+				label.setFlags(label.getFlags() | M3DM.MD3DMESHF_DISABLED);
 			} else if (mTag == 'e') {
 				earth.setProgram(Shaders.p_cci_oisst_v2);
 				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
@@ -331,6 +337,10 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 				Shaders.p_cci_oisst_v2 = DEV.CompileProgram(Shaders.vsc_cci_oisst_v2, Shaders.fsc_cci_oisst_v2);
 			} else if (mTag == 'e') {
 				Shaders.p_cci_oisst_v2 = DEV.CompileProgram(Shaders.vsc_cci_oisst_v2, Shaders.fsc_cci_oisst_v2);
+			}  else if (mTag == 'N') {
+				Shaders.p_noaa_aurora_n = DEV.CompileProgram(Shaders.vsc_noaa_aurora_n, Shaders.fsc_noaa_aurora_n);
+			} else if (mTag == 'S') {
+				Shaders.p_noaa_aurora_s = DEV.CompileProgram(Shaders.vsc_noaa_aurora_s, Shaders.fsc_noaa_aurora_s);
 			} else if (mTag == 'm') {
 				Shaders.p_meteosat_0_hd = DEV.CompileProgram(Shaders.vsc_meteosat_0_hd, Shaders.fsc_meteosat_0_hd);
 			} else {
@@ -1030,6 +1040,10 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 			else if (mTag == 'e') {
 				mTimeRotate += 25 * ((long) 365.25 * Tc * 2 * 30 * 60) * 1000;
 			}
+			// last 24 h
+			else if (mTag == 'N' || mTag == 'S') {
+				mTimeRotate += Tc * 4 * 30 * 60 * 1000;
+			}
 			// last 0.5 years
 			else if (mTag == 'a' || mTag == 'b') {
 				mTimeRotate += 0.3 * ((long) 365.25 * Tc * 2 * 30 * 60) * 1000;
@@ -1065,6 +1079,13 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 				mTimeRotate -= 35 * 365.25 * 24 * 3600 * 1000;
 			}
 			mEpoch = now - (long) (35 * 365.25 * 24 * 3600) * 1000 + mTimeRotate;
+		}
+		// last 24h
+		else if (mTag == 'N' || mTag == 'S') {
+			while (mTimeRotate > 24 * 3600 * 1000) {
+				mTimeRotate -= 24 * 3600 * 1000;
+			}
+			mEpoch = now - 24 * 3600 * 1000 + mTimeRotate;
 		}
 		// last 65 years
 		else if (mTag == 'e') {

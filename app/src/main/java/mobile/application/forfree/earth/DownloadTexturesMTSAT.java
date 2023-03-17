@@ -2,7 +2,7 @@
  * DownloadTexturesMTSAT class
  *
  * This file is part of Earth Viewer
- * Copyright 2016, Martin Kacer, H21 lab
+ * Copyright 2023, Martin Kacer, H21 lab
  *
  * Earth Viewer is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -149,6 +149,7 @@ public class DownloadTexturesMTSAT extends DownloadTextures {
 						str = str.trim().replaceAll("-00+", "");
 						//str += "UTC";
 						SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
+						df.setTimeZone(TimeZone.getTimeZone("GMT"));
 						java.util.Date d = df.parse(str);
 						long e = d.getTime();
 						Log.d("H21lab", "eKeys: " + str + " " + e);
@@ -186,7 +187,7 @@ public class DownloadTexturesMTSAT extends DownloadTextures {
 
 			if (!eKeys.containsKey(h)) {
 
-				Log.d("H21lab", "Does not conain eKeys h = " + h);
+				Log.d("H21lab", "Does not contain eKeys h = " + h);
 
 				continue;
 			}

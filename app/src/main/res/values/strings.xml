@@ -33,4 +33,6 @@
     <string name="cci_oisst_v2_1y">CCI T. Anomaly OISSTv2 (-182d)</string>
     <string name="cci_oisst_v2">CCI T. Anomaly OISSTv2 (-35Y)</string>
     <string name="cci_ersst_v5">CCI T. Anomaly ERSSTv5 (-65Y)</string>
+    <string name="noaa_aurora_n">NOAA Aurora North (-24h)</string>
+    <string name="noaa_aurora_s">NOAA Aurora South (-24h)</string>
 </resources>

@@ -2,7 +2,7 @@
  * EarthActivity class
  *
  * This file is part of Earth Viewer
- * Copyright 2016, Martin Kacer, H21 lab
+ * Copyright 2023, Martin Kacer, H21 lab
  *
  * Earth Viewer is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -66,6 +66,9 @@ public class EarthActivity extends Activity {
 	private final int ID_MENU_IMAGERY_MPE_HD = 31;
 	private final int ID_MENU_IMAGERY_NRL_RAINRATE = 41;
 
+	private final int ID_MENU_IMAGERY_NOAA_AURORA_N = 51;
+	private final int ID_MENU_IMAGERY_NOAA_AURORA_S = 52;
+
 
 	private OpenGLES20SurfaceView mGLView;
 
@@ -114,6 +117,8 @@ public class EarthActivity extends Activity {
 		//menu.add(Menu.NONE, ID_MENU_IMAGERY_MTSAT, Menu.NONE, R.string.mtsat);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_SSEC_IR, Menu.NONE, R.string.ssec_ir);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_SSEC_WATER, Menu.NONE, R.string.ssec_water);
+		menu.add(Menu.NONE, ID_MENU_IMAGERY_NOAA_AURORA_N, Menu.NONE, R.string.noaa_aurora_n);
+		menu.add(Menu.NONE, ID_MENU_IMAGERY_NOAA_AURORA_S, Menu.NONE, R.string.noaa_aurora_s);
 		menu.add(Menu.NONE, ID_MENU_COPYRIGHT, Menu.NONE, "Copyright");
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -199,6 +204,7 @@ public class EarthActivity extends Activity {
 					//+ "MTSAT DATA: Credit to Japan Meteorological Agency\nhttp://www.jma.go.jp/en/gms/\n\n"
 					+ "SSEC DATA: Provided courtesy of University of Wisconsin-Madison Space Science and Engineering Center\nhttp://www.ssec.wisc.edu/data/comp/\n\n"
 					//+ "XPLANET DATA: Many thanks to Hari Nair author of Xplanet\nhttp://xplanet.sourceforge.net\n\n"
+					+ "NOAA DATA: Data are obtained from NOAA SPACE WEATHER PREDICTION CENTER \nhttps://www.swpc.noaa.gov/\n\n"
 					+ "Developed by Martin Kacer\n");
 			dlgAlert.setTitle("Copyright");
 			dlgAlert.setPositiveButton("Ok",
@@ -389,6 +395,20 @@ public class EarthActivity extends Activity {
 			if (mGLView.getOpenGLES20Renderer().mDownloadTextures.getStatus() == AsyncTask.Status.FINISHED) {
 				mGLView.getOpenGLES20Renderer().mDownloadTextures = new DownloadTexturesSSEC(mGLView.getOpenGLES20Renderer());
 				mGLView.getOpenGLES20Renderer().mDownloadTextures.execute("WATER");
+			} else if (mGLView.getOpenGLES20Renderer().mDownloadTextures.isCancelled() != true) {
+				mGLView.getOpenGLES20Renderer().mDownloadTextures.progressDialogShow();
+			}
+		} else if (item.getItemId() == ID_MENU_IMAGERY_NOAA_AURORA_N) {
+			if (mGLView.getOpenGLES20Renderer().mDownloadTextures.getStatus() == AsyncTask.Status.FINISHED) {
+				mGLView.getOpenGLES20Renderer().mDownloadTextures = new DownloadTexturesNoaa(mGLView.getOpenGLES20Renderer());
+				mGLView.getOpenGLES20Renderer().mDownloadTextures.execute("NOAA_AURORA_NORTH");
+			} else if (mGLView.getOpenGLES20Renderer().mDownloadTextures.isCancelled() != true) {
+				mGLView.getOpenGLES20Renderer().mDownloadTextures.progressDialogShow();
+			}
+		}   else if (item.getItemId() == ID_MENU_IMAGERY_NOAA_AURORA_S) {
+			if (mGLView.getOpenGLES20Renderer().mDownloadTextures.getStatus() == AsyncTask.Status.FINISHED) {
+				mGLView.getOpenGLES20Renderer().mDownloadTextures = new DownloadTexturesNoaa(mGLView.getOpenGLES20Renderer());
+				mGLView.getOpenGLES20Renderer().mDownloadTextures.execute("NOAA_AURORA_SOUTH");
 			} else if (mGLView.getOpenGLES20Renderer().mDownloadTextures.isCancelled() != true) {
 				mGLView.getOpenGLES20Renderer().mDownloadTextures.progressDialogShow();
 			}

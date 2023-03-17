@@ -1,5 +1,5 @@
 /*
- * DownloadTexturesEumetsat class
+ * DownloadTexturesGoes class
  *
  * This file is part of Earth Viewer
  * Copyright 2023, Martin Kacer, H21 lab
@@ -20,13 +20,14 @@
 
 package mobile.application.forfree.earth;
 
-import java.io.BufferedInputStream;
+import android.graphics.Bitmap;
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -37,19 +38,10 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//import org.apache.http.HttpResponse;
-//import org.apache.http.client.HttpClient;
-//import org.apache.http.client.methods.HttpGet;
-//import org.apache.http.impl.client.DefaultHttpClient;
-//import org.apache.http.util.EntityUtils;
-
-import android.graphics.Bitmap;
-import android.util.Log;
-
-public class DownloadTexturesEumetsat extends DownloadTextures {
+public class DownloadTexturesNoaa extends DownloadTextures {
 	private OpenGLES20Renderer gles20Renderer = null;
 
-	public DownloadTexturesEumetsat(OpenGLES20Renderer mGLES20Renderer) {
+	public DownloadTexturesNoaa(OpenGLES20Renderer mGLES20Renderer) {
 		super(mGLES20Renderer);
 		gles20Renderer = mGLES20Renderer;
 	}
@@ -58,52 +50,21 @@ public class DownloadTexturesEumetsat extends DownloadTextures {
 	protected String doInBackground(String... urls) {
 		gles20Renderer.downloadedTextures = 0;
 		gles20Renderer.reloadedTextures = true;
-		int tWidth = 1024;
-		int tHeight = 1024;
-		int hBack = 24;
 
-		String myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/AIRMASS/FULLDISC";
-		char tag = 'M';
+		String myUri = "https://services.swpc.noaa.gov/images/animations/ovation/north/";
+		char tag = 'N';
 
-		if (urls[0].equals("AIRMASS")) {
-			myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/AIRMASS/FULLDISC";
-			tag = 'M';
-		} else if (urls[0].equals("AIRMASS_HD")) {
-			myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/AIRMASS/FULLRESOLUTION";
-			tag = 'm';
-			tWidth = 4096;
-			tHeight = 4096;
-			hBack = 3;
-		} else if (urls[0].equals("NATURALCOLOR")) {
-			myUri = "https://eumetview.eumetsat.int/static-images/MSG/RGB/NATURALCOLOR/FULLDISC";
+		if (urls[0].equals("NOAA_AURORA_NORTH")) {
+			myUri = "https://services.swpc.noaa.gov/images/animations/ovation/north/";
 			tag = 'N';
-		} else if (urls[0].equals("IR108_BW")) {
-			myUri = "https://eumetview.eumetsat.int/static-images/MSG/IMAGERY/IR108/BW/FULLDISC";
-			tag = 'B';
-		} else if (urls[0].equals("VIS006_BW")) {
-			myUri = "https://eumetview.eumetsat.int/static-images/MSG/IMAGERY/VIS006/BW/FULLDISC";
-			tag = 'C';
-		} else if (urls[0].equals("WV062_BW")) {
-			myUri = "https://eumetview.eumetsat.int/static-images/MSG/IMAGERY/WV062/BW/FULLDISC";
-			tag = 'D';
-		} else if (urls[0].equals("MPE")) {
-			myUri = "https://eumetview.eumetsat.int/static-images/MSG/PRODUCTS/H03B/FULLDISC";
-			tag = 'E';
-		}/* else if (urls[0].equals("MPE_HD")) {
-    		myUri = "https://eumetview.eumetsat.int/static-images/MSG/PRODUCTS/MPE/FULLRESOLUTION";
-    		tag = 'e';
-    		tWidth = 4096;
-    		tHeight = 4096;
-    		hBack = -1;
-    	}*/ else if (urls[0].equals("IODC")) {
-			//myUri = "http://oiswww.eumetsat.org/IPPS/html/MTP/PRODUCTS/MPE/FULLDISC";
-			myUri = "https://eumetview.eumetsat.int/static-images/MSGIODC/IMAGERY/IR108/BW/FULLDISC/";
-			tag = 'F';
+		} else if (urls[0].equals("NOAA_AURORA_SOUTH")) {
+			myUri = "https://services.swpc.noaa.gov/images/animations/ovation/south/";
+			tag = 'S';
 		}
 
 		gles20Renderer.mTag = tag;
 
-		BufferedInputStream is2 = null;
+		InputStream is2 = null;
 		Bitmap b = null;
 
 		URLConnection ucon = null;
@@ -134,14 +95,22 @@ public class DownloadTexturesEumetsat extends DownloadTextures {
 			try {
 
 				//HttpClient httpClient = new DefaultHttpClient();
-				//HttpGet get = new HttpGet(myUri + "/index.htm");
+				//HttpGet get = new HttpGet(myUri);
 
 				//HttpResponse response = httpClient.execute(get);
 
-				URL urlObj = new URL(myUri + "/index.htm");
-				HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
-
+				URL urlObj = new URL(myUri);
+				URLConnection urlConnection = (URLConnection) urlObj.openConnection();
 				Log.d("H21lab", "HTTP GET OK");
+
+				urlConnection.setUseCaches(false);
+				// unable to connect during the first connect, reduce timeout for this attempt
+				urlConnection.setConnectTimeout(300);
+				urlConnection.setReadTimeout(300);
+				urlConnection.connect();
+
+				urlConnection.setConnectTimeout(5000);
+				urlConnection.setReadTimeout(5000);
 
 				// Build up result
 				//String bodyHtml = EntityUtils.toString(response.getEntity());
@@ -150,37 +119,43 @@ public class DownloadTexturesEumetsat extends DownloadTextures {
 
 				//BufferedReader bufReader = new BufferedReader(new StringReader(bodyHtml));
 				BufferedReader bufReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-
-				// array_nom_imagen[0]="PTwhQddyHWGUL"
-				Pattern pattern = Pattern.compile("array_nom_imagen\\[(\\d+)\\]\\s*=\\s*\\\"(\\S+)\\\"");
-
-				//  <option value="0">13/01/15   11:00 UTC</option>
-				Pattern pattern2 = Pattern.compile("\\<option value=\\\"(\\d+)\\\"\\>(.*)\\<\\/option\\>");
+				// <a href="aurora_N_2023-03-15_1450.jpg">aurora_N_2023-03-15_..&gt;</a> 2023-03-15 14:51  249K
+				// <a href="aurora_S_2023-03-15_1450.jpg">aurora_S_2023-03-15_..&gt;</a> 2023-03-15 14:51  188K
+				// Download only 10 mins intervals
+				Pattern pattern = Pattern.compile("href=\\\"(aurora_[N|S]_)(\\S+0)\\.jpg\\\"");
 
 				String line;
+				int i = 0;
+				int j = 0;
 				while ((line = bufReader.readLine()) != null) {
 					Matcher matcher = pattern.matcher(line);
 					while (matcher.find()) {
-						Log.d("H21lab", "iKeys: " + "array_nom_imagen[" + matcher.group(1) + "] = " + matcher.group(2));
-						iKeys.put(Integer.parseInt(matcher.group(1)), matcher.group(2));
+						Log.d("H21lab", "iKeys: " + i + " " + matcher.group(1) + matcher.group(2));
+						iKeys.put(i, matcher.group(1) + matcher.group(2));
+						i++;
 					}
 
-					matcher = pattern2.matcher(line);
+					matcher = pattern.matcher(line);
 					while (matcher.find()) {
-						Log.d("H21lab", "eKeys: " + matcher.group(1) + " " + matcher.group(2));
+						Log.d("H21lab", "eKeys: " + matcher.group(2));
 
 						String str = matcher.group(2);
 						str = str.trim().replaceAll("\\t+", " ");
 						str = str.trim().replaceAll("\\s+", " ");
-						SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm zzz");
+						SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd_HHmm");
+						df.setTimeZone(TimeZone.getTimeZone("GMT"));
 						java.util.Date d = df.parse(str);
 						long e = d.getTime();
+						// add cca 1h, it is forecast data
+						e = e + 3600 * 1000;
 
-						if (current - e <= (hBack + 3) * 3600 * 1000) {
+						if (current - e <= (24 + 2) * 3600 * 1000) {
 							files_to_download++;
 						}
 
-						eKeys.put(Integer.parseInt(matcher.group(1)), e);
+						Log.d("H21lab", "eKeys: " + j + " " + e);
+						eKeys.put(i, e);
+						j++;
 					}
 				}
 
@@ -204,9 +179,7 @@ public class DownloadTexturesEumetsat extends DownloadTextures {
 
 			Log.d("H21lab", "h = " + h);
 
-
 			if (!eKeys.containsKey(h)) {
-				progressDialogUpdate();
 
 				Log.d("H21lab", "Does not contain eKeys h = " + h);
 
@@ -217,10 +190,9 @@ public class DownloadTexturesEumetsat extends DownloadTextures {
 
 
 			// do not download too old data
-			if (current - epoch > (hBack + 3) * 3600 * 1000) {
-				progressDialogUpdate();
+			if (current - epoch > (24 + 2) * 3600 * 1000) {
 
-				Log.d("H21lab", "Data from eKeys too old h = " + h);
+				Log.d("H21lab", "Data fom eKeys too old h = " + h);
 
 				continue;
 			}
@@ -250,10 +222,8 @@ public class DownloadTexturesEumetsat extends DownloadTextures {
 
 			// download from internet
 			try {
-				Log.e("H21lab", "!!!!!!!!!!!!!!!!!!!!");
-
 				//oiswww.eumetsat.org/IPPS/html/MSG/IMAGERY/IR108/BW/FULLDISC/IMAGESDisplay/
-				url = new URL(myUri + "/IMAGESDisplay/" + iKeys.get(h));
+				url = new URL(myUri + iKeys.get(h) + ".jpg");
 
 				Log.d("H21lab", "Downloading: " + url.toString());
 
@@ -261,14 +231,12 @@ public class DownloadTexturesEumetsat extends DownloadTextures {
 				ucon.setUseCaches(false);
 				ucon.connect();
 
-				//is2 = ucon.getInputStream();
-				is2 = new BufferedInputStream(ucon.getInputStream());
+				is2 = ucon.getInputStream();
 
 				ByteArrayOutputStream mis2 = new ByteArrayOutputStream();
 				byte data[] = new byte[1024];
 				int count;
 				while ((count = is2.read(data, 0, 1024)) != -1) {
-					Log.d("H21lab", Integer.toString(data.toString().length()));
 					mis2.write(data, 0, count);
 				}
 				mis2.flush();
@@ -276,7 +244,7 @@ public class DownloadTexturesEumetsat extends DownloadTextures {
 
 				byte[] ba = mis2.toByteArray();
 
-				gles20Renderer.saveTexture(filename, ba, tWidth, tHeight);
+				gles20Renderer.saveTexture(filename, ba, 512, 512);
 
 				mis2.close();
 
@@ -290,7 +258,6 @@ public class DownloadTexturesEumetsat extends DownloadTextures {
 				}
 
 			}
-
 
 			progressDialogUpdate();
 

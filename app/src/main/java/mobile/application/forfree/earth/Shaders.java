@@ -3768,7 +3768,7 @@ public class Shaders {
 					+ "; \n" +
 
 
-					" if (_vPosition.z < 0.0) { \n" +
+					" if (vPosition.y < 0.6) { \n" +
 					" 	cmT = vec4(0.0,0.0,0.0,1.0); \n" +
 					" 	cm = 0.0; \n" +
 					" 	cmS = 0.0; \n" +
@@ -4003,7 +4003,7 @@ public class Shaders {
 					+ "; \n" +
 
 
-					" if (_vPosition.z < 0.0) { \n" +
+					" if (vPosition.y > -0.6) { \n" +
 					" 	cmT = vec4(0.0,0.0,0.0,1.0); \n" +
 					" 	cm = 0.0; \n" +
 					" 	cmS = 0.0; \n" +

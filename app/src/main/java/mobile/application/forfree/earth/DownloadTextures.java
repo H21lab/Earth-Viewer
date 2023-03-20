@@ -2,7 +2,7 @@
  * DownloadTextures class
  *
  * This file is part of Earth Viewer
- * Copyright 2016, Martin Kacer, H21 lab
+ * Copyright 2023, Martin Kacer, H21 lab
  *
  * Earth Viewer is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -116,7 +116,8 @@ public class DownloadTextures extends AsyncTask<String, Void, String> {
 		File[] subFiles;
 		Calendar cal;
 		Long epoch;
-		File dir = gles20Renderer.mContext.getFilesDir();
+		//File dir = gles20Renderer.mContext.getFilesDir();
+		File dir = gles20Renderer.mContext.getCacheDir();
 		InputStream is2 = null;
 
 		// clean the internal storage and select actual cloadmap

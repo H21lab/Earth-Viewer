@@ -21,6 +21,7 @@
 package mobile.application.forfree.earth;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -694,7 +695,8 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 
 
 		try {
-			outputStream = mContext.openFileOutput(filename, Context.MODE_PRIVATE);
+			//outputStream = mContext.openFileOutput(filename, Context.MODE_PRIVATE);
+			outputStream = new FileOutputStream(new File(mContext.getCacheDir(), filename));
 
 			ETC1Util.writeTexture(etc1tex, outputStream);
 
@@ -768,7 +770,8 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 		FileInputStream inputStream;
 		Bitmap b = null;
 		try {
-			inputStream = mContext.openFileInput(filename);
+			//inputStream = mContext.openFileInput(filename);
+			inputStream = new FileInputStream(new File(mContext.getCacheDir(), filename));
 
 			etc1tex = ETC1Util.createTexture(inputStream);
 

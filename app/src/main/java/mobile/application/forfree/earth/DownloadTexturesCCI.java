@@ -145,7 +145,8 @@ public class DownloadTexturesCCI extends DownloadTextures {
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
 
-		File dir = gles20Renderer.mContext.getFilesDir();
+		//File dir = gles20Renderer.mContext.getFilesDir();
+		File dir = gles20Renderer.mContext.getCacheDir();
 		File[] subFiles;
 		long epoch;
 		long current_real = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")).getTimeInMillis();

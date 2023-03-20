@@ -53,6 +53,9 @@ Copyright and credit:
 - All METEOSAT images shown in the application are subject to EUMETSAT copyright.
 - For all MTSAT images credit to Japan Meteorological Agency.
 - For all SSEC images provided courtesy of University of Wisconsin-Madison Space Science and Engineering Center.
+- NOAA DATA are obtained from NOAA SPACE WEATHER PREDICTION CENTER (https://www.swpc.noaa.gov/).
+
+
 
 
 Limitations

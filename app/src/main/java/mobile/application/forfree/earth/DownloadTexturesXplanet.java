@@ -2,7 +2,7 @@
  * DownloadTexturesXplanet class
  *
  * This file is part of Earth Viewer
- * Copyright 2016, Martin Kacer, H21 lab
+ * Copyright 2023, Martin Kacer, H21 lab
  *
  * Earth Viewer is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -64,7 +64,8 @@ public class DownloadTexturesXplanet extends DownloadTextures {
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
 
-		File dir = gles20Renderer.mContext.getFilesDir();
+		//File dir = gles20Renderer.mContext.getFilesDir();
+		File dir = gles20Renderer.mContext.getCacheDir();
 		File[] subFiles;
 		long epoch = cal.getTimeInMillis();
 		long current = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")).getTimeInMillis();

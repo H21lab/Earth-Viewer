@@ -15,15 +15,11 @@ Climate Reanalyzer weather forecast
 - World GFS Jetstream Wind Speed (+48h)
 
 Climate Reanalyzer historical data / Global warming monitoring
-- CCI Temperature Anomaly CFSV2 2m (past 182 days)
 - CCI Sea Surface Temperature Anomaly OISST v2 (past 182 days)
-- Sea Surface Temperature Anomaly OISST v2 (past 35 years)
-- Sea Surface Temperature Anomaly ERSST v5 (past 65 years)
 
 METEOSAT 0 degree satellite
 - Airmass realtime imagery (-24h, generated every 1h)
 - Airmass realtime imagery full resolution (-6h, generated every 1h)
-- Multi-Sensor Precipitation Estimate (rain rate) (-24h, generated every 15min)
 - IR 10.8 (-24h, generated every 1h)
 
 METEOSAT IODC satellite

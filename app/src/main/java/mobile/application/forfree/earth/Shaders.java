@@ -2159,6 +2159,20 @@ public class Shaders {
 			" } \n" +
 		*/
 
+			// Mollweide
+			" 	float psi = 3.14159265*(vTex[1] - 0.5); \n" +
+			//" 	for (int i = 0; i < 4; i++) { \n" +
+			//" 		psi = psi - (2.0*psi + sin(2.0*psi) - 3.14159265*sin(vTex[1]*3.14159265 - 3.14159265*0.5))/(2.0 + 2.0*cos(2.0*psi)); \n" +
+			//" 	} \n" +
+			"	psi = psi - (2.0*psi + sin(2.0*psi) - 3.14159265*sin(vTex[1]*3.14159265 - 3.14159265*0.5))/(2.0 + 2.0*cos(2.0*psi)); \n" +
+			" 	_vTexM[0] = (2.0*vTex[0] - 1.0)*0.98*pow(abs(cos(psi)), 0.63); \n" +
+			//" 	_vTexM[1] = sin(psi); \n" +
+			" 	_vTexM[0] = 0.5 + 0.5*_vTexM[0]; \n" +
+			//" 	_vTexM[1] = 0.5 + 0.5*_vTexM[1]; \n" +
+
+			//" 	_vTexM[0] = 0.015 + (1.0 - 0.015 - 0.015)*_vTexM[0]; \n" +
+			//" 	_vTexM[1] = 0.12 + (1.0 - 0.12 - 0.12)*_vTexM[1]; \n" +
+
 			" vec4 cmT = 1.0*(sin(uTW3*0.5*3.1415)*(texture2D(uTextures[2], _vTexM)) 						+ (1.0 - sin(uTW3*0.5*3.1415))*(texture2D(uTextures[5], _vTexM)) ) "
 			+ "			+ 0.0*( uTW1*(texture2D(uTextures[2], _vTexM)) 						+ (1.0 - uTW1)*(texture2D(uTextures[6], _vTexM)) ) "
 			+ "			+ 0.0*( uTW2*(texture2D(uTextures[4], _vTexM))						+ (1.0 - uTW2)*(texture2D(uTextures[5], _vTexM)) ) "
@@ -2374,6 +2388,21 @@ public class Shaders {
 			" 	_vTexM[1] =  -0.05 + 0.9 - 1.5*(0.9 + vPosition.y - 0.01) ; \n" +
 			" } \n" +
 		*/
+
+			// Mollweide
+			" 	float psi = 3.14159265*(vTex[1] - 0.5); \n" +
+			//" 	for (int i = 0; i < 4; i++) { \n" +
+			//" 		psi = psi - (2.0*psi + sin(2.0*psi) - 3.14159265*sin(vTex[1]*3.14159265 - 3.14159265*0.5))/(2.0 + 2.0*cos(2.0*psi)); \n" +
+			//" 	} \n" +
+			"	psi = psi - (2.0*psi + sin(2.0*psi) - 3.14159265*sin(vTex[1]*3.14159265 - 3.14159265*0.5))/(2.0 + 2.0*cos(2.0*psi)); \n" +
+			" 	_vTexM[0] = (2.0*vTex[0] - 1.0)*0.98*pow(abs(cos(psi)), 0.63); \n" +
+			//" 	_vTexM[1] = sin(psi); \n" +
+			" 	_vTexM[0] = 0.5 + 0.5*_vTexM[0]; \n" +
+			//" 	_vTexM[1] = 0.5 + 0.5*_vTexM[1]; \n" +
+
+			//" 	_vTexM[0] = 0.015 + (1.0 - 0.015 - 0.015)*_vTexM[0]; \n" +
+			//" 	_vTexM[1] = 0.12 + (1.0 - 0.12 - 0.12)*_vTexM[1]; \n" +
+
 			" vec4 cmT = 0.2*(sin(uTW3*0.5*3.1415)*(texture2D(uTextures[2], _vTexM)) 						+ (1.0 - sin(uTW3*0.5*3.1415))*(texture2D(uTextures[5], _vTexM)) ) "
 			+ "			+ 0.4*( uTW1*(texture2D(uTextures[2], _vTexM)) 						+ (1.0 - uTW1)*(texture2D(uTextures[6], _vTexM)) ) "
 			+ "			+ 0.4*( uTW2*(texture2D(uTextures[4], _vTexM))						+ (1.0 - uTW2)*(texture2D(uTextures[5], _vTexM)) ) "
@@ -2500,8 +2529,8 @@ public class Shaders {
 
 			//" 	vTexM[0] = vTex[0]; \n" +
 			//" 	vTexM[1] = vTex[1]; \n" +
-			" 	vTexM[0] =  (41.0/1172.0) + (vTex[0])*((1081.0-41.0)/1172.0); \n" +
-			" 	vTexM[1] =  (60.0/764.0) + (vTex[1])*((683.0-60.0)/764.0); \n" +
+			" 	vTexM[0] =  (7.0/1100.0) + (vTex[0])*((1092.0-7.0)/1100.0); \n" +
+			" 	vTexM[1] =  (62.0/794.0) + (vTex[1])*((725.0-62.0)/794.0); \n" +
 
 			"}                         \n";
 	 
@@ -2593,6 +2622,20 @@ public class Shaders {
 			" } \n" +
 		*/
 
+			// Mollweide
+			" 	float psi = 3.14159265*(vTex[1] - 0.5); \n" +
+			//" 	for (int i = 0; i < 4; i++) { \n" +
+			//" 		psi = psi - (2.0*psi + sin(2.0*psi) - 3.14159265*sin(vTex[1]*3.14159265 - 3.14159265*0.5))/(2.0 + 2.0*cos(2.0*psi)); \n" +
+			//" 	} \n" +
+			"	psi = psi - (2.0*psi + sin(2.0*psi) - 3.14159265*sin(vTex[1]*3.14159265 - 3.14159265*0.5))/(2.0 + 2.0*cos(2.0*psi)); \n" +
+			" 	_vTexM[0] = (2.0*vTex[0] - 1.0)*0.98*pow(abs(cos(psi)), 0.63); \n" +
+			//" 	_vTexM[1] = sin(psi); \n" +
+			" 	_vTexM[0] = 0.5 + 0.5*_vTexM[0]; \n" +
+			//" 	_vTexM[1] = 0.5 + 0.5*_vTexM[1]; \n" +
+
+			//" 	_vTexM[0] = 0.015 + (1.0 - 0.015 - 0.015)*_vTexM[0]; \n" +
+			//" 	_vTexM[1] = 0.12 + (1.0 - 0.12 - 0.12)*_vTexM[1]; \n" +
+
 			" vec4 cmT = 0.2*(sin(uTW3*0.5*3.1415)*(texture2D(uTextures[2], _vTexM)) 						+ (1.0 - sin(uTW3*0.5*3.1415))*(texture2D(uTextures[5], _vTexM)) ) "
 			+ "			+ 0.4*( uTW1*(texture2D(uTextures[2], _vTexM)) 						+ (1.0 - uTW1)*(texture2D(uTextures[6], _vTexM)) ) "
 			+ "			+ 0.4*( uTW2*(texture2D(uTextures[4], _vTexM))						+ (1.0 - uTW2)*(texture2D(uTextures[5], _vTexM)) ) "
@@ -2635,7 +2678,7 @@ public class Shaders {
 
 			" a = abs(vMVNormal.z); \n" +
 			// additional specular
-			" gl_FragColor = clamp(gl_FragColor  + 0.1 * uLightSpecularColor * (a) * (sp*sp * 0.5), 0.0, 1.0);	\n" + 
+			" gl_FragColor = clamp(gl_FragColor  + 0.1 * uLightSpecularColor * (a) * (sp*sp k* 0.5), 0.0, 1.0);	\n" +
 	
 			" a = pow(abs(1.0 - vMVNormal.z), 4.0); \n" +
 			" gl_FragColor = clamp(gl_FragColor  + 7.0*vec4(1.0, 1.0, 1.0, 1.0) * uLightSpecularColor  * (a) * (diffuse * 5.0), 0.0, 1.0);	\n" + 

@@ -2464,91 +2464,90 @@ public class Shaders {
 	
 	
 	public static int p_cci_temp_an;
-	
-	public static final String vsc_cci_temp_an = 
+
+	public static final String vsc_cci_temp_an =
 			"uniform mat4 uMVPMatrix;   \n" +
 			"uniform mat4 uMVMatrix;   	\n" +
 			"uniform mat4 uVMatrix;   	\n" +
 			"varying mat4 vMVMatrix;   	\n" +
 			"uniform mat4 uIMVMatrix;	\n" +
-			
+
 			"attribute vec4 aPosition; 	\n" +
 			"attribute vec3 aNormal;  	\n" +
 			"attribute vec2 aTex;		\n" +
-			
+
 			"varying vec3 vPosition;	\n" +
-			"varying vec3 vNormal;		\n" + 
-			"varying vec3 vMVNormal;		\n" + 
+			"varying vec3 vNormal;		\n" +
+			"varying vec3 vMVNormal;		\n" +
 			"varying vec2 vTex;			\n" +
 			"varying vec2 vTexM;		\n" +
-			
+
 			"uniform vec4 uLightPos;  	\n" +
 			"varying vec3 vLightPos;	\n" +
 			"varying vec3 lightVector;	\n" +
-			
-			
+
+
 			"varying vec3 vEye;	\n" +
-			
+
 			// Atmosphere
 			"varying vec3 vPositionA;	\n" +
 			// clouds shadow shift
 			"varying vec2 shiftUV;		\n" +
 
-	        "void main(){              	\n" +
-	        " gl_Position = uMVPMatrix * aPosition; \n" +
-	        " vec4 position = aPosition; \n" +
-	        " vPosition = vec3(position.x, position.y, position.z); \n" +
-	        
-	        // only rotate the normals 
-	        " vec4 normal = vec4(aNormal, 0.0); \n" +
-	        " vNormal = vec3(normal.x, normal.y, normal.z); \n" +
-	        " normal = uMVMatrix*vec4(aNormal, 0.0); \n" +
-	        " vMVNormal = vec3(normal.x, normal.y, normal.z); \n" +
-	        
-	        
-	        " vTex = aTex; \n" +
-	        
+			"void main(){              	\n" +
+			" gl_Position = uMVPMatrix * aPosition; \n" +
+			" vec4 position = aPosition; \n" +
+			" vPosition = vec3(position.x, position.y, position.z); \n" +
+
+			// only rotate the normals
+			" vec4 normal = vec4(aNormal, 0.0); \n" +
+			" vNormal = vec3(normal.x, normal.y, normal.z); \n" +
+			" normal = uMVMatrix*vec4(aNormal, 0.0); \n" +
+			" vMVNormal = vec3(normal.x, normal.y, normal.z); \n" +
+
+
+			" vTex = aTex; \n" +
+
 			" vec4 lightPos = uIMVMatrix * uLightPos; \n" +
 			" vLightPos = vec3(lightPos.x, lightPos.y, lightPos.z); \n" +
-			
+
 			" vec4 eye = uIMVMatrix * vec4(0.0, 0.0, 0.0, 1.0); \n" +
 			" vEye = vec3(eye.x, eye.y, eye.z); \n" +
-			
-			
+
+
 			" lightVector = normalize(vLightPos - vPosition);   \n" +
-			
+
 			// clouds shadow
-			" vec3 _y = vec3(0.0, 1.0, 0.0); \n" + 
+			" vec3 _y = vec3(0.0, 1.0, 0.0); \n" +
 			" vec3 _x = cross(_y, vNormal); \n" +
 			" vec3 _z = vNormal; \n" +
 			" shiftUV = vec2( dot(lightVector, _x), -dot(lightVector, _y) ); \n" +
-			
+
 			// 1172x764
 			// [41,60]
 			// [1081,683]
-
 			//" 	vTexM[0] = vTex[0]; \n" +
 			//" 	vTexM[1] = vTex[1]; \n" +
 			" 	vTexM[0] =  (7.0/1100.0) + (vTex[0])*((1092.0-7.0)/1100.0); \n" +
 			" 	vTexM[1] =  (62.0/794.0) + (vTex[1])*((725.0-62.0)/794.0); \n" +
 
 			"}                         \n";
-	 
-	
-	public static final String fsc_cci_temp_an = 
-		 	"precision mediump float;  	\n" +
+
+
+	public static final String fsc_cci_temp_an =
+			"precision mediump float;  	\n" +
 			"varying vec3 vLightPos;  	\n" +
 			"varying vec3 vPosition;	\n" +     // Interpolated position for this fragment.
 			"varying vec3 lightVector;	\n" +
 			"uniform vec4 uColor;  		\n" +     // This is the color from the vertex shader interpolated across the triangle per fragment.
 			"varying vec3 vNormal;   	\n" +     // Interpolated normal for this fragment.
-			"varying vec3 vMVNormal;	\n" + 
+			"varying vec3 vMVNormal;	\n" +
 			"varying vec2 vTex;			\n" +
 			"varying vec2 vTexM;		\n" +
-	        "uniform sampler2D uTextures[7];\n" +
-	        "varying vec3 vEye	;   	\n" +
-	        "varying vec2 shiftUV;		\n" +	  // clouds shadow shift
-	        
+			"uniform sampler2D uTextures[7];\n" +
+			"varying vec3 vEye	;   	\n" +
+			"varying vec2 shiftUV;		\n" +	  // clouds shadow shift
+
 			"uniform vec4 uLightAmbientColor;  		\n" +
 			"uniform vec4 uLightDiffuseColor;  		\n" +
 			"uniform vec4 uLightSpecularColor;  	\n" +
@@ -2560,67 +2559,66 @@ public class Shaders {
 			"uniform float uMaterialShinnes;  		\n" +
 			"uniform float uBumpLevel;				\n" +
 			"uniform int uTexMapping;				\n" +
-			
+
 			"uniform float uTW1;					\n" +		// cloud map texture weight
 			"uniform float uTW2;					\n" +		// cloud map texture weight
 			"uniform float uTW3;					\n" +		// cloud map texture weight
-			
+
 			// The entry point for our fragment shader.
 			"void main()  				\n" +
 			"{  						\n" +
-			
-				// phong shading
+
+			// phong shading
 			//"    vec3 normal2 = normalize(vNormal);	\n" +
-				// gouraud shading
+			// gouraud shading
 			"    vec3 normal2 = vNormal;	\n" +
-			
-				
-				// bumpmapping
-				// lookup normal from normal map, move from [0,1] to  [-1, 1] range
+
+			// bumpmapping
+			// lookup normal from normal map, move from [0,1] to  [-1, 1] range
 			"	 vec3 normal = vec3(0.0, 0.0, 0.0);	\n" +
 			"	 normal.x = -(2.0 * texture2D (uTextures[0], vTex).b - 1.0);	\n" +
 			"	 normal.y = 2.0 * texture2D (uTextures[0], vTex).g - 1.0;	\n" +
 			"	 normal.z = -(2.0 * texture2D (uTextures[0], vTex).r - 1.0);	\n" +
 			"	 vec4 n = vec4(normal, 0.0); \n" +
-	        "	 normal = vec3(n.x, n.y, n.z); \n" +
-	        
-	        "	 normal = uBumpLevel*normal + (1.0 - uBumpLevel)*normal2; \n" +
+			"	 normal = vec3(n.x, n.y, n.z); \n" +
 
-				// diffuse
+			"	 normal = uBumpLevel*normal + (1.0 - uBumpLevel)*normal2; \n" +
+
+			// diffuse
 			"    float diffuse = max(dot(normal, lightVector), 0.0);   \n" +
 
-				// diffuse 2
+			// diffuse 2
 			"    float diffuse2 = max(dot(normal2, lightVector), 0.0);   \n" +
 
-			    // specular
+			// specular
 			"	 vec3 E = normalize(vEye - vPosition);\n" +  // we are in Eye Coordinates, so EyePos is (0,0,0)
 			"	 vec3 R = normalize(-reflect(lightVector, normal));\n" +
 			"    float sp = max(dot(R, E), 0.0);\n" +
-			"	 vec4 spec = vec4(1.0, 1.0, 1.0, 1.0) * pow(sp, uMaterialShinnes);\n" + 
+			"	 vec4 spec = vec4(1.0, 1.0, 1.0, 1.0) * pow(sp, uMaterialShinnes);\n" +
 			"	 spec = clamp(spec, 0.0, 1.0);\n" +
-			
-				// specular watter
-			"	 vec4 specW = vec4(1.0, 1.0, 1.0, 1.0) * pow(sp, 15.0);\n" + 
-			"	 specW = clamp(specW, 0.0, 1.0);\n" + 
-			
-				// specular clouds 
+
+			// specular watter
+			"	 vec4 specW = vec4(1.0, 1.0, 1.0, 1.0) * pow(sp, 15.0);\n" +
+			"	 specW = clamp(specW, 0.0, 1.0);\n" +
+
+			// specular clouds
 			"	 R = normalize(-reflect(lightVector, normal2));\n" +
 			"    sp = max(dot(R, E), 0.0);\n" +
-			"	 vec4 specC = vec4(1.0, 1.0, 1.0, 1.0) * pow(sp, 1.5);\n" + 
-			"	 specC = clamp(specC, 0.0, 1.0);\n" + 
-			
+			"	 vec4 specC = vec4(1.0, 1.0, 1.0, 1.0) * pow(sp, 1.5);\n" +
+			"	 specC = clamp(specC, 0.0, 1.0);\n" +
+
 
 			// text in the bottom
 			" 	vec2 _vTexM =  vTexM; \n" +
-		/*	" if (vPosition.y > 0.95) { \n" +
-			" 	_vTexM[1] =  -0.03 + 0.1 - 2.0*(vPosition.y-0.95) ; \n" +
-			" 	_vTexM[0] =  1.6*_vTexM[0] ; \n" +
-			" } \n" +
-			
-			" if (vPosition.y < -0.9) { \n" +
-			" 	_vTexM[1] =  -0.19 + 0.9 - 1.5*(0.9 + vPosition.y - 0.01) ; \n" +
-			" } \n" +
-		*/
+/*	" if (vPosition.y > 0.95) { \n" +
+	" 	_vTexM[1] =  -0.03 + 0.1 - 2.0*(vPosition.y-0.95) ; \n" +
+	" 	_vTexM[0] =  1.6*_vTexM[0] ; \n" +
+	" } \n" +
+
+	" if (vPosition.y < -0.9) { \n" +
+	" 	_vTexM[1] =  -0.19 + 0.9 - 1.5*(0.9 + vPosition.y - 0.01) ; \n" +
+	" } \n" +
+*/
 
 			// Mollweide
 			" 	float psi = 3.14159265*(vTex[1] - 0.5); \n" +
@@ -2640,20 +2638,19 @@ public class Shaders {
 			+ "			+ 0.4*( uTW1*(texture2D(uTextures[2], _vTexM)) 						+ (1.0 - uTW1)*(texture2D(uTextures[6], _vTexM)) ) "
 			+ "			+ 0.4*( uTW2*(texture2D(uTextures[4], _vTexM))						+ (1.0 - uTW2)*(texture2D(uTextures[5], _vTexM)) ) "
 			+ "; \n" +
-			
+
 			" vec4 cmTS = 0.2*(sin(uTW3*0.5*3.1415)*(texture2D(uTextures[2], _vTexM + 0.001*shiftUV)) 						+ (1.0 - sin(uTW3*0.5*3.1415))*(texture2D(uTextures[5], _vTexM + 0.001*shiftUV)) ) "
 			+ "			+ 0.4*( uTW1*(texture2D(uTextures[2], _vTexM + 0.001*shiftUV)) 						+ (1.0 - uTW1)*(texture2D(uTextures[6], _vTexM + 0.001*shiftUV)) ) "
 			+ "			+ 0.4*( uTW2*(texture2D(uTextures[4], _vTexM + 0.001*shiftUV))						+ (1.0 - uTW2)*(texture2D(uTextures[5], _vTexM + 0.001*shiftUV)) ) "
 			+ "; \n" +
-			
+
 			" float cm = (cmT.r + cmT.g + cmT.b)/3.0; \n" +
 			" cm = 0.5; \n" +
-			
-			
+
 			" float cmS = (cmTS.r + cmTS.g + cmTS.b)/3.0; \n" +
 			" cmS = 0.5; \n" +
 
-			
+
 			" 		float d = (1.0 - texture2D(uTextures[1], vTex).r)*(1.0 - texture2D(uTextures[1], vTex).g)*texture2D(uTextures[1], vTex).b; \n" +
 			// cloudmap
 			"		gl_FragColor = 1.0*cm*cmT*( 0.4 + 1.0*uLightAmbientColor + 0.9*uLightDiffuseColor * diffuse2 + 0.1*uLightSpecularColor * specC ) "
@@ -2665,36 +2662,35 @@ public class Shaders {
 			+ "						+ 5.0*d*(1.0 - 1.0*cm)*1.0*vec4(1.0, 1.0, 1.0, 1.0)*uLightSpecularColor * specW , 0.0, 1.0)  ;   \n" +
 
 
-			
 			// night light
 			//" if (diffuse < 2.0) { \n" +
 			"	 diffuse = clamp(diffuse, 0.0, 1.0); \n" +
 			"    gl_FragColor =  gl_FragColor + 1.0*(1.0*clamp(1.0 - 2.25*cm, 0.0, 1.0))*pow(1.0 - diffuse, 10.0)*texture2D(uTextures[3], vTex);   \n" +
 			//"}   \n" +
 
-			
+
 			// antialias edges
 			" float a; \n" +
 
 			" a = abs(vMVNormal.z); \n" +
 			// additional specular
-			" gl_FragColor = clamp(gl_FragColor  + 0.1 * uLightSpecularColor * (a) * (sp*sp k* 0.5), 0.0, 1.0);	\n" +
-	
-			" a = pow(abs(1.0 - vMVNormal.z), 4.0); \n" +
-			" gl_FragColor = clamp(gl_FragColor  + 7.0*vec4(1.0, 1.0, 1.0, 1.0) * uLightSpecularColor  * (a) * (diffuse * 5.0), 0.0, 1.0);	\n" + 
-			
-			" a = pow(abs(1.0 - vMVNormal.z), 0.5); \n" +
-			" gl_FragColor = clamp(gl_FragColor  + 0.2*vec4(0.3, 0.6, 0.9, 1.0) * (a) * (1.3), 0.0, 1.0);	\n" + 
+			" gl_FragColor = clamp(gl_FragColor  + 0.1 * uLightSpecularColor * (a) * (sp*sp * 0.5), 0.0, 1.0);	\n" +
 
-			
+			" a = pow(abs(1.0 - vMVNormal.z), 4.0); \n" +
+			" gl_FragColor = clamp(gl_FragColor  + 7.0*vec4(1.0, 1.0, 1.0, 1.0) * uLightSpecularColor  * (a) * (diffuse * 5.0), 0.0, 1.0);	\n" +
+
+			" a = pow(abs(1.0 - vMVNormal.z), 0.5); \n" +
+			" gl_FragColor = clamp(gl_FragColor  + 0.2*vec4(0.3, 0.6, 0.9, 1.0) * (a) * (1.3), 0.0, 1.0);	\n" +
+
+
 			" a = pow(abs(1.0 - vMVNormal.z), 30.0); \n" +
 			" gl_FragColor = clamp(gl_FragColor  + 20.0*vec4(0.0, 0.4, 0.9, 1.0) * (a) * (1.3), 0.0, 1.0);	\n" +
 
 			" gl_FragColor.a = 1.0;	\n" +
 			" if (abs(vMVNormal.z) < 0.55) { \n" +
-			" 	gl_FragColor = clamp(gl_FragColor * pow(abs(vMVNormal.z)/0.55 - 0.0, 5.0), 0.0, 1.0);	\n" + 
+			" 	gl_FragColor = clamp(gl_FragColor * pow(abs(vMVNormal.z)/0.55 - 0.0, 5.0), 0.0, 1.0);	\n" +
 			" }; \n" +
-			
+
 			"}   \n";
 	
 	public static int p_cci_water;

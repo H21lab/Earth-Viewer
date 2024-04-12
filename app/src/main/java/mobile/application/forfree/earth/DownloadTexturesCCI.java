@@ -106,7 +106,8 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/T2_anom/";
 			//myUri = "https://pamola.um.maine.edu/wxrmaps/clim_frames/t2anom/world-ced/";
-			myUri = "https://climatereanalyzer.org/reanalysis/daily_maps/clim_frames/t2anom/world-ced/";
+			//myUri = "https://climatereanalyzer.org/reanalysis/daily_maps/clim_frames/t2anom/world-ced/";
+			myUri = "https://climatereanalyzer.org/reanalysis/daily_maps/clim_frames/t2anom/world-wt/";
 			tag = 'a';
 		} else if (urls[0].equals("OISST_V2_1Y")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
@@ -167,9 +168,9 @@ public class DownloadTexturesCCI extends DownloadTextures {
 		if (tag == 'e') {
 			files_to_download = 65;
 		}
-		// last 0.5 years
+		// last 1 year
 		else if (tag == 'a' || tag == 'b') {
-			files_to_download = 365 / 2 - 15;
+			files_to_download = 365 - 15;
 		}
 		// next 24h
 		else {
@@ -199,7 +200,7 @@ public class DownloadTexturesCCI extends DownloadTextures {
 
 			reload = c.getTimeInMillis();
 		}
-		// last 0.5 year
+		// last 1 year
 		else if (tag == 'a' || tag == 'b') {
 			c.set(Calendar.HOUR_OF_DAY, 9);
 			c.set(Calendar.MINUTE, 0);
@@ -259,10 +260,10 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			// start loading from beginning and not backward
 			epoch = epoch - 65 * (long) (365.25 * 24 * 3600 * 1000);
 		}
-		// last 0.5 years
+		// last 1 year
 		else if (tag == 'a' || tag == 'b') {
 			// start loading from beginning and not backward
-			epoch = epoch - (long) (0.5 * 365.25 * 24 * 3600 * 1000);
+			epoch = epoch - (long) (1.0 * 365.25 * 24 * 3600 * 1000);
 		}
 
 		for (int h = 0; h < files_to_download; h += 1) {
@@ -279,7 +280,7 @@ public class DownloadTexturesCCI extends DownloadTextures {
 				// each 1 year
 				epoch = epoch + (long) (365.25 * 24 * 3600 * 1000);
 			}
-			// last 0.5 years
+			// last 1 year
 			else if (tag == 'a' || tag == 'b') {
 				// each 1 day
 				epoch = epoch + 24 * 3600 * 1000;
@@ -331,7 +332,7 @@ public class DownloadTexturesCCI extends DownloadTextures {
 					continue;
 				}
 			}
-			// last 0.5 years
+			// last 1 year
 			else if (tag == 'a' || tag == 'b') {
 				// do not download too new data
 				if (epoch - current_real > ((long) -15 * 24 * 3600 * 1000)) {
@@ -341,7 +342,7 @@ public class DownloadTexturesCCI extends DownloadTextures {
 					continue;
 				}
 				// do not download old data
-				if (epoch - current_real < ((long) -(0.5 * 365.25) * 24 * 3600 * 1000)) {
+				if (epoch - current_real < ((long) -(1.0 * 365.25) * 24 * 3600 * 1000)) {
 
 					Log.d("H21lab", "Data fom eKeys old h = " + h);
 
@@ -383,7 +384,7 @@ public class DownloadTexturesCCI extends DownloadTextures {
 							break;
 						}
 					}
-					// last 0.5 years
+					// last 1 year
 					else if (tag == 'a' || tag == 'b') {
 						// file exist
 
@@ -431,12 +432,12 @@ public class DownloadTexturesCCI extends DownloadTextures {
 					url = new URL(myUri + "/"
 							+ getERSSTV5NameFromEpoch(epoch) + ".png");
 				}
-				// last 0.5 years
+				// last 1 year
 				else if (tag == 'a') {
 					url = new URL(myUri + "/"
 							+ getTEMP_AN_1Y_NameFromEpoch(epoch) + ".png");
 				}
-				// last 0.5 years
+				// last 1 year
 				else if (tag == 'b') {
 					url = new URL(myUri + "/"
 							+ getOISSTV2_1Y_NameFromEpoch(epoch) + ".png");
@@ -525,7 +526,8 @@ public class DownloadTexturesCCI extends DownloadTextures {
 		String year = String.format("%04d", (int) (c.get(Calendar.YEAR)));
 		String day = String.format("%03d", (int) (c.get(Calendar.DAY_OF_YEAR)));
 
-		String filename = year + "/" + "t2anom_world-ced_" + year + "_d" + day;
+		//String filename = year + "/" + "t2anom_world-ced_" + year + "_d" + day;
+		String filename = year + "/" + "t2anom_world-wt_" + year + "_d" + day;
 
 		return filename;
 

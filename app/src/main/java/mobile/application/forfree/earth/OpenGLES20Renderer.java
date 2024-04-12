@@ -249,8 +249,8 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 				earth.setProgram(Shaders.p_cci_temp_an_1y);
 				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
 				// change label UV
-				label.Vertex[1 * label.VertexSize + 7] = 1.0f - 0.13f;
-				label.Vertex[2 * label.VertexSize + 7] = 1.0f - 0.13f;
+				label.Vertex[1 * label.VertexSize + 7] = 1.0f - 0.076f;
+				label.Vertex[2 * label.VertexSize + 7] = 1.0f - 0.076f;
 			} else if (mTag == 'b') {
 				earth.setProgram(Shaders.p_cci_oisst_v2);
 				label.setFlags(label.getFlags() & ~M3DM.MD3DMESHF_DISABLED);
@@ -331,7 +331,8 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 			} else if (mTag == 's') {
 				Shaders.p_cci_snow = DEV.CompileProgram(Shaders.vsc_cci_wind, Shaders.fsc_cci_temp);
 			} else if (mTag == 'a') {
-				Shaders.p_cci_temp_an_1y = DEV.CompileProgram(Shaders.vsc_cci_temp_an_1y, Shaders.fsc_cci_temp_an_1y);
+				//Shaders.p_cci_temp_an_1y = DEV.CompileProgram(Shaders.vsc_cci_temp_an_1y, Shaders.fsc_cci_temp_an_1y);
+				Shaders.p_cci_temp_an_1y = DEV.CompileProgram(Shaders.vsc_cci_temp_an, Shaders.fsc_cci_temp_an);
 			} else if (mTag == 'b') {
 				Shaders.p_cci_oisst_v2 = DEV.CompileProgram(Shaders.vsc_cci_oisst_v2, Shaders.fsc_cci_oisst_v2);
 			} else if (mTag == 'O') {
@@ -1047,7 +1048,7 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 			else if (mTag == 'N' || mTag == 'S') {
 				mTimeRotate += Tc * 4 * 30 * 60 * 1000;
 			}
-			// last 0.5 years
+			// last 1 year
 			else if (mTag == 'a' || mTag == 'b') {
 				mTimeRotate += 0.3 * ((long) 365.25 * Tc * 2 * 30 * 60) * 1000;
 			}
@@ -1097,12 +1098,12 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 			}
 			mEpoch = now - (long) (65 * 365.25 * 24 * 3600) * 1000 + mTimeRotate;
 		}
-		// last 1 years
+		// last 1 year
 		else if (mTag == 'a' || mTag == 'b') {
-			while (mTimeRotate > 0.5 * 365.25 * 24 * 3600 * 1000) {
-				mTimeRotate -= 0.5 * 365.25 * 24 * 3600 * 1000;
+			while (mTimeRotate > 1.0 * 365.25 * 24 * 3600 * 1000) {
+				mTimeRotate -= 1.0 * 365.25 * 24 * 3600 * 1000;
 			}
-			mEpoch = now - (long) (0.5 * 365.25 * 24 * 3600) * 1000 + mTimeRotate;
+			mEpoch = now - (long) (1.0 * 365.25 * 24 * 3600) * 1000 + mTimeRotate;
 		}
 		// last 6h
 		else if (mTag == 'm') {

@@ -101,8 +101,8 @@ public class EarthActivity extends Activity {
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_WATER, Menu.NONE, R.string.cci_water);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_WIND, Menu.NONE, R.string.cci_wind);
 		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_JET, Menu.NONE, R.string.cci_jet);
-		//menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_TEMP_AN_1Y, Menu.NONE, R.string.cci_temp_an_1y);
-		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_OISST_V2_1Y, Menu.NONE, R.string.cci_oisst_v2_1y);
+		menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_TEMP_AN_1Y, Menu.NONE, R.string.cci_temp_an_1y);
+		//menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_OISST_V2_1Y, Menu.NONE, R.string.cci_oisst_v2_1y);
 		//menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_OISST_V2, Menu.NONE, R.string.cci_oisst_v2);
 		//menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_ERSST_V5, Menu.NONE, R.string.cci_ersst_v5);
 		//menu.add(Menu.NONE, ID_MENU_IMAGERY_CCI_SNOW, Menu.NONE, R.string.cci_snow);

@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 31
+    compileSdk 34
 
     defaultConfig {
         applicationId "mobile.application.forfree.earth"
         minSdkVersion 11
-        targetSdkVersion 33
+        targetSdkVersion 34
     }
 
     buildTypes {

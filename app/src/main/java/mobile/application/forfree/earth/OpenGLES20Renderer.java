@@ -1030,11 +1030,11 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 			DEV.Light[0].Pos = M3DMATRIX.VxM(DEV.Light[0].Pos, fearth.world);
 		}
 
-		// Time calculation
+		// Time calculation (Playback speed)
 		if (mPlay) {
-			// next 48h
+			// next 7d
 			if (mTag == 'C' || mTag == 't' || mTag == 'T' || mTag == 'w' || mTag == 'v' || mTag == 'j' || mTag == 's') {
-				mTimeRotate += Tc * 6 * 30 * 60 * 1000;
+				mTimeRotate += Tc * 24 * 30 * 60 * 1000;
 			}
 			// last 35 years
 			else if (mTag == 'O') {
@@ -1070,10 +1070,10 @@ public class OpenGLES20Renderer implements GLSurfaceView.Renderer {
 			}
 		}
 
-		// next 48h
+		// next 9d
 		if (mTag == 'C' || mTag == 't' || mTag == 'T' || mTag == 'w' || mTag == 'v' || mTag == 'j' || mTag == 's') {
-			while (mTimeRotate > 48 * 3600 * 1000) {
-				mTimeRotate -= 48 * 3600 * 1000;
+			while (mTimeRotate > 168 * 3600 * 1000) {
+				mTimeRotate -= 168 * 3600 * 1000;
 			}
 			mEpoch = now + mTimeRotate;
 		}

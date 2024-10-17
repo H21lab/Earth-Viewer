@@ -49,6 +49,7 @@ public class DownloadTexturesCCI extends DownloadTextures {
 		// Format: https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2/2018-08-08-00z/00.png
 		//String myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp/";
 		String myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/prcp/";
+		String myPrefix = "";
 
 
 		char tag = 'C';
@@ -57,8 +58,10 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PRCP/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/PRCP/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp-tcld-topo/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/prcp-tcld-topo/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/prcp-tcld-topo/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/prcp-tcld-topo/";
+			myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/prcp-mslp-gph500/";
+			myPrefix = "gfs_world-wt_prcp-mslp-gph500";
 			tag = 'C';
 		} else if (urls[0].equals("TEMP")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2/";
@@ -67,6 +70,7 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/t2/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2/";
 			myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/t2/";
+			myPrefix = "gfs_world-wt_t2";
 			tag = 'T';
 		} else if (urls[0].equals("TEMP_AN")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
@@ -75,13 +79,16 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/t2anom/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2anom/";
 			myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/t2anom/";
+			myPrefix = "gfs_world-wt_t2anom";
 			tag = 't';
 		} else if (urls[0].equals("WATER")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PWTR/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/PWTR/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/pwtr/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/pwtr/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/pwtr/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/pwtr/";
+			myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/pwtr/";
+			myPrefix = "gfs_world-wt_pwtr";
 			tag = 'w';
 		} else if (urls[0].equals("WIND")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/WS10/";
@@ -89,20 +96,26 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws10/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/ws10-mslp/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws10-mslp/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/ws10-mslp/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/ws10-mslp/";
+			myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/ws10-mslp/";
+			myPrefix = "gfs_world-wt_ws10-mslp";
 			tag = 'v';
 		} else if (urls[0].equals("JET")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/WS250/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/WS250/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws250-mslp/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/ws250-mslp/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/ws250-mslp/";
+			myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/ws250-mslp/";
+			myPrefix = "gfs_world-wt_ws250-mslp";
 			tag = 'j';
 		} else if (urls[0].equals("SNOW")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/SNOW/";
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/SNOW/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/snowd-mslp/";
-			myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/snowd-mslp/";
+			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/snowd-mslp/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/snowd-mslp/";
+			myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/snowd-mslp/";
+			myPrefix = "gfs_world-wt_snowd-mslp";
 			tag = 's';
 		} else if (urls[0].equals("TEMP_AN_1Y")) {
 			//myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/T2_anom/";
@@ -174,9 +187,9 @@ public class DownloadTexturesCCI extends DownloadTextures {
 		else if (tag == 'a' || tag == 'b') {
 			files_to_download = 365 - 15;
 		}
-		// next 24h
+		// next 7d
 		else {
-			files_to_download = (48) / 3;
+			files_to_download = (168) / 6;
 		}
 
 		progressDialogSetMax(files_to_download);
@@ -210,17 +223,17 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			c.set(Calendar.MILLISECOND, 0);
 			reload = c.getTimeInMillis();
 		}
-		// next 24h
+		// next 7d
 		else {
 			if (c.get(Calendar.HOUR_OF_DAY) < 9) {
-				epoch -= 24 * 3600 * 1000;
+				epoch -= 168 * 3600 * 1000;
 
 				c.set(Calendar.HOUR_OF_DAY, 9);
 				c.set(Calendar.MINUTE, 0);
 				c.set(Calendar.SECOND, 0);
 				c.set(Calendar.MILLISECOND, 0);
 				reload = c.getTimeInMillis();
-				reload -= 24 * 3600 * 1000;
+				reload -= 168 * 3600 * 1000;
 
 			} else {
 				c.set(Calendar.HOUR_OF_DAY, 9);
@@ -247,8 +260,8 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
 			data_generated_epoch = current_real;
 			if (c.get(Calendar.HOUR_OF_DAY) < 8) {
-				epoch -= 24 * 3600 * 1000;
-				data_generated_epoch -= 24 * 3600 * 1000;
+				epoch -= 168 * 3600 * 1000;
+				data_generated_epoch -= 168 * 3600 * 1000;
 			}
 		}
 
@@ -287,10 +300,10 @@ public class DownloadTexturesCCI extends DownloadTextures {
 				// each 1 day
 				epoch = epoch + 24 * 3600 * 1000;
 			}
-			// next 24h
+			// next 7d
 			else {
-				// each 3h
-				epoch = epoch + 3 * 3600 * 1000;
+				// each 6h
+				epoch = epoch + 6 * 3600 * 1000;
 			}
 
 
@@ -352,17 +365,17 @@ public class DownloadTexturesCCI extends DownloadTextures {
 					continue;
 				}
 			}
-			// next 24h
+			// next 7d
 			else {
 				// do not download too new data
-				if (epoch - current_real > (48) * 3600 * 1000) {
+				if (epoch - current_real > (2 * 168) * 3600 * 1000) {
 
 					Log.d("H21lab", "Data fom eKeys too new h = " + h);
 
 					continue;
 				}
 				// do not download old data
-				if (epoch - current_real < -3 * 3600 * 1000) {
+				if (epoch - current_real < -(3 * 6) * 3600 * 1000) {
 
 					Log.d("H21lab", "Data fom eKeys old h = " + h);
 
@@ -395,7 +408,7 @@ public class DownloadTexturesCCI extends DownloadTextures {
 							break;
 						}
 					}
-					// next 24h
+					// next 7d
 					else {
 						// file exist and is not newer file
 
@@ -444,11 +457,13 @@ public class DownloadTexturesCCI extends DownloadTextures {
 					url = new URL(myUri + "/"
 							+ getOISSTV2_1Y_NameFromEpoch(epoch) + ".png");
 				}
-				// next 24h
+				// next 7d
 				else {
 					url = new URL(myUri
 							+ getDirectoryNameFromEpoch(data_generated_epoch) + "/"
-							+ String.format("%02d", h) + ".png");
+							+ myPrefix + "_" + getFileNamePrefixFromEpoch(data_generated_epoch) + "_" + String.format("%03d", 6 * h)
+							+ ".png");
+							//+ String.format("%02d", h) + ".png");
 				}
 
 
@@ -515,6 +530,23 @@ public class DownloadTexturesCCI extends DownloadTextures {
 		String day = String.format("%02d", (int) (c.get(Calendar.DAY_OF_MONTH)));
 
 		String filename = Integer.toString(c.get(Calendar.YEAR)) + "-" + month + "-" + day + "-00z";
+
+		return filename;
+
+	}
+
+	// 2024101700_006.png
+	public static String getFileNamePrefixFromEpoch(long epoch) {
+
+		Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
+		c.setTimeInMillis(epoch);
+
+		String year = String.format("%04d", (int) (c.get(Calendar.YEAR)));
+		String month = String.format("%02d", (int) (c.get(Calendar.MONTH) + 1));
+		String day = String.format("%02d", (int) (c.get(Calendar.DAY_OF_MONTH)));
+		//String hour = String.format("%03d", (int) (c.get(Calendar.HOUR_OF_DAY)));
+
+		String filename = Integer.toString(c.get(Calendar.YEAR)) + "" + month + "" + day + "00";
 
 		return filename;
 

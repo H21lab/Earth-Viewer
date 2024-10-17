@@ -205,8 +205,8 @@ public class DownloadTextures extends AsyncTask<String, Void, String> {
 					}
 				}
 
-				// delete newer files
-				if (OpenGLES20Renderer.getEpochFromName(file.getName()) - epoch > (72 + 24) * 3600 * 1000) {
+				// delete newer files then 7d
+				if (OpenGLES20Renderer.getEpochFromName(file.getName()) - epoch > (168 + 24) * 3600 * 1000) {
 					Log.d("H21lab",
 							"Deleting new: " + file.getName() + " epoch " + epoch + " file epoch " + OpenGLES20Renderer.getEpochFromName(file.getName()));
 					file.delete();

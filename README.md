@@ -7,15 +7,12 @@ Animated planet Earth with live weather, satellite data, global forecast and his
 Imagery included:
 
 Climate Reanalyzer weather forecast
-- World GFS Precipitation and Clouds (+48h)
-- World GFS Air Temperature (+48h)
-- World GFS Air Temperature Anomaly (+48h)
-- World GFS Precipitable Water (+48h)
-- World GFS Surface Wind Speed (+48h)
-- World GFS Jetstream Wind Speed (+48h)
-
-Climate Reanalyzer historical data / Global warming monitoring
-- CCI Temperature Anomaly CFSv2 2m (past 1 year)
+- World GFS Precipitation and Clouds (+7d)
+- World GFS Air Temperature (+7d)
+- World GFS Air Temperature Anomaly (+7d)
+- World GFS Precipitable Water (+7d)
+- World GFS Surface Wind Speed (+7d)
+- World GFS Jetstream Wind Speed (+7d)
 
 METEOSAT 0 degree satellite
 - Airmass realtime imagery (-24h, generated every 1h)
@@ -67,7 +64,7 @@ Import the project into Android Studio, build and run the application.
 
 ## Attribution
 
-This code was created by Martin Kacer, H21 lab, Copyright 2023.
+This code was created by Martin Kacer, H21 lab, Copyright 2024.
 https://www.h21lab.com/android
 
 

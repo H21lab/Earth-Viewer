@@ -48,7 +48,9 @@ public class DownloadTexturesCCI extends DownloadTextures {
 		//String myUri = "http://pamola.um.maine.edu/DailySummary/frames/GFS-025deg/WORLD-CED/PRCP/";
 		// Format: https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2/2018-08-08-00z/00.png
 		//String myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp/";
-		String myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/prcp/";
+		//String myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/prcp/";
+		String myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/";
+		String myUriSuffix = "";
 		String myPrefix = "";
 
 
@@ -60,7 +62,8 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/prcp-tcld-topo/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/prcp-tcld-topo/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/prcp-tcld-topo/";
-			myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/prcp-mslp-gph500/";
+			//myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/prcp-mslp-gph500/";
+			myUriSuffix = "world-wt/prcp-mslp-gph500/";
 			myPrefix = "gfs_world-wt_prcp-mslp-gph500";
 			tag = 'C';
 		} else if (urls[0].equals("TEMP")) {
@@ -69,7 +72,8 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/t2/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2/";
-			myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/t2/";
+			//myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/t2/";
+			myUriSuffix = "world-wt/t2/";
 			myPrefix = "gfs_world-wt_t2";
 			tag = 'T';
 		} else if (urls[0].equals("TEMP_AN")) {
@@ -78,7 +82,8 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/t2anom/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/t2anom/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/t2anom/";
-			myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/t2anom/";
+			//myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/t2anom/";
+			myUriSuffix = "world-wt/t2anom/";
 			myPrefix = "gfs_world-wt_t2anom";
 			tag = 't';
 		} else if (urls[0].equals("WATER")) {
@@ -87,7 +92,8 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/pwtr/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/pwtr/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/pwtr/";
-			myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/pwtr/";
+			//myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/pwtr/";
+			myUriSuffix = "world-wt/pwtr/";
 			myPrefix = "gfs_world-wt_pwtr";
 			tag = 'w';
 		} else if (urls[0].equals("WIND")) {
@@ -97,7 +103,8 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/ws10-mslp/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws10-mslp/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/ws10-mslp/";
-			myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/ws10-mslp/";
+			//myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/ws10-mslp/";
+			myUriSuffix = "world-wt/ws10-mslp/";
 			myPrefix = "gfs_world-wt_ws10-mslp";
 			tag = 'v';
 		} else if (urls[0].equals("JET")) {
@@ -105,7 +112,8 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			//myUri = "http://traveler.um.maine.edu/fcst_frames/GFS-025deg/WORLD-CED/WS250/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/ws250-mslp/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/ws250-mslp/";
-			myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/ws250-mslp/";
+			//myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/ws250-mslp/";
+			myUriSuffix = "world-wt/ws250-mslp/";
 			myPrefix = "gfs_world-wt_ws250-mslp";
 			tag = 'j';
 		} else if (urls[0].equals("SNOW")) {
@@ -114,7 +122,8 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-ced/snowd-mslp/";
 			//myUri = "https://climatereanalyzer.org/wx_frames/gfs/world-wt/snowd-mslp/";
 			//myUri = "https://pamola.um.maine.edu/wx_frames/gfs/world-ced/snowd-mslp/";
-			myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/snowd-mslp/";
+			//myUri = "https://climatereanalyzer.org/wx/fcst/maps/gfs/world-wt/snowd-mslp/";
+			myUriSuffix = "world-wt/snowd-mslp/";
 			myPrefix = "gfs_world-wt_snowd-mslp";
 			tag = 's';
 		} else if (urls[0].equals("TEMP_AN_1Y")) {
@@ -260,8 +269,8 @@ public class DownloadTexturesCCI extends DownloadTextures {
 			c = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
 			data_generated_epoch = current_real;
 			if (c.get(Calendar.HOUR_OF_DAY) < 8) {
-				epoch -= 168 * 3600 * 1000;
-				data_generated_epoch -= 168 * 3600 * 1000;
+				epoch -= 24 * 3600 * 1000;
+				data_generated_epoch -= 24 * 3600 * 1000;
 			}
 		}
 
@@ -460,7 +469,7 @@ public class DownloadTexturesCCI extends DownloadTextures {
 				// next 7d
 				else {
 					url = new URL(myUri
-							+ getDirectoryNameFromEpoch(data_generated_epoch) + "/"
+							+ getDirectoryNameFromEpoch(data_generated_epoch) + "/" + myUriSuffix
 							+ myPrefix + "_" + getFileNamePrefixFromEpoch(data_generated_epoch) + "_" + String.format("%03d", 6 * h)
 							+ ".png");
 							//+ String.format("%02d", h) + ".png");

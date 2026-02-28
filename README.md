@@ -1,3 +1,10 @@
+# 💡 Update: Earth-Viewer
+More recent application **earth-viewer-web** is now available.
+
+You can find it in the https://github.com/h21-lab/apps-collection-info repository.
+👉 [Get Access](https://buy.polar.sh/polar_cl_eRpd2b9nzlDyHdA2M8vYvCiUyCjl4gPZeYiHs41btfM)
+
+
 # Earth-Viewer
 Android application.
 Animated planet Earth with live weather, satellite data, global forecast and historical data. Application visualizes also data-sets useful for Global warming monitoring. 
